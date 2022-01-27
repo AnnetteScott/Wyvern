@@ -20,11 +20,31 @@ const createWindow = () => {
         {
             label: "File",
             submenu: [
-                {label: 'Open'}, 
-                {label: 'Save'}, 
-                {label: 'New Timesheet'}, 
-                {label: 'Print'}, 
-                {label: 'Exit', click(){ app.quit() }} 
+                {
+                    label: 'Open', 
+                    accelerator: process.platform === 'darwin' ? 'Ctrl+O' : 'Ctrl+O',
+                    //click(){ app.quit() }
+                }, 
+                {
+                    label: 'Save', 
+                    accelerator: process.platform === 'darwin' ? 'Ctrl+S' : 'Ctrl+S',
+                    //click(){ app.quit() }
+                }, 
+                {
+                    label: 'New Timesheet', 
+                    accelerator: process.platform === 'darwin' ? 'Ctrl+T' : 'Ctrl+T',
+                    //click(){ app.quit() }
+                }, 
+                {
+                    label: 'Print', 
+                    accelerator: process.platform === 'darwin' ? 'Ctrl+P' : 'Ctrl+P',
+                    //click(){ app.quit() }
+                },
+                {
+                    label: 'Exit', 
+                    accelerator: process.platform === 'darwin' ? 'Ctrl+W' : 'Ctrl+W',
+                    click(){ app.quit() }
+                } 
             ]
         }
     ])

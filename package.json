@@ -1,0 +1,23 @@
+{
+  "name": "wyvern",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NotNatural21/Wyvern.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NotNatural21/Wyvern/issues"
+  },
+  "homepage": "https://github.com/NotNatural21/Wyvern#readme",
+  "devDependencies": {
+    "electron": "16.0.7"
+  }
+}

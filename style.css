@@ -1,0 +1,66 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 8vh;
+    background-color: rgb(25, 230, 230);
+    font-family: Playball;
+}
+
+.logo{
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 20px;
+}
+
+.nav-links{
+    display: flex;
+    justify-content: space-around;
+    text-transform: uppercase;
+    width: 80%;
+}
+
+.nav-links li{
+    list-style: none;
+}
+
+.nav-links a{
+    text-decoration: none;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+.burger{
+    display: none;
+}
+
+.burger div{
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 2px;
+}
+
+@media screen and (max-width:750px){
+    .nav-links{
+		position: absolute;
+		right: 0px;
+		height: 92hv;
+		top: 8vh;
+		background-color: rgb(25, 230, 230);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 30%;
+		opacity: 0;
+	}
+	.burger{
+		display: block;
+	}
+}

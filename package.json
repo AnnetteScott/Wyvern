@@ -19,5 +19,8 @@
   "homepage": "https://github.com/NotNatural21/Wyvern#readme",
   "devDependencies": {
     "electron": "16.0.7"
+  },
+  "dependencies": {
+    "electron-reload": "^2.0.0-alpha.1"
   }
 }

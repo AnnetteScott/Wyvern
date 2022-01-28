@@ -17,3 +17,15 @@ body {
 .home h2{
     margin-top: 10%;
 }
+
+label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+    margin-top: 2%;
+    margin-left: 2%;
+    
+}
+
+input{
+    margin-left: 2%;
+}

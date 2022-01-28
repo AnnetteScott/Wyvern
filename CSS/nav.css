@@ -12,13 +12,11 @@ nav{
     text-transform: uppercase;
     letter-spacing: 5px;
     font-size: 20px;
-    margin-left: 20%;
+    margin-left: 75px;
 }
 
 .nav-links{
-    display: flex;
     justify-content: space-around;
-    width: 80%;
     font-size: 25px;
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
     border-radius: 5px;
@@ -54,6 +52,7 @@ nav{
 .burger{
     display: block;
     margin-right: 75px;
+    cursor: pointer;
 }
 
 .burger div{

@@ -3,8 +3,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="CSS/style.css">
+		<link rel="stylesheet" href="CSS/root.css">
 		<link rel="stylesheet" href="CSS/nav.css">
+		<link rel="stylesheet" href="CSS/style.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
@@ -12,25 +13,13 @@
 	</head>
 	<body>
 		<nav>
-			<div class="navName">
-				<h4>Wyvern</h4>
-			</div>
+			<div class="navName">wyvern</div>
 			<ul class="nav-links">
-				<li>
-					<a href="main.html">Home</a>
-				</li>
-				<li>
-					<a href="Pages/settings.html">Settings</a>
-				</li>
-				<li>
-					<a href="Pages/Budget.html">Budget</a>
-				</li>
-				<li>
-					<a href="Pages/Timesheet.html">TimeSheets</a>
-				</li>
-				<li>
-					<a href="Pages/Invoice.html">Invoice</a>
-				</li>
+				<li onclick="changePage('PAGE_home')">Home</li>
+				<li onclick="changePage('PAGE_settings')">Settings</li>
+				<li onclick="changePage('PAGE_projects')">Projects</li>
+				<li onclick="changePage('PAGE_budget')">Budget</li>
+				<li onclick="changePage('PAGE_invoice')">Invoice</li>
 			</ul>
 			<div class="burger">
 				<div class="line1"></div>
@@ -38,10 +27,51 @@
 				<div class="line3"></div>
 			</div>
 		</nav>
-		<div class="home">
+
+
+		<div id="PAGE_home" class="page hidden">
 			<h1>Welcome To Wyvern!</h1>
 			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
 		</div>
+
+		<div id="PAGE_settings" class="page hidden">
+			<div class="inner">
+			</div>
+		</div>
+
+		<div id="PAGE_projects" class="page">
+			<div class="inner">
+				<div id="projects_container">
+					<div id="projects_controls">
+						<div title="New project" onclick="createProject()" style="background-image: url(Images/add_white_24dp.svg);"></div>
+						<div title="Delete project" onclick="deleteAllProjects()" style="background-image: url(Images/delete_forever_white_24dp.svg);"></div>
+					</div>
+					<div id="projects_list">
+						<!--generated content-->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="PAGE_budget" class="page hidden">
+			<div class="inner">
+			</div>
+		</div>
+
+		<div id="PAGE_invoice" class="page hidden">
+			<div class="inner">
+			</div>
+		</div>
+
+		<div id="alert">
+			<p class="title"></p>
+			<p class="message"></p>
+			<div class="options"></div>
+		</div>
+
 		<script src="JS/nav.js"></script>
+		<script src="JS/domBlocks.js"></script>
+		<script src="JS/alert.js"></script>
+		<script src="JS/createProject.js"></script>
 	</body>
 </html>

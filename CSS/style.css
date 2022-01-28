@@ -9,6 +9,40 @@ body {
     overflow-x: hidden; 
 }
 
+#alert{
+    position: fixed;
+    top: 50vh;
+    left: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 250px;
+    height: 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 3px 14px -7px black;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+#alert .title{
+    width: 100%;
+    height: 20px;
+    padding: 0px 10px;
+    background-color: #F0F0F0;
+}
+#alert .message{
+    padding: 0px 10px;
+}
+#alert .options{
+    width: 100%;
+    height: 30px;
+    padding: 0px 10px;
+    text-align: end;
+    background-color: #F0F0F0;
+}
+
 .home{
     text-align: center;
     margin: 3%;
@@ -28,4 +62,109 @@ label {
 
 input{
     margin-left: 2%;
+}
+
+
+.page{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    
+}
+
+
+#projects_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: calc(100vw - 30px);
+    height: 600px;
+    max-height: 600px;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+#projects_controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    border-radius: 5px;
+}
+#projects_controls div{
+    width: 35px;
+    height: 35px;
+    background-color: black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    border-radius: 50%;
+    user-select: none;
+    cursor: pointer;
+}
+#projects_controls div:hover{
+    background-color: blue;
+}
+#projects_list{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.small_project_card{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 100%;
+    height: 40px;
+    margin: 4px 0px;
+    background-color: white;
+    border-radius: 20px;
+}
+.small_project_card h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 0px 10px 0px 0px;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+    background-color: black;
+    border-radius: 50%;
+}
+.small_project_card p{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.small_project_card div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 38px;
+    height: 38px;
+    margin: 0px 1px 0px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.small_project_card div::after {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 4px;
+    background-color: black;
+    border-radius: 50%;
+    box-shadow: 0px 8px 0px 0px black,
+                0px 16px 0px 0px black;
+    transform: translateY(-8px);
 }

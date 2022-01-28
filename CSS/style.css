@@ -1,0 +1,19 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+body { 
+    background-image: url("../Images/home.png");
+    background-repeat: no-repeat;
+    overflow-x: hidden; 
+}
+
+.home{
+    text-align: center;
+    margin: 3%;
+}
+
+.home h2{
+    margin-top: 10%;
+}

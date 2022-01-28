@@ -3,12 +3,40 @@ const { app, BrowserWindow, Menu } = require('electron')
 const path = require('path')
 
 const createWindow = () => {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    icon: __dirname + '/WyvernIcon.ico',
-  })
+  	// Create the browser window.
+	const mainWindow = new BrowserWindow({
+		width: 1200,
+		height: 800,
+		icon: __dirname + '/WyvernIcon.ico',
+	})
+
+	var settingsWindow = new BrowserWindow({
+		width: 1200,
+		height: 800,
+		show: false
+	})
+	settingsWindow.loadURL('file://' + __dirname + '/Pages/settings.html')
+
+	var budgetWindow = new BrowserWindow({
+		width: 1200,
+		height: 800,
+		show: false
+	})
+	budgetWindow.loadURL('file://' + __dirname + '/Pages/Budget.html')
+	
+	var invoiceWindow = new BrowserWindow({
+		width: 1200,
+		height: 800,
+		show: false
+	})
+	invoiceWindow.loadURL('file://' + __dirname + '/Pages/Invoice.html')
+	
+	var timeSheetWindow = new BrowserWindow({
+		width: 1200,
+		height: 800,
+		show: false
+	})
+	timeSheetWindow.loadURL('file://' + __dirname + '/Pages/Timesheet.html')
 
   // and load the index.html of the app.
   mainWindow.loadFile('main.html')

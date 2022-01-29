@@ -34,7 +34,10 @@ function changePage(page_id, clicked = false){
     document.querySelectorAll(".page").forEach((page) => {
         page.classList.add("hidden");
     });
-    document.querySelector(".navName").innerHTML = page_id.split("_")[1] === "home" ? "wyvern" : page_id.split("PAGE_")[1].replaceAll("_", " ");
+
+    if(page_id != "PAGE_project"){
+        document.querySelector(".navName").innerHTML = page_id.split("_")[1] === "home" ? "wyvern" : page_id.split("PAGE_")[1].replaceAll("_", " ");       
+    }
     document.getElementById(page_id).classList.remove("hidden");
     if(clicked){
         closeNav();

@@ -37,7 +37,6 @@ function createProjectValidate(){
 function deleteAllProjects(){
     if (confirm("You are about to delete all projects. Continue?")) {
         projects = {};
-        document.getElementById("projects_list").innerHTML = "";
     }
 }
 

@@ -9,40 +9,6 @@ body {
     overflow-x: hidden; 
 }
 
-#alert{
-    position: fixed;
-    top: 50vh;
-    left: 50vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 250px;
-    height: 100px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0px 3px 14px -7px black;
-    transform: translate(-50%, -50%);
-    overflow: hidden;
-}
-#alert .title{
-    width: 100%;
-    height: 20px;
-    padding: 0px 10px;
-    background-color: #F0F0F0;
-}
-#alert .message{
-    padding: 0px 10px;
-}
-#alert .options{
-    width: 100%;
-    height: 30px;
-    padding: 0px 10px;
-    text-align: end;
-    background-color: #F0F0F0;
-}
-
 .home{
     text-align: center;
     margin: 3%;
@@ -50,18 +16,6 @@ body {
 
 .home h2{
     margin-top: 10%;
-}
-
-label {
-    display: block;
-    font: 1rem 'Fira Sans', sans-serif;
-    margin-top: 2%;
-    margin-left: 2%;
-    
-}
-
-input{
-    margin-left: 2%;
 }
 
 
@@ -91,7 +45,7 @@ input{
 #projects_controls{
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     background-color: white;

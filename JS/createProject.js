@@ -31,9 +31,6 @@ function createProject(){
 }
 
 function deleteAllProjects(){
-    /* alerty.title = "Warning";
-    alerty.message = "You are about to delete all projects. Continue?";
-    alerty.options = ["Ok"] */
     if (confirm("You are about to delete all projects. Continue?")) {
         projects = [];
         document.getElementById("projects_list").innerHTML = "";

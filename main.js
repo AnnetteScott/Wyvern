@@ -38,14 +38,9 @@ const mainMenuTemplate =  [
         label: "File",
         submenu: [
             {
-                label: 'Open', 
-                accelerator: process.platform === 'darwin' ? 'Ctrl+O' : 'Ctrl+O',
-                //click(){ app.quit() }
-            }, 
-            {
                 label: 'Save', 
                 accelerator: process.platform === 'darwin' ? 'Ctrl+S' : 'Ctrl+S',
-                //click(){ app.quit() }
+                click(){ mainWindow.webContents.send('save_Data') }
             },  
             {
                 label: 'Print', 

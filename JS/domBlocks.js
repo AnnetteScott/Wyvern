@@ -5,5 +5,9 @@ DOM_Blocks = {
         +          `<p>${title}</p>`
         +          '<div class="menu"></div>'
         +      '</div>';
+    },
+    time_sheet_button: function (weekOne = 1, weekTwo = 2){
+        var title = "Weeks " + weekOne.toString() + " - " + weekTwo.toString();
+        return `<button onclick="">${title}</button>` + '<br>'
     }
 }

@@ -1,17 +1,13 @@
-const navSlide = () => {
-    const burger = document.querySelector('.burger');
-    const nav = document.querySelector('.nav-links');
-    const navLinks = document.querySelectorAll('.nav-links li')
+const burger = document.querySelector('.burger');
+const nav = document.querySelector('.nav-links');
+const navLinks = document.querySelectorAll('.nav-links li');
 
-    
-    burger.addEventListener('click', () =>{
-        //Toggle nav
-        nav.classList.toggle('nav-active');
+function openNav(){
+    nav.classList.add('nav-active');
 
-        //Animate Links
-        navLinks.forEach((link, index) =>{
-            link.style.animation = link.style.animation ? '' : link.style.animation = `navLinkFade 0.3s ease forwards ${index / 7 + 0.25}s`;
-        });
+    //Animate Links
+    navLinks.forEach((link, index) =>{
+        link.style.animation = link.style.animation ? '' : link.style.animation = `navLinkFade 0.2s ease forwards ${index / 7 + 0.15}s`;
     });
 }
 

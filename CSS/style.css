@@ -168,7 +168,7 @@ input {
     transition: 0.2s ease border;
 }
 input:focus {
-    border-color: black;
+    border-color: blue;
 }
 button {
     padding: 5px 20px;

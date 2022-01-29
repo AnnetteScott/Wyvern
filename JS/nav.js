@@ -11,7 +11,23 @@ function openNav(){
     });
 }
 
-navSlide();
+function closeNav(){
+    nav.classList.remove('nav-active');
+
+    //Animate Links
+    navLinks.forEach((link, index) =>{
+        link.style.animation = link.style.animation ? '' : link.style.animation = `navLinkFade 0.2s ease forwards ${index / 7 + 0.15}s`;
+    });
+}
+
+function toggleNav(){
+    nav.classList.toggle('nav-active');
+
+    //Animate Links
+    navLinks.forEach((link, index) =>{
+        link.style.animation = link.style.animation ? '' : link.style.animation = `navLinkFade 0.2s ease forwards ${index / 7 + 0.15}s`;
+    });
+}
 
 
 function changePage(page_id){

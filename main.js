@@ -1,7 +1,6 @@
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
-
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 let mainWindow;
 
@@ -11,7 +10,11 @@ app.on('ready', function(){
     mainWindow = new BrowserWindow({
         width: 1200,
 		height: 800,
-		icon: __dirname + '/WyvernIcon.ico'
+		icon: __dirname + '/WyvernIcon.ico',
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
     });
     // Load html in window
     mainWindow.loadFile('main.html');
@@ -20,7 +23,7 @@ app.on('ready', function(){
       app.quit();
     });
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools();
   
     // Build menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);

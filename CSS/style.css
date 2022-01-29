@@ -136,4 +136,56 @@ body {
     box-shadow: 0px 8px 0px 0px black,
                 0px 16px 0px 0px black;
     transform: translateY(-8px);
+    user-select: none;
+    pointer-events: none;
+}
+
+
+#PAGE_create_project .creation_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #FFFFFF23;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px -5px white inset,
+                0px 4px 16px -16px black;
+    backdrop-filter: blur(5px);
+    transition: 0.3s ease all;
+}
+input {
+    width: 200px;
+    margin-bottom: 15px;
+    padding: 2px;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: transparent;
+    border: 1px solid white;
+    border-bottom: 3px solid white;
+    border-radius: 5px;
+    outline: unset;
+    transition: 0.2s ease border;
+}
+input:focus {
+    border-color: black;
+}
+button {
+    padding: 5px 20px;
+    color: black;
+    background: linear-gradient(45deg, white, white);
+    border: unset;
+    border-radius: 5px;
+    transform-origin: 50% 50%;
+    transition: 0.2s ease all;
+    cursor: pointer;
+}
+button:hover {
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+
+.form_error input {
+    border-color: red !important;
 }

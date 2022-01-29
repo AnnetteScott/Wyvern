@@ -9,7 +9,10 @@ function createProject(){
         document.querySelector('.creation_form').classList.remove('form_error');
         projects[keyname] = project_template();
         let dur = parseInt(document.getElementById('project_duration').value);
-        projects[keyname]["project_duration"] = dur % 2 === 0 ? dur++ : dur; //Ensure project duration is even
+        if(dur % 2 === 0){
+            dur++;
+        }
+        projects[keyname]["project_duration"] = dur;
         projects[keyname]["project_start_date"] = document.getElementById('project_date').value;
 
         //Clear inputs
@@ -38,10 +41,4 @@ function deleteAllProjects(){
     if (confirm("You are about to delete all projects. Continue?")) {
         projects = {};
     }
-}
-
-function clickProject(e){
-    let project = e.target;
-    changePage('PAGE_project');
-
 }

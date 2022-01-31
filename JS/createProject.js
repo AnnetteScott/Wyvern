@@ -13,7 +13,29 @@ function createProject(){
             dur++;
         }
         projects[keyname]["project_duration"] = dur;
-        projects[keyname]["project_start_date"] = document.getElementById('project_date').value;
+
+        let startDateList = document.getElementById('project_date').value.split("-")
+        let startDate = startDateList[2] + "/" + startDateList[1] + "/" + startDateList[0].substr(2, 3) 
+        
+        let day = parseInt(startDate.split("/")[0]);
+        let month = parseInt(startDate.split("/")[1]);
+        let year = parseInt(startDate.split("/")[2]);
+        let project_dates = {'Weeks 1 - 2': {'start_date':startDate, 'cells': {}}};
+        for(let i = 3; i < dur; i++){
+            let week1 = i;
+            let week2 = i + 1;
+            let title = "Weeks " + week1.toString() + " - " + week2.toString();
+            day += 14;
+            if(day > getMonth(month, year)){
+                day = day - getMonth(month, year);
+                month++;
+            }
+            let newDate = day.toString() + "/" + month.toString() + "/" + year.toString()
+            project_dates[title] = {'start_date':newDate, 'cells': {}};
+            i++;
+        }
+
+        projects[keyname]["time_sheet_weeks"] = project_dates;
 
         //Clear inputs
         document.getElementById('project_duration').value = "";

@@ -3,18 +3,16 @@ function clickProject(e){
     chosenProject = e.target.querySelector("p").innerHTML;
     document.querySelector(".navName").innerHTML = chosenProject;
     let keyname = chosenProject.replaceAll(" ", "_");
-    var duration = projects[keyname]["project_duration"]
+    let duration = projects[keyname]["project_duration"];
+    let weekTitles = projects[keyname]["time_sheet_weeks"];
+
 
     let elem = '';
-    let week1 = 1;
-    let week2 = 1;
-    for(let i = 1; week2 < duration; i++){
-        week2 = week1 + 1;
-        elem += DOM_Blocks.time_sheet_button(week1, week2)
-        week1 = week2 + 1;
-    }
+    Object.keys(weekTitles).forEach(key => {
+        elem += DOM_Blocks.time_sheet_button(key)
+    })
+    
     document.getElementById("project_buttons").innerHTML = elem;
-
 
     changePage('PAGE_project');
 }

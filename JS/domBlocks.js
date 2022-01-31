@@ -6,8 +6,7 @@ DOM_Blocks = {
         +          '<div class="menu"></div>'
         +      '</div>';
     },
-    time_sheet_button: function (weekOne = 1, weekTwo = 2){
-        var title = "Weeks " + weekOne.toString() + " - " + weekTwo.toString();
-        return `<button onclick="">${title}</button>` + '<br>'
+    time_sheet_button: function (title){
+        return `<button value="${title}"onclick="tableGen(event)">${title}</button>` + '<br>'
     }
 }

@@ -9,7 +9,7 @@ function createProject(){
         document.querySelector('.creation_form').classList.remove('form_error');
         projects[keyname] = project_template();
         let dur = parseInt(document.getElementById('project_duration').value);
-        if(dur % 2 === 0){
+        if(dur % 2 === 1){
             dur++;
         }
         projects[keyname]["project_duration"] = dur;

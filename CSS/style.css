@@ -58,15 +58,12 @@ button {
     background: linear-gradient(45deg, #0EE3F4, #071B4A);
     border: unset;
     border-radius: 5px;
-    transform-origin: 50% 50%;
-    transition: 0.2s ease all;
     cursor: pointer;
 }
 button:hover {
     background: linear-gradient(220deg, #9f1169, #041136);
 }
-
-
-
-
-
+#project_buttons button{
+    width: 50px;
+    padding: 4px;
+}

@@ -1,11 +1,12 @@
 function tableGen(e){
     currentTimeSheet = e.target.getAttribute('value');
+    document.querySelector(".navName").innerHTML = currentPage + " Weeks " + currentTimeSheet;
+    let projectWeekObj = projectMasterDict[currentChosenProject]["time_sheet_weeks"][currentTimeSheet];
     let tableContainer = document.getElementById("project_table");
     tableContainer.innerHTML = ''
     let colLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
     let rowCount = 97;
     let tableHTML = '';
-    let projectWeekObj = projectMasterDict[currentChosenProject]["time_sheet_weeks"][currentTimeSheet];
     let timeList = timeGen();
     let dateList = dateGen(projectWeekObj)
     for(col in colLetter){
@@ -18,7 +19,7 @@ function tableGen(e){
                 } else if(row == rowCount){
                     tableHTML += `<div value="${cellID}"></div>`;
                 } else {
-                    tableHTML += `<div value="${cellID}" onclick="cellClicked(event)"></div>`;
+                    tableHTML += `<div value="${cellID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
                 }
             }else{
                 tableHTML += `<div value="${cellID}">${timeList[row]}</div>`;
@@ -26,8 +27,14 @@ function tableGen(e){
         }
         tableHTML += '</div>';
     }
-
     tableContainer.innerHTML = tableHTML;
+    let colouredCellList = projectWeekObj['cells']
+    if(colouredCellList != {}){
+        for (const [key, value] of Object.entries(colouredCellList)) {
+            let element = document.querySelector(`[value="${key}"]`);
+            element.style.background = value;
+        }
+    }
 
 }
 

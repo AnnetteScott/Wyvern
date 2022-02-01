@@ -20,11 +20,11 @@ function createProject(){
         let day = parseInt(startDate.split("/")[0]);
         let month = parseInt(startDate.split("/")[1]);
         let year = parseInt(startDate.split("/")[2]);
-        let project_dates = {'Weeks 1 - 2': {'start_date':startDate, 'cells': {}}};
+        let project_dates = {'1 - 2': {'start_date':startDate, 'cells': {}}};
         for(let i = 3; i < dur; i++){
             let week1 = i;
             let week2 = i + 1;
-            let title = "Weeks " + week1.toString() + " - " + week2.toString();
+            let title = week1.toString() + " - " + week2.toString();
             day += 14;
             if(day > getMonth(month, year)){
                 day = day - getMonth(month, year);

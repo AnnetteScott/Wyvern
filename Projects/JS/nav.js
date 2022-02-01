@@ -36,7 +36,8 @@ function changePage(page_id, clicked = false){
     });
 
     if(page_id != "PAGE_project"){
-        document.querySelector(".navName").innerHTML = page_id.split("_")[1] === "home" ? "wyvern" : page_id.split("PAGE_")[1].replaceAll("_", " ");       
+        currentPage = page_id.split("_")[1] === "home" ? "wyvern" : page_id.split("PAGE_")[1].replaceAll("_", " ");       
+        document.querySelector(".navName").innerHTML = currentPage;
     }
     document.getElementById(page_id).classList.remove("hidden");
     if(clicked){

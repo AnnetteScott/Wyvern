@@ -8,8 +8,8 @@ write_file = function(data, path = "./DATA/user.json"){
 }
 
 function save_Data(){
-    write_file(JSON.stringify(projects));
+    write_file(JSON.stringify(projectMasterDict));
 }
 function read_Data(){
-    projects = JSON.parse(read_file());
+    projectMasterDict = JSON.parse(read_file());
 }

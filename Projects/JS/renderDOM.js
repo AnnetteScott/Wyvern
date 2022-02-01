@@ -13,13 +13,13 @@ let TaskManager = {
 
     tasks: {
         t_projects: function (){
-            if(shallowEqual(projects, TaskManager.cache.c_projects) == false){
+            if(shallowEqual(projectMasterDict, TaskManager.cache.c_projects) == false){
                 let elem = '';
-                Object.keys(projects).forEach(function(k, i){
+                Object.keys(projectMasterDict).forEach(function(k, i){
                     elem += DOM_Blocks.small_project_card(i, k.toString().replaceAll("_", " "));
                 });
                 document.getElementById("projects_list").innerHTML = elem;
-                TaskManager.cache.c_projects = { ...projects };
+                TaskManager.cache.c_projects = { ...projectMasterDict };
             }
         },
 

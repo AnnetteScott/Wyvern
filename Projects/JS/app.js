@@ -7,9 +7,7 @@ ipcRenderer.on('read_Data', function (event) {
     read_Data();
 });
 
-let projects = {};
 read_Data();
-
 
 //This must be last
 TaskManager.start();

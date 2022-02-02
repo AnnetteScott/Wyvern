@@ -18,6 +18,14 @@ function clickProject(e){
     })
     
     document.getElementById("project_buttons").innerHTML = elem;
+    
 
+    let elemRibbon = '<div class="color_button" onclick="setColour(event)" style="background-color: white;">White</div>';
+    Object.keys(colourMasterDict).forEach(name => {
+        if(colourMasterDict[name][1]['yes'].includes(currentChosenProject)){
+            elemRibbon += DOM_Blocks.colour_ribbon(name, colourMasterDict[name][0])
+        }    
+    })
+    document.getElementById("project_ribbon").innerHTML = elemRibbon;
     changePage('PAGE_project');
 }

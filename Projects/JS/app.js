@@ -9,5 +9,10 @@ ipcRenderer.on('read_Data', function (event) {
 
 read_Data();
 
+
+let intervalId = window.setInterval(function(){
+    save_Data();
+}, 300000);
+
 //This must be last
 TaskManager.start();

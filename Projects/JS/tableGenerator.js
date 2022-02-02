@@ -5,7 +5,7 @@ function tableGen(e){
     let tableContainer = document.getElementById("project_table");
     tableContainer.innerHTML = ''
     let colLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-    let rowCount = 97;
+    let rowCount = 97 + colourCount - 1;
     let tableHTML = '';
     let timeList = timeGen();
     let dateList = dateGen(projectWeekObj)
@@ -16,7 +16,7 @@ function tableGen(e){
             if(colLetter[col] != 'Z'){
                 if(row == 0){
                     tableHTML += `<div value="${cellID}">${dateList[col - 1]}</div>`;
-                } else if(row == rowCount){
+                } else if(row >= 97){
                     tableHTML += `<div value="${cellID}"></div>`;
                 } else {
                     tableHTML += `<div value="${cellID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
@@ -75,6 +75,13 @@ function timeGen(){
             timeArr.push(newTime);
             
         }
+    }
+    for(let i = 0; i < colourCount; i++){
+        let colour = document.getElementsByClassName("color_button")[i].style.backgroundColor;
+        if(colour != "white"){
+            timeArr.push(colour);
+        }
+        
     }
     timeArr.push("Total:");
     return timeArr;

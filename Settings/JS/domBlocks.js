@@ -8,7 +8,7 @@ let DOM_Blocks_Settings = {
     },
     checkboxes: function (project, colourName){
         return '<div class="check_box">'
-        +          `<input title="Project: ${project}" type="checkbox" id="settings_colour_${project}_${colourName}" name="accept" value="yes">`
+        +  `<input onclick="addToDict(event)" title="Project: ${project}" type="checkbox" id="settings_colour_${project}_${colourName}" name="accept" value="${colourName}">`
         +      '</div>';
 
     }

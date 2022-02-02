@@ -114,7 +114,7 @@
 }
 
 
-#PAGE_create_project .creation_form {
+.creation_form {
     display: flex;
     flex-direction: column;
     justify-content: center;

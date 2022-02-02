@@ -8,5 +8,8 @@ let DOM_Blocks = {
     },
     time_sheet_button: function (title){
         return `<button value="${title}"onclick="tableGen(event)">${title}</button>` + '<br>'
+    }, 
+    colour_ribbon: function (name, colour){
+        return `<div class="color_button" onclick="setColour(event)" style="background-color: ${colour};">${name}</div>`
     }
 }

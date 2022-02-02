@@ -7,6 +7,7 @@ let TaskManager = {
 
     render_loop: function (){
         TaskManager.tasks.t_projects();
+        TaskManager.tasks.t_colours();
 
         if(TaskManager.enabled){window.requestAnimationFrame(TaskManager.render_loop);}
     },
@@ -23,6 +24,26 @@ let TaskManager = {
             }
         },
 
+        t_colours: function (){
+            if(shallowEqual(colourMasterDict, TaskManager.cache.c_colours) == false){
+                let elem = '';
+                let elemCheck = '';
+                Object.keys(colourMasterDict).forEach(function(k){
+                    elem += DOM_Blocks_Settings.colour_card(k, colourMasterDict[k][0]);
+                });
+                Object.keys(colourMasterDict).forEach(function(key){
+                    Object.keys(projectMasterDict).forEach(function(k){
+                        elemCheck += DOM_Blocks_Settings.checkboxes(k, key);
+                    });
+                    elemCheck += "<br>"
+                });
+                
+                document.getElementById("colour_list").innerHTML = elem;
+                document.getElementById("colour_list_checkboxes").innerHTML = elemCheck;
+                TaskManager.cache.c_colours = { ...colourMasterDict };
+            }
+        },
+
         t_navigation: function (){
             if(currentPage === TaskManager.cache.c_navigation){
 
@@ -32,6 +53,7 @@ let TaskManager = {
 
     cache: {
         c_projects: {},
+        c_colours: {},
         c_navigation: null
     }
 }

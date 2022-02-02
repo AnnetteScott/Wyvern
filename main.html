@@ -39,9 +39,16 @@
 		<div id="PAGE_settings" class="page">
 			<div class="inner_settings">
 				<div id="colour_container">
-					<p id="colourTitle">Timesheet Colours</p>
-					<div id="settings_colour_controls">	
-						<div title="New Colour" onclick="changePage('PAGE_add_new_colour')" style="background-image: url(Images/add_white_24dp.svg);"></div>
+					<div id="settings_colour_controls">
+						<div id="add_new_colour_button" title="New Colour" onclick="changePage('PAGE_add_new_colour')" style="background-image: url(Images/add_white_24dp.svg);"></div>
+					</div>
+					<div id="colourINFO">
+						<div id="colour_list">
+							<!--generated content-->
+						</div>
+						<div id="colour_list_checkboxes">
+							<!--generated content-->
+						</div>
 					</div>
 				</div>		
 			</div>
@@ -118,7 +125,11 @@
 			</div>
 		</div>
 
-		<script src="Projects/JS/globalVariables.js"></script>
+		<script src="JS/globalVariables.js"></script>
+		<script src="Settings/JS/domBlocks.js"></script>
+		<script src="Settings/JS/colourGenerator.js"></script>
+		<script src="Settings/JS/colourHandler.js"></script>
+		<!-- Projects -->
 		<script src="Projects/JS/nav.js"></script>
 		<script src="Projects/JS/fileIO.js"></script>
 		<script src="Projects/JS/domBlocks.js"></script>

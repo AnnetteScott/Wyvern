@@ -3,7 +3,13 @@ function cellClicked(e){
     let cellID = e.target.getAttribute('value');
     let element = document.querySelector(`[value="${cellID}"]`);
     cellSelect(element);
-    selectedCellsList.push(cellID);
+    if(selectedCellsList != []){
+        selectedCellsList.forEach(cellIDR => {
+            let pCell = document.querySelector(`[value="${cellIDR}"]`);
+            cellDeSelect(pCell);
+        });
+    }
+    selectedCellsList = [cellID];
 }
 
 function cellHovered(e){
@@ -24,6 +30,11 @@ function cellSelect(element){
     element.style.background = "#D1D3D9";
 }
 
+function cellDeSelect(element){
+    element.style.borderColor = "black";
+    element.style.background = "white";
+}
+
 function setColour(e){
     let colourButtonStyle = window.getComputedStyle(e.target);
     let colour = colourButtonStyle.getPropertyValue('background-color');
@@ -33,8 +44,7 @@ function setColour(e){
         let element = document.querySelector(`[value="${cellID}"]`);
         if(colour == "rgb(255, 255, 255)"){
             delete projectWeekObj['cells'][cellID];
-            element.style.background = "white";
-            element.style.borderColor = "black";
+            cellDeSelect(element);
         } else{
             projectWeekObj['cells'][cellID] = colour;
             element.style.background = colour;

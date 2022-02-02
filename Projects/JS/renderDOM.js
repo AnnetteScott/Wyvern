@@ -6,8 +6,9 @@ let TaskManager = {
     },
 
     render_loop: function (){
-        TaskManager.tasks.t_projects();
+        TaskManager.tasks.t_projects(); 
         TaskManager.tasks.t_colours();
+        TaskManager.tasks.t_colour_CheckBoxes();
 
         if(TaskManager.enabled){window.requestAnimationFrame(TaskManager.render_loop);}
     },
@@ -23,6 +24,21 @@ let TaskManager = {
                 TaskManager.cache.c_projects = { ...projectMasterDict };
             }
         },
+        
+        t_colour_CheckBoxes: function (){
+            if(shallowEqual(colourMasterDict, TaskManager.cache.c_colour_checkBoxes) == false){
+                Object.keys(colourMasterDict).forEach(function(name){
+                    Object.keys(projectMasterDict).forEach(function(proj){
+                        if(colourMasterDict[name][1]['yes'].includes(proj)){
+                            document.getElementById(`settings_colour_${proj}_${name}`).checked = true;
+                        }else{
+                            document.getElementById(`settings_colour_${proj}_${name}`).checked = false;
+                        }   
+                    });
+                });
+                TaskManager.cache.c_colour_checkBoxes = { ...colourMasterDict };
+            }
+        },
 
         t_colours: function (){
             if(shallowEqual(colourMasterDict, TaskManager.cache.c_colours) == false){
@@ -31,15 +47,16 @@ let TaskManager = {
                 Object.keys(colourMasterDict).forEach(function(k){
                     elem += DOM_Blocks_Settings.colour_card(k, colourMasterDict[k][0]);
                 });
-                Object.keys(colourMasterDict).forEach(function(key){
-                    Object.keys(projectMasterDict).forEach(function(k){
-                        elemCheck += DOM_Blocks_Settings.checkboxes(k, key);
+                Object.keys(colourMasterDict).forEach(function(name){
+                    elemCheck += '<div class="check_box_container">'
+                    Object.keys(projectMasterDict).forEach(function(proj){
+                        elemCheck += DOM_Blocks_Settings.checkboxes(proj, name);    
                     });
-                    elemCheck += "<br>"
+                    elemCheck += '</div>';
                 });
-                
                 document.getElementById("colour_list").innerHTML = elem;
                 document.getElementById("colour_list_checkboxes").innerHTML = elemCheck;
+
                 TaskManager.cache.c_colours = { ...colourMasterDict };
             }
         },
@@ -54,6 +71,7 @@ let TaskManager = {
     cache: {
         c_projects: {},
         c_colours: {},
+        c_colour_checkBoxes: {},
         c_navigation: null
     }
 }

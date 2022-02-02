@@ -5,7 +5,7 @@ function tableGen(e){
     let tableContainer = document.getElementById("project_table");
     tableContainer.innerHTML = ''
     let colLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-    let rowCount = 97 + colourCount - 1;
+    let rowCount = 97 + colourCount;
     let tableHTML = '';
     let timeList = timeGen();
     let dateList = dateGen(projectWeekObj)
@@ -35,7 +35,6 @@ function tableGen(e){
             element.style.background = value;
         }
     }
-    checkColourStatus();
 }
 
 function dateGen(weekDict){
@@ -76,13 +75,10 @@ function timeGen(){
             
         }
     }
-    for(let i = 0; i < colourCount; i++){
-        let colour = document.getElementsByClassName("color_button")[i].style.backgroundColor;
-        if(colour != "white"){
-            timeArr.push(colour);
-        }
-        
-    }
+    Object.keys(colourMasterDict).forEach(function(key){
+        timeArr.push(key);
+    });
+
     timeArr.push("Total:");
     return timeArr;
 

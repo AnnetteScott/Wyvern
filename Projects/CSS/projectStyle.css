@@ -88,7 +88,7 @@
     user-select: none;
     pointer-events: none;
 }
-.small_project_card div {
+.small_project_card .projectMenu {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,9 +98,8 @@
     border-radius: 50%;
     cursor: pointer;
     user-select: none;
-    pointer-events: none;
 }
-.small_project_card div::after {
+.small_project_card .projectMenu::after {
     content: "";
     display: block;
     width: 4px;
@@ -168,8 +167,13 @@
     border-right: 10px solid black;
 }
 
+#project_table > div > div:nth-child(97){
+    border-bottom: 3px solid black;
+}
+
 #project_table > div > div{
-    border: 1px dashed black;
+    border-left: 1px dashed black;
+    border-bottom: 1px solid black;
     width: 100%;
     height: 22px;
     min-height: 22px;

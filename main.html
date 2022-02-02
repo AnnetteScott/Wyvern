@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="CSS/nav.css">
 		<link rel="stylesheet" href="CSS/style.css">
 		<link rel="stylesheet" href="Projects/CSS/projectStyle.css">
+		<link rel="stylesheet" href="Settings/CSS/settings.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
@@ -35,12 +36,30 @@
 			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
 		</div>
 
-		<div id="PAGE_settings" class="page hidden">
-			<div class="inner">
+		<div id="PAGE_settings" class="page">
+			<div class="inner_settings">
+				<div id="colour_container">
+					<p id="colourTitle">Timesheet Colours</p>
+					<div id="settings_colour_controls">	
+						<div title="New Colour" onclick="changePage('PAGE_add_new_colour')" style="background-image: url(Images/add_white_24dp.svg);"></div>
+					</div>
+				</div>		
 			</div>
 		</div>
 
-		<div id="PAGE_projects" class="page">
+		<div id="PAGE_add_new_colour" class="page hidden">
+			<div class="inner">
+				<div class="creation_form">
+					<label for="colour_creation_name">Colour Name:</label>
+					<input id="colour_creation_name" type="text"></input>
+					<label for="colour_creation_colour">Colour:</label>
+					<input type="color" id="colour_creation_colour" name="head" value="">
+					<button onclick="addColour()">Add Colour</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="PAGE_projects" class="page hidden">
 			<div class="inner">
 				<div id="projects_container">
 					<div id="projects_controls">
@@ -71,12 +90,12 @@
 		<!-- Project page -->
 		<div id="PAGE_project" class="page hidden">
 			<div id="project_ribbon">
-				<div class="color_button" onclick="setColour(event)" style="background-color: green;"></div>
-				<div class="color_button" onclick="setColour(event)" style="background-color: rgb(196, 0, 0);"></div>
-				<div class="color_button" onclick="setColour(event)" style="background-color: magenta;"></div>
-				<div class="color_button" onclick="setColour(event)" style="background-color: cyan;"></div>
-				<div class="color_button" onclick="setColour(event)" style="background-color: darkblue;"></div>
+				<div class="color_button" onclick="setColour(event)" style="background-color: red;"></div>
 				<div class="color_button" onclick="setColour(event)" style="background-color: darkorange;"></div>
+				<div class="color_button" onclick="setColour(event)" style="background-color: green;"></div>
+				<div class="color_button" onclick="setColour(event)" style="background-color: darkblue;"></div>
+				<div class="color_button" onclick="setColour(event)" style="background-color: cyan;"></div>
+				<div class="color_button" onclick="setColour(event)" style="background-color: purple;"></div>
 				<div class="color_button" onclick="setColour(event)" style="background-color: white;"></div>
 			</div>
 			<div class="inner_project">

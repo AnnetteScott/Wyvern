@@ -35,7 +35,7 @@ function tableGen(e){
             element.style.background = value;
         }
     }
-
+    checkColourStatus();
 }
 
 function dateGen(weekDict){

@@ -1,4 +1,5 @@
 function tableGen(e){
+    let timeList = timeGen();
     currentTimeSheet = e.target.getAttribute('value');
     document.querySelector(".navName").innerHTML = currentPage + " Weeks " + currentTimeSheet;
     let projectWeekObj = projectMasterDict[currentChosenProject]["time_sheet_weeks"][currentTimeSheet];
@@ -7,7 +8,6 @@ function tableGen(e){
     let colLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
     let rowCount = 97 + colourCount;
     let tableHTML = '';
-    let timeList = timeGen();
     let dateList = dateGen(projectWeekObj)
     for(col in colLetter){
         tableHTML += '<div>';
@@ -17,7 +17,7 @@ function tableGen(e){
                 if(row == 0){
                     tableHTML += `<div value="${cellID}">${dateList[col - 1]}</div>`;
                 } else if(row >= 97){
-                    tableHTML += `<div value="${cellID}"></div>`;
+                    tableHTML += `<div value="${cellID}">0</div>`;
                 } else {
                     tableHTML += `<div value="${cellID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
                 }
@@ -75,9 +75,13 @@ function timeGen(){
             
         }
     }
-    Object.keys(colourMasterDict).forEach(function(key){
-        timeArr.push(key);
-    });
+    colourCount = 0;
+    Object.keys(colourMasterDict).forEach(name => {
+        if(colourMasterDict[name][1]['yes'].includes(currentChosenProject)){
+            timeArr.push(name);
+            colourCount++;
+        }    
+    })
 
     timeArr.push("Total:");
     return timeArr;

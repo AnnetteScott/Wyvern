@@ -59,18 +59,37 @@ function tableGen(e){
         
     }
 
+    let totalColCell = '';
+    let totalColCellInt = 97;
+    let weeklyColCell = '';
     for(let i = 1; i < colLetter.length; i++){
         let totalHours = 0.00;
         let col = colLetter[i];
-        let cellInd = 97;
+        totalColCellInt = 97;
         for(let colour = 0; colour < colourCount; colour++){
-            let cellID = col + cellInd.toString();
+            let cellID = col + totalColCellInt.toString();
             totalHours += parseFloat(document.querySelector(`[value="${cellID}"]`).innerHTML);
-            cellInd += 1;
+            totalColCellInt += 1;
         }
-        let lastCell = col + rowCount.toString();
-        document.querySelector(`[value="${lastCell}"]`).innerHTML = totalHours.toString()
+        totalColCell = col + totalColCellInt.toString();
+        let colourBorderCell = col + (totalColCellInt - 1).toString();
+        document.querySelector(`[value="${totalColCell}"]`).innerHTML = totalHours.toString();
+        document.querySelector(`[value="${colourBorderCell}"]`).style.borderWidth = "5px thin";
     }
+
+    totalColCellInt += 1;  
+    for(let i = 0; i < totalColCellInt + 1; i++){
+        let cellIDB = 'H' + i.toString();
+        document.querySelector(`[value="${cellIDB}"]`).style.borderLeft = '5px solid black';
+    }
+
+    let colIndex = 1;
+    let weekIndex = 1;
+    for(let k = 0; k < 2; k++){
+        let weeklyTotal = 0
+        for(let i = 0; i < 7; i++){
+            let cellIDW = colLetter[colIndex] + (rowCount - 3).toString();
+            colIndex++;
 }
 
 function dateGen(weekDict){

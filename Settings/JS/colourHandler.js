@@ -18,3 +18,79 @@ function addToDict(e){
         }
     }
 }
+
+
+function showColourOptions(e){
+    let clickedName = e.target.innerHTML;
+    if(selectedColourName == ''){
+        selectedColourName = clickedName
+    } else if(clickedName != selectedColourName){
+        document.querySelector(`[value="${selectedColourName}"]`).classList.add("hidden");
+    }
+    selectedColourName = clickedName;
+    selectedColour = colourMasterDict[selectedColourName][0];
+    document.querySelector(`[value="${clickedName}"]`).classList.toggle("hidden");
+}
+
+function deleteColour(){
+    if (confirm(`You are about to DELETE ${selectedColourName}. This action is permanent and removes it from everywhere. Continue?`)) {
+        delete colourMasterDict[selectedColourName];
+        for (const [projName, projDict] of Object.entries(projectMasterDict)) {
+            for (const [weeks, weekInfo] of Object.entries(projDict['time_sheet_weeks'])) {
+                for (const [cell, cellColour] of Object.entries(weekInfo['cells'])) {
+                    if(cellColour == selectedColour){
+                        delete projectMasterDict[projName]['time_sheet_weeks'][weeks]['cells'][cell]
+                    }
+                }
+            }
+        }
+        selectedColourName = '';
+    }
+    document.querySelector(`[value="${selectedColourName}"]`).classList.add("hidden");
+}
+
+function editColour(){
+    document.getElementById('colour_creation_name').value = selectedColourName;
+    let rgbList = selectedColour.split("(")[1].split(", ");
+    let hex = rgbToHex(parseInt(rgbList[0]), parseInt(rgbList[1]), (parseInt(rgbList[2].substring(0, rgbList[2].length - 1))))
+    document.getElementById('colour_creation_colour').setAttribute('value', hex);
+
+    document.querySelector(`[value="${selectedColourName}"]`).classList.add("hidden");
+
+    document.getElementById('create_new_colour_button').classList.add("hidden");//.style.display = 'none';
+    document.getElementById('change_colour_button').classList.remove("hidden");//.style.display = 'unset';
+
+    changePage('PAGE_add_new_colour');
+}
+
+function changeColour(){
+    let newName = document.getElementById('colour_creation_name').value;
+    let newColour = document.getElementById('colour_creation_colour').value;
+    newColour = hexToRgb(newColour);
+
+    let oldDict = colourMasterDict[selectedColourName]
+    delete colourMasterDict[selectedColourName]
+    colourMasterDict[newName] = [newColour, oldDict[1]];
+
+    for (const [projName, projDict] of Object.entries(projectMasterDict)) {
+        for (const [weeks, weekInfo] of Object.entries(projDict['time_sheet_weeks'])) {
+            for (const [cell, cellColour] of Object.entries(weekInfo['cells'])) {
+                if(cellColour == selectedColour){
+                    projectMasterDict[projName]['time_sheet_weeks'][weeks]['cells'][cell] = newColour;
+                }
+            }
+        }
+    }
+    changePage('PAGE_settings');
+
+}
+
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+  
+  function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }

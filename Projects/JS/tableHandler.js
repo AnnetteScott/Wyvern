@@ -18,7 +18,7 @@ function cellClicked(e){
     selectedCellsList = [cellID];
     let tip = document.getElementById('user_selection_tip');
     const onMouseMove = (e) =>{
-        tip.style.left = e.pageX + 17 + 'px';
+        tip.style.left = e.pageX + 55 + 'px';
         tip.style.top = e.pageY - 20 + 'px';
     }
 

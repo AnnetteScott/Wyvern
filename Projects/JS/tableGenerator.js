@@ -6,19 +6,23 @@ function tableGen(e){
     let tableContainer = document.getElementById("project_table");
     tableContainer.innerHTML = ''
     let colLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-    rowCount = 97 + colourCount;
+    rowCount = 100 + colourCount;
     let tableHTML = '';
     let dateList = dateGen(projectWeekObj)
     for(col in colLetter){
-        tableHTML += '<div>';
+        if(colLetter[col] == 'Z'){tableHTML += '<div id="z_col">'} else { tableHTML += '<div>'}
         for(let row = 0; row <= rowCount; row++){
             let cellID = colLetter[col] + row.toString();
             if(colLetter[col] != 'Z'){
                 if(row == 0){
                     tableHTML += `<div value="${cellID}">${dateList[col - 1]}</div>`;
-                } else if(row >= 97){
-                    tableHTML += `<div value="${cellID}">0.00</div>`;
-                } else {
+                } else if(row == rowCount - 2 && (colLetter[col] == 'A' || colLetter[col] == 'H')){
+                    tableHTML += `<div class="weeklyTotals" value="${cellID}"></div>`;
+                } else if(row >= rowCount - 1 && colLetter[col] == 'A'){
+                    tableHTML += `<div class="time_sheet_totals" value="${cellID}"></div>`;
+                } else if(row >= 97 && row <= rowCount - 3){
+                    tableHTML += `<div value="${cellID}"></div>`;
+                } else if (row < 97){
                     tableHTML += `<div value="${cellID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
                 }
             }else{

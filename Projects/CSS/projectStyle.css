@@ -156,7 +156,7 @@
     flex-direction: row;
     margin: 50px;
     overflow-y: auto;
-    height: calc(100% - 50px);
+    height: calc(100% - 75px);
 }
 
 #project_table > div{
@@ -188,4 +188,21 @@
 
 .form_error input {
     border-color: red !important;
+}
+
+#user_selection_tip{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    height:35px;
+    width:100px;
+    background-color: #FFFFFF23;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px -5px white inset,
+                0px 4px 16px -16px black;
+    backdrop-filter: blur(5px);
+    font-size: 12px;
+}
+
+.tool_tip{
+    border:2px solid black;
 }

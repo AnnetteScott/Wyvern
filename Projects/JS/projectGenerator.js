@@ -20,7 +20,7 @@ function createProject(){
         let day = parseInt(startDate.split("/")[0]);
         let month = parseInt(startDate.split("/")[1]);
         let year = parseInt(startDate.split("/")[2]);
-        let project_dates = {'1 - 2': {'start_date':startDate, 'cells': {}}};
+        let project_dates = {'1 - 2': {'start_date':startDate, 'cells': {}, 'colour_totals':{}}};
         for(let i = 3; i < dur; i++){
             let week1 = i;
             let week2 = i + 1;
@@ -31,7 +31,7 @@ function createProject(){
                 month++;
             }
             let newDate = day.toString() + "/" + month.toString() + "/" + year.toString()
-            project_dates[title] = {'start_date':newDate, 'cells': {}};
+            project_dates[title] = {'start_date':newDate, 'cells': {}, 'colour_totals':{}};
             i++;
         }
 

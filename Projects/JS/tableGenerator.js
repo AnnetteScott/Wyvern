@@ -1,12 +1,12 @@
 function tableGen(e){
-    let timeList = timeGen();
     currentTimeSheet = e.target.getAttribute('value');
-    document.querySelector(".navName").innerHTML = currentPage + " Weeks " + currentTimeSheet;
     let projectWeekObj = projectMasterDict[currentChosenProject]["time_sheet_weeks"][currentTimeSheet];
+    let timeList = timeGen(projectWeekObj);
+    document.querySelector(".navName").innerHTML = currentPage + " Weeks " + currentTimeSheet;
     let tableContainer = document.getElementById("project_table");
     tableContainer.innerHTML = ''
     let colLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-    let rowCount = 97 + colourCount;
+    rowCount = 97 + colourCount;
     let tableHTML = '';
     let dateList = dateGen(projectWeekObj)
     for(col in colLetter){
@@ -17,7 +17,7 @@ function tableGen(e){
                 if(row == 0){
                     tableHTML += `<div value="${cellID}">${dateList[col - 1]}</div>`;
                 } else if(row >= 97){
-                    tableHTML += `<div value="${cellID}">0</div>`;
+                    tableHTML += `<div value="${cellID}">0.00</div>`;
                 } else {
                     tableHTML += `<div value="${cellID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
                 }
@@ -28,12 +28,38 @@ function tableGen(e){
         tableHTML += '</div>';
     }
     tableContainer.innerHTML = tableHTML;
-    let colouredCellList = projectWeekObj['cells']
+    let colouredCellList = projectWeekObj['cells'];
     if(colouredCellList != {}){
         for (const [key, value] of Object.entries(colouredCellList)) {
+            let col = key.substring(0, 1)
             let element = document.querySelector(`[value="${key}"]`);
             element.style.background = value;
+            projectWeekObj['colour_totals'][value][col] += 1;
         }
+    }
+
+    let cellIndex = 97;
+    for (const [key, value] of Object.entries(projectWeekObj['colour_totals'])) {
+        for (const [col, colourTotal] of Object.entries(value)) {
+            let cellID = col + cellIndex.toString();
+            let element = document.querySelector(`[value="${cellID}"]`);
+            let hours = colourTotal * 15 / 60;
+            element.innerHTML = hours.toString();
+        }
+        cellIndex++;
+    }
+
+    for(let i = 1; i < colLetter.length; i++){
+        let totalHours = 0.00;
+        let col = colLetter[i];
+        let cellInd = 97;
+        for(let colour = 0; colour < colourCount; colour++){
+            let cellID = col + cellInd.toString();
+            totalHours += parseFloat(document.querySelector(`[value="${cellID}"]`).innerHTML);
+            cellInd += 1;
+        }
+        let lastCell = col + rowCount.toString();
+        document.querySelector(`[value="${lastCell}"]`).innerHTML = totalHours.toString()
     }
 }
 
@@ -57,29 +83,20 @@ function dateGen(weekDict){
     return dateList;
 }
 
-function timeGen(){
-    let timeArr = ["Time|Date"];
-
-    for (let hours = 0; hours < 24; hours++){
-        for(let mins = 0; mins <= 45; mins += 15){
-            let hourString = hours.toString();
-            let minString = mins.toString();
-            if(hours < 10){
-                hourString = "0" + hours.toString();
-            }
-            if(mins == 0){
-                minString = "00";
-            }
-            let newTime = hourString + ":" + minString;
-            timeArr.push(newTime);
-            
-        }
-    }
+function timeGen(projectWeekObj){
+    let timeArr = [...timeList]
+    timeArr.unshift("Time|Date");
     colourCount = 0;
     Object.keys(colourMasterDict).forEach(name => {
         if(colourMasterDict[name][1]['yes'].includes(currentChosenProject)){
             timeArr.push(name);
             colourCount++;
+            let colour = colourMasterDict[name][0];
+            projectWeekObj['colour_totals'][colour] = {"A": 0};
+            for(let i = 2; i < colLetter.length; i++){
+                let col = colLetter[i];
+                projectWeekObj['colour_totals'][colour][col] = 0;
+            }           
         }    
     });
 

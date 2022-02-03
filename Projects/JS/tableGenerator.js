@@ -61,7 +61,6 @@ function tableGen(e){
 
     let totalColCell = '';
     let totalColCellInt = 97;
-    let weeklyColCell = '';
     for(let i = 1; i < colLetter.length; i++){
         let totalHours = 0.00;
         let col = colLetter[i];
@@ -98,6 +97,13 @@ function tableGen(e){
     }
     document.querySelector(`[value="A${rowCount - 1}"]`).innerHTML = (parseFloat(document.querySelector(`[value="A${rowCount - 2}"]`).innerHTML) + parseFloat(document.querySelector(`[value="H${rowCount - 2}"]`).innerHTML)).toString();
 
+    let tip = document.getElementById('user_selection_tip');
+    const onMouseMove = (e) =>{
+        tip.style.left = e.pageX + 55 + 'px';
+        tip.style.top = e.pageY - 20 + 'px';
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
 
 }
 

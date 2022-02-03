@@ -34,11 +34,11 @@
 			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
 		</div>
 
-		<div id="PAGE_settings" class="page hidden">
+		<div id="PAGE_settings" class="page">
 			<div class="inner_settings">
 				<div id="colour_container">
 					<div id="settings_colour_controls">
-						<div id="add_new_colour_button" title="New Colour" onclick="changePage('PAGE_add_new_colour')" style="background-image: url(Images/add_white_24dp.svg);"></div>
+						<div id="add_new_colour_button" title="New Colour" onclick="changeToNewColour()" style="background-image: url(Images/add_white_24dp.svg);"></div>
 					</div>
 					<div id="colourINFO">
 						<div id="colour_list">
@@ -59,12 +59,13 @@
 					<input id="colour_creation_name" type="text"></input>
 					<label for="colour_creation_colour">Colour:</label>
 					<input type="color" id="colour_creation_colour" name="head" value="">
-					<button onclick="addColour()">Add Colour</button>
+					<button id="create_new_colour_button" onclick="addColour()">Add Colour</button>
+					<button id="change_colour_button" onclick="changeColour()">Save Colour</button>
 				</div>
 			</div>
 		</div>
 
-		<div id="PAGE_projects" class="page">
+		<div id="PAGE_projects" class="page hidden">
 			<div class="inner">
 				<div id="projects_container">
 					<div id="projects_controls">

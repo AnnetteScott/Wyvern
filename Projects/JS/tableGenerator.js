@@ -26,7 +26,7 @@ function tableGen(e){
                     tableHTML += `<div value="${cellID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
                 }
             }else{
-                tableHTML += `<div value="${cellID}">${timeList[row]}</div>`;
+                tableHTML += `<div class="z_time_col" value="${cellID}">${timeList[row]}</div>`;
             }
         }
         tableHTML += '</div>';
@@ -42,15 +42,21 @@ function tableGen(e){
         }
     }
 
+    //Total Cell Colour
     let cellIndex = 97;
-    for (const [key, value] of Object.entries(projectWeekObj['colour_totals'])) {
-        for (const [col, colourTotal] of Object.entries(value)) {
-            let cellID = col + cellIndex.toString();
-            let element = document.querySelector(`[value="${cellID}"]`);
-            let hours = colourTotal * 15 / 60;
-            element.innerHTML = hours.toString();
-        }
-        cellIndex++;
+    for (const [colour, value] of Object.entries(projectWeekObj['colour_totals'])) {
+        let colourName = Object.keys(colourMasterDict).find(key => colourMasterDict[key][0] === colour);
+        let compareName = document.querySelector(`[value="Z${cellIndex}"]`).innerHTML;
+        if(colourName == compareName){
+            for (const [col, colourTotal] of Object.entries(value)) {
+                let cellID = col + cellIndex.toString();
+                let element = document.querySelector(`[value="${cellID}"]`);
+                let hours = colourTotal * 15 / 60;
+                element.innerHTML = hours.toString();
+            }
+            cellIndex++;
+        } 
+        
     }
 
     for(let i = 1; i < colLetter.length; i++){

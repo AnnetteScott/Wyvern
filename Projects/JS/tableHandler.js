@@ -16,13 +16,6 @@ function cellClicked(e){
         });
     }
     selectedCellsList = [cellID];
-    let tip = document.getElementById('user_selection_tip');
-    const onMouseMove = (e) =>{
-        tip.style.left = e.pageX + 55 + 'px';
-        tip.style.top = e.pageY - 20 + 'px';
-    }
-
-    document.addEventListener('mousemove', onMouseMove);
 
     let firstTime = "Z" + cellID.substring(1);
     cellSelectFirstTime = document.querySelector(`[value="${firstTime}"]`).innerHTML;

@@ -25,6 +25,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    min-height: 50px;
     border-radius: 5px;
     border-bottom: 1px solid white;
 }
@@ -72,6 +73,7 @@
     width: 75px;
     height: 25px;
     margin-bottom: 5px;
+    cursor: pointer;
 }
 
 .colour_card div{
@@ -114,6 +116,31 @@ input[type="checkbox"]{
     height: 15px;
     min-height: 15px;
     margin-bottom: 5px;
+}
+
+.colour_card .colour_options{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    min-height: 80px;
+    height: 80px;
+    min-width:  150px;
+    width: 150px;
+
+    background-color: #FFFFFF23;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px -5px white inset,
+                0px 4px 16px -16px black;
+    backdrop-filter: blur(5px);
+    font-size: 12px;
+    user-select: none;
+    border:2px solid black;
+
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }
 
 

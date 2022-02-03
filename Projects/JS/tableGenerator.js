@@ -90,8 +90,20 @@ function tableGen(e){
         for(let i = 0; i < 7; i++){
             let cellIDW = colLetter[colIndex] + (rowCount - 3).toString();
             colIndex++;
+            weeklyTotal += parseFloat(document.querySelector(`[value="${cellIDW}"]`).innerHTML);
+        }
+        let cellW = colLetter[weekIndex] + (rowCount - 2).toString();
+        document.querySelector(`[value="${cellW}"]`).innerHTML = weeklyTotal.toString();
+        weekIndex = 8;
+    }
+    document.querySelector(`[value="A${rowCount - 1}"]`).innerHTML = (parseFloat(document.querySelector(`[value="A${rowCount - 2}"]`).innerHTML) + parseFloat(document.querySelector(`[value="H${rowCount - 2}"]`).innerHTML)).toString();
+
+
 }
 
+//###############################################################################################
+//###############################################################################################
+//###############################################################################################
 function dateGen(weekDict){
     let weekStartDate = weekDict['start_date'];
     let dateList = [weekStartDate];
@@ -129,7 +141,11 @@ function timeGen(projectWeekObj){
         }    
     });
 
-    timeArr.push("Total:");
+    timeArr.push("Total Hours:");
+    timeArr.push("Weekly Hours:");
+    timeArr.push("Timesheet Hours:");
+    timeArr.push("Timesheet Total $:");
+
     return timeArr;
 
 }

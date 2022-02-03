@@ -98,16 +98,21 @@ function setColour(e){
 
     selectedCellsList = [];
 
-
+    //Total Each colour
     let cellIndex = 97;
-    for (const [key, value] of Object.entries(projectWeekObj['colour_totals'])) {
-        for (const [col, colourTotal] of Object.entries(value)) {
-            let cellID = col + cellIndex.toString();
-            let element = document.querySelector(`[value="${cellID}"]`);
-            let hours = colourTotal * 15 / 60;
-            element.innerHTML = hours.toString();
-        }
-        cellIndex++;
+    for (const [colour, value] of Object.entries(projectWeekObj['colour_totals'])) {
+        let colourName = Object.keys(colourMasterDict).find(key => colourMasterDict[key][0] === colour);
+        let compareName = document.querySelector(`[value="Z${cellIndex}"]`).innerHTML;
+        if(colourName == compareName){
+            for (const [col, colourTotal] of Object.entries(value)) {
+                let cellID = col + cellIndex.toString();
+                let element = document.querySelector(`[value="${cellID}"]`);
+                let hours = colourTotal * 15 / 60;
+                element.innerHTML = hours.toString();
+            }
+            cellIndex++;
+        } 
+        
     }
 
     for(let i = 1; i < colLetter.length; i++){
@@ -119,8 +124,23 @@ function setColour(e){
             totalHours += parseFloat(document.querySelector(`[value="${cellID}"]`).innerHTML);
             cellInd += 1;
         }
-        let lastCell = col + rowCount.toString();
+        let lastCell = col + cellInd.toString();
         document.querySelector(`[value="${lastCell}"]`).innerHTML = totalHours.toString()
     }
+
+    let colIndex = 1;
+    let weekIndex = 1;
+    for(let k = 0; k < 2; k++){
+        let weeklyTotal = 0
+        for(let i = 0; i < 7; i++){
+            let cellIDW = colLetter[colIndex] + (rowCount - 3).toString();
+            colIndex++;
+            weeklyTotal += parseFloat(document.querySelector(`[value="${cellIDW}"]`).innerHTML);
+        }
+        let cellW = colLetter[weekIndex] + (rowCount - 2).toString();
+        document.querySelector(`[value="${cellW}"]`).innerHTML = weeklyTotal.toString();
+        weekIndex = 8;
+    }
+    document.querySelector(`[value="A${rowCount - 1}"]`).innerHTML = (parseFloat(document.querySelector(`[value="A${rowCount - 2}"]`).innerHTML) + parseFloat(document.querySelector(`[value="H${rowCount - 2}"]`).innerHTML)).toString();
     
 }

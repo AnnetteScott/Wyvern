@@ -27,5 +27,7 @@ function clickProject(e){
         }    
     })
     document.getElementById("project_ribbon").innerHTML = elemRibbon;
+
+    colourCount = Object.keys(colourMasterDict).length;
     changePage('PAGE_project');
 }

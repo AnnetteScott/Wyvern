@@ -81,7 +81,7 @@ function timeGen(){
             timeArr.push(name);
             colourCount++;
         }    
-    })
+    });
 
     timeArr.push("Total:");
     return timeArr;

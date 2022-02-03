@@ -24,3 +24,11 @@ function hexToRgb(c){
     }
     return '';
 }
+
+function changeToNewColour(){
+    document.getElementById('colour_creation_name').value = '';
+    document.getElementById('colour_creation_colour').setAttribute('value', '#000000');
+    document.getElementById('create_new_colour_button').classList.add("hidden");
+    document.getElementById('change_colour_button').classList.remove("hidden");
+    changePage('PAGE_add_new_colour');
+}

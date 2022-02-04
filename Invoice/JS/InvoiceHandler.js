@@ -5,27 +5,8 @@ function createTable(){
     tableGen(tableContainer);
 }
 
-function createInvoice(){
-    changePage('PAGE_print_invoice');
-    //document.querySelector("nav").classList.add('hidden');
-    //window.print();
-    //changePage('PAGE_invoice');
-    //document.querySelector("nav").classList.remove('hidden');
-}
 
-function printInvoice(elem = 'PRINTtheTHING'){
-    document.querySelector("nav").classList.add('hidden');
-    printDiv(elem);
-/*     let printingDoc = window.open();
-    printingDoc.document.write(document.getElementById(elem).innerHTML);
-    printingDoc.document.head.insertAdjacentHTML("beforeend", `<link rel="stylesheet" href="Invoice/CSS/printout.css">`)
-    printingDoc.print();
-    printingDoc.close(); */
-    document.querySelector("nav").classList.remove('hidden');
-}
-
-function printDiv(id) {
-
+function printInvoice(id = 'PRINTtheTHING'){
     let html = "";
   
     $('link').each(function() { // find all <link tags that have
@@ -36,5 +17,4 @@ function printDiv(id) {
     html += '<body onload="window.focus(); window.print()">'+$("#"+id).html()+'</body>';
     let w = window.open("","print");
     if (w) { w.document.write(html); w.document.close() }
-  
-  }
+}

@@ -122,7 +122,7 @@
 
 		<!-- Invoice Page -->
 		<div id="PAGE_invoice" class="page">
-			<div class="inner_project">
+			<div class="inner">
 				<div class="invoice_controls">
 					<div id="project_selection_box">
 					<!-- generated content -->
@@ -133,13 +133,31 @@
 					<div id="customer_selection_box">
 						<!-- generated content -->
 					</div>
-					<!-- <button onclick="createTable()">Create Invoice Table</button> -->
+					<div id="user_selection_box"> 
+						<!-- generated content -->
+					</div>
 					<button onclick="changePage('PAGE_create_new_customer')">Create New Customer</button>
-					<button onclick="createInvoice()">Generate Invoice</button>
+					<button onclick="changePage('PAGE_create_new_user')">Create New User</button>
 				</div>
-				<div id="invoice_timesheet_table">
-					<!-- generated content -->
+				<div class="inner">
+					<div class="creation_form">
+						<label for="invoice_date">Invoice Date:</label>
+						<input id="invoice_date" type="date"></input>
+
+						<label for="invoice_start_date">Invoice Period Start Date:</label>
+						<input id="invoice_start_date" type="date"></input>
+
+						<label for="invoice_end_date">Invoice Period End Date:</label>
+						<input id="invoice_end_date" type="date"></input>
+
+						<label for="invoice_for">Invoice For:</label>
+						<input id="invoice_for" type="text"></input>
+						
+						<label for="invoice_ID">Invoice ID:</label>
+						<input id="invoice_ID" type="text"></input>
+					</div>
 				</div>
+				<button id="generate_invoice" onclick="changePage('PAGE_print_invoice')">Generate Invoice</button>
 			</div>
 		</div>
 
@@ -158,7 +176,25 @@
 					<input id="create_customer_city" type="text"></input>
 					<label for="create_customer_country">Country:</label>
 					<input id="create_customer_country" type="text"></input>
-					<button onclick="addNewCustomer()">Create Project</button>
+					<button onclick="addNewCustomer()">Create New Customer</button>
+				</div>
+			</div>
+		</div>
+		
+		<div id="PAGE_create_new_user" class="page hidden">
+			<div class="inner">
+				<div class="creation_form">
+					<label for="create_user_name">Name:</label>
+					<input id="create_user_name" type="text"></input>
+					<label for="create_user_addOne">Address line 1</label>
+					<input id="create_user_addOne" type="text"></input>
+					<label for="create_user_addTwo">Address line 2</label>
+					<input id="create_user_addTwo" type="text"></input>
+					<label for="create_user_city">City/State</label>
+					<input id="create_user_city" type="text"></input>
+					<label for="create_user_country">Country:</label>
+					<input id="create_user_country" type="text"></input>
+					<button onclick="addNewUser()">Create New User</button>
 				</div>
 			</div>
 		</div>

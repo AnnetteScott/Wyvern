@@ -19,3 +19,25 @@ function UpdateCustomer(){
     elem += '</select>';
     document.getElementById("customer_selection_box").innerHTML = elem;
 }
+
+
+function addNewUser(){
+    let userName = document.getElementById('create_user_name').value;
+    let addOne = document.getElementById('create_user_addOne').value;
+    let addTwo = document.getElementById('create_user_addTwo').value;
+    let city = document.getElementById('create_user_city').value;
+    let country = document.getElementById('create_user_country').value;
+    userMasterDict['user'][userName] = {'userName': userName, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country}
+    UpdateUser();
+    changePage('PAGE_invoice');
+}
+
+function UpdateUser(){
+    let elem = '<label for="customerSelection">Choose A User</label>';
+    elem += '<select name="customerSelection" id="customerSelection">';
+    Object.keys(userMasterDict["user"]).forEach(customerID => {
+        elem += `<option value="${customerID}">${customerID}</option>`;
+    });
+    elem += '</select>';
+    document.getElementById("user_selection_box").innerHTML = elem;
+}

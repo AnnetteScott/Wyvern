@@ -22,4 +22,5 @@ function updateTimeSheetSelection(){
     let e = document.getElementById("timeSheetSelection");
     e.options[e.selectedIndex].text = "1 - 2";
     UpdateCustomer();
+    UpdateUser();
 }

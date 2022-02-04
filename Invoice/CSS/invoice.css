@@ -64,4 +64,9 @@
 .invoice_controls{
     display: flex;
     flex-direction: row;
+    margin-bottom: 50px;
+}
+
+#generate_invoice{
+    margin: 20px;
 }

@@ -9,6 +9,8 @@ let TaskManager = {
         TaskManager.tasks.t_projects(); 
         TaskManager.tasks.t_colours();
         TaskManager.tasks.t_colour_CheckBoxes();
+        TaskManager.tasks.t_project_selection_box();
+        TaskManager.tasks.t_time_selection_box();
 
         if(TaskManager.enabled){window.requestAnimationFrame(TaskManager.render_loop);}
     },
@@ -19,9 +21,11 @@ let TaskManager = {
                 let elem = '';
                 Object.keys(projectMasterDict).forEach(function(k, i){
                     elem += DOM_Blocks.small_project_card(i, k.toString().replaceAll("_", " "));
+
                 });
                 document.getElementById("projects_list").innerHTML = elem;
                 TaskManager.cache.c_projects = { ...projectMasterDict };
+                updateProjectSelection();
             }
         },
         
@@ -45,7 +49,7 @@ let TaskManager = {
                 let elem = '';
                 let elemCheck = '';
                 Object.keys(colourMasterDict).forEach(function(k){
-                    elem += DOM_Blocks_Settings.colour_card(k, colourMasterDict[k][0]);
+                    elem += DOM_Blocks_Settings.colour_card(k, colourMasterDict[k][0], colourMasterDict[k][2]);
                 });
                 Object.keys(colourMasterDict).forEach(function(name){
                     elemCheck += '<div class="check_box_container">'
@@ -65,6 +69,25 @@ let TaskManager = {
             if(currentPage === TaskManager.cache.c_navigation){
 
             }
+        },
+        
+        t_project_selection_box: function (){
+            let e = document.getElementById("projectSelection");
+            currentChosenProject = e.options[e.selectedIndex].text;
+            if(currentChosenProject != TaskManager.cache.c_project_selection_box){
+                updateTimeSheetSelection();                
+            }
+            TaskManager.cache.c_project_selection_box = currentChosenProject;
+        },
+        
+        
+        t_time_selection_box: function (){
+            let e = document.getElementById("timeSheetSelection");
+            currentTimeSheet = e.options[e.selectedIndex].text;
+            if(currentTimeSheet != TaskManager.cache.c_time_selection_box){
+                createTable();                
+            }
+            TaskManager.cache.c_time_selection_box = currentTimeSheet;
         }
     },
 
@@ -72,6 +95,8 @@ let TaskManager = {
         c_projects: {},
         c_colours: {},
         c_colour_checkBoxes: {},
+        c_project_selection_box: '',
+        c_time_selection_box: '',
         c_navigation: null
     }
 }

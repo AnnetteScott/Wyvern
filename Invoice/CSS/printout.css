@@ -1,0 +1,32 @@
+:root {
+	--i_page_margins: 40px;
+}
+
+#invoice_sheet {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	width: 21cm;
+	min-width: 21cm;
+	max-width: 21cm;
+	height: 29.7cm;
+	min-height: 29.7cm;
+	max-height: 29.7cm;
+	padding: var(--i_page_margins);
+	background-color: white;
+}
+#invoice_sheet > .inner {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	min-width: 100%;
+	min-height: 100%;
+	border: 1px dotted black;
+}
+#invoice_sheet .title {
+	color: dodgerblue;
+	font-family: 'Oxanium';
+	font-size: 50px;
+}

@@ -71,12 +71,14 @@ let TaskManager = {
         },
         
         t_project_selection_box: function (){
-            let e = document.getElementById("projectSelection");
-            currentChosenProject = e.options[e.selectedIndex].text;
-            if(currentChosenProject != TaskManager.cache.c_project_selection_box){
-                updateTimeSheetSelection();                
+            let projID = document.getElementById("projectSelection");
+            if(Object.keys(projectMasterDict) != {} && projID != null){
+                currentChosenProject = projID.options[projID.selectedIndex].text;
+                if(currentChosenProject != TaskManager.cache.c_project_selection_box){
+                    updateTimeSheetSelection();                
+                }
+                TaskManager.cache.c_project_selection_box = currentChosenProject;
             }
-            TaskManager.cache.c_project_selection_box = currentChosenProject;
         },
         
     },

@@ -27,7 +27,7 @@ body {
     width: 100%;
     height: calc(100vh - var(--navbar_height));
 }
-.page .inner{
+.page > .inner{
     display: flex;
     flex-direction: column;
     justify-content: center;

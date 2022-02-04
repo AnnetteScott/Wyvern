@@ -7,6 +7,8 @@ function createTable(){
 
 function createInvoice(){
     changePage('PAGE_invoice_print');
+    document.querySelector("nav").classList.add('hidden');
     window.print();
     changePage('PAGE_invoice');
+    document.querySelector("nav").classList.remove('hidden');
 }

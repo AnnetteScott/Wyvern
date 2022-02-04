@@ -1,12 +1,15 @@
 function addColour(){
     let name = document.getElementById('colour_creation_name').value;
+    let rate = parseFloat(document.getElementById('colour_creation_rate').value);
     let colour = document.getElementById('colour_creation_colour').value;
     colour = hexToRgb(colour);
     if(name in colourMasterDict || name == '' || name == null){
         document.querySelector('.creation_form').classList.add('form_error');
+    } else if(Object.values(colourMasterDict).indexOf(colour) > -1) {
+        document.querySelector('.creation_form').classList.add('form_error');
     } else {
         document.querySelector('.creation_form').classList.remove('form_error');
-        colourMasterDict[name] = [colour, {"yes":[], "no":[]}];
+        colourMasterDict[name] = [colour, {"yes":[], "no":[]}, rate];
 
         //Clear inputs
         document.getElementById('colour_creation_name').value = ""; 
@@ -28,7 +31,7 @@ function hexToRgb(c){
 function changeToNewColour(){
     document.getElementById('colour_creation_name').value = '';
     document.getElementById('colour_creation_colour').setAttribute('value', '#000000');
-    document.getElementById('create_new_colour_button').classList.add("hidden");
-    document.getElementById('change_colour_button').classList.remove("hidden");
+    document.getElementById('create_new_colour_button').classList.remove("hidden");
+    document.getElementById('change_colour_button').classList.add("hidden");
     changePage('PAGE_add_new_colour');
 }

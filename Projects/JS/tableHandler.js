@@ -97,17 +97,20 @@ function setColour(e){
         let colourName = Object.keys(colourMasterDict).find(key => colourMasterDict[key][0] === colour);
         let compareName = document.querySelector(`[value="Z${cellIndex}"]`).innerHTML;
         if(colourName == compareName){
+            rowSumTotal[colourName] = 0;
             for (const [col, colourTotal] of Object.entries(value)) {
                 let cellID = col + cellIndex.toString();
                 let element = document.querySelector(`[value="${cellID}"]`);
                 let hours = colourTotal * 15 / 60;
                 element.innerHTML = hours.toString();
+                rowSumTotal[colourName] += (hours * colourMasterDict[colourName][2])
             }
             cellIndex++;
         } 
         
     }
 
+    //Day total hours
     for(let i = 1; i < colLetter.length; i++){
         let totalHours = 0.00;
         let col = colLetter[i];
@@ -121,6 +124,7 @@ function setColour(e){
         document.querySelector(`[value="${lastCell}"]`).innerHTML = totalHours.toString()
     }
 
+    //Weekly Total
     let colIndex = 1;
     let weekIndex = 1;
     for(let k = 0; k < 2; k++){
@@ -134,6 +138,14 @@ function setColour(e){
         document.querySelector(`[value="${cellW}"]`).innerHTML = weeklyTotal.toString();
         weekIndex = 8;
     }
+
+    //Total Timesheet hours
     document.querySelector(`[value="A${rowCount - 1}"]`).innerHTML = (parseFloat(document.querySelector(`[value="A${rowCount - 2}"]`).innerHTML) + parseFloat(document.querySelector(`[value="H${rowCount - 2}"]`).innerHTML)).toString();
-    
+
+    let moneyTotal = 0
+    //Timesheet money total
+    for (const [proj, dollarTotal] of Object.entries(rowSumTotal)) {
+        moneyTotal += dollarTotal
+    }
+    document.querySelector(`[value="A${rowCount}"]`).innerHTML = '$'+ parseFloat(moneyTotal);
 }

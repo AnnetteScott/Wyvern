@@ -1,10 +1,8 @@
-function tableGen(e){
-    currentTimeSheet = e.target.getAttribute('value');
+function tableGen(tableContainer = document.getElementById("project_table")){
     let projectWeekObj = projectMasterDict[currentChosenProject]["time_sheet_weeks"][currentTimeSheet];
     let timeList = timeGen(projectWeekObj);
     document.querySelector(".navName").innerHTML = currentPage + " Weeks " + currentTimeSheet;
-    let tableContainer = document.getElementById("project_table");
-    tableContainer.innerHTML = ''
+    tableContainer.innerHTML = '';
     let colLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
     rowCount = 100 + colourCount;
     let tableHTML = '';
@@ -48,17 +46,20 @@ function tableGen(e){
         let colourName = Object.keys(colourMasterDict).find(key => colourMasterDict[key][0] === colour);
         let compareName = document.querySelector(`[value="Z${cellIndex}"]`).innerHTML;
         if(colourName == compareName){
+            rowSumTotal[colourName] = 0;
             for (const [col, colourTotal] of Object.entries(value)) {
                 let cellID = col + cellIndex.toString();
                 let element = document.querySelector(`[value="${cellID}"]`);
                 let hours = colourTotal * 15 / 60;
-                element.innerHTML = hours.toString();
+                element.innerHTML = hours.toString(); 
+                rowSumTotal[colourName] += (hours * colourMasterDict[colourName][2])
             }
             cellIndex++;
         } 
         
     }
 
+    //Total hours for each day
     let totalColCell = '';
     let totalColCellInt = 97;
     for(let i = 1; i < colLetter.length; i++){
@@ -76,12 +77,14 @@ function tableGen(e){
         document.querySelector(`[value="${colourBorderCell}"]`).style.borderWidth = "5px thin";
     }
 
+    //Set week border
     totalColCellInt += 1;  
     for(let i = 0; i < totalColCellInt + 1; i++){
         let cellIDB = 'H' + i.toString();
         document.querySelector(`[value="${cellIDB}"]`).style.borderLeft = '5px solid black';
     }
 
+    //Weekly Total
     let colIndex = 1;
     let weekIndex = 1;
     for(let k = 0; k < 2; k++){
@@ -95,8 +98,18 @@ function tableGen(e){
         document.querySelector(`[value="${cellW}"]`).innerHTML = weeklyTotal.toString();
         weekIndex = 8;
     }
+
+    //Timesheet total
     document.querySelector(`[value="A${rowCount - 1}"]`).innerHTML = (parseFloat(document.querySelector(`[value="A${rowCount - 2}"]`).innerHTML) + parseFloat(document.querySelector(`[value="H${rowCount - 2}"]`).innerHTML)).toString();
 
+    let moneyTotal = 0
+    //Timesheet money total
+    for (const [proj, dollarTotal] of Object.entries(rowSumTotal)) {
+        moneyTotal += dollarTotal
+    }
+    document.querySelector(`[value="A${rowCount}"]`).innerHTML = '$'+ parseFloat(moneyTotal);
+
+    //Cell select tool tip
     let tip = document.getElementById('user_selection_tip');
     const onMouseMove = (e) =>{
         tip.style.left = e.pageX + 55 + 'px';

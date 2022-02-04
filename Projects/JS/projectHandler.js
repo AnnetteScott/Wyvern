@@ -32,3 +32,9 @@ function clickProject(e){
     tableContainer.innerHTML = '';
     changePage('PAGE_project');
 }
+
+function loadTable(e){
+    currentTimeSheet = e.target.getAttribute('value');
+    let tableContainer = document.getElementById("project_table");
+    tableGen(tableContainer)
+}

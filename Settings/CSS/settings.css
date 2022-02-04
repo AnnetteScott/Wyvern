@@ -59,8 +59,8 @@
 
 #colour_list{
     margin: 7px;
-    width: 110px;
-    min-width: 110px;
+    width: 150px;
+    min-width: 150px;
     height: 100%;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .colour_card p{
-    margin-right: 50px;
+    margin-right: 10px;
 }
 
 

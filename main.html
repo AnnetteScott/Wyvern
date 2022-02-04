@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="CSS/style.css">
 		<link rel="stylesheet" href="Projects/CSS/projectStyle.css">
 		<link rel="stylesheet" href="Settings/CSS/settings.css">
+		<link rel="stylesheet" href="Invoice/CSS/invoice.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
@@ -34,7 +35,7 @@
 			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
 		</div>
 
-		<div id="PAGE_settings" class="page">
+		<div id="PAGE_settings" class="page hidden">
 			<div class="inner_settings">
 				<div id="colour_container">
 					<div id="settings_colour_controls">
@@ -57,8 +58,13 @@
 				<div class="creation_form">
 					<label for="colour_creation_name">Colour Name:</label>
 					<input id="colour_creation_name" type="text"></input>
+					
+					<label for="colour_creation_rate">Colour Rate</label>
+					<input id="colour_creation_rate" type="number" step="0.01"></input>
+
 					<label for="colour_creation_colour">Colour:</label>
-					<input type="color" id="colour_creation_colour" name="head" value="">
+					<input type="color" id="colour_creation_colour" name="head" value="#000000">
+					
 					<button id="create_new_colour_button" onclick="addColour()">Add Colour</button>
 					<button id="change_colour_button" onclick="changeColour()">Save Colour</button>
 				</div>
@@ -113,14 +119,24 @@
 			</div>
 		</div>
 
-		<div id="PAGE_invoice" class="page hidden">
+		<div id="PAGE_invoice" class="page">
 			<div class="inner">
+				<div id="project_selection_box">
+					<!-- generated content -->
+				</div>
+				<div id="week_selection_box">
+					<!-- generated content -->
+				</div>
+				<div id="invoice_timesheet_table">
+					<!-- generated content -->
+				</div>
 			</div>
 		</div>
 
 		<script src="JS/globalVariables.js"></script>
 		<script src="JS/nav.js"></script>
 		<script src="Projects/JS/fileIO.js"></script>
+		<!-- Settings -->
 		<script src="Settings/JS/domBlocks.js"></script>
 		<script src="Settings/JS/colourGenerator.js"></script>
 		<script src="Settings/JS/colourHandler.js"></script>
@@ -131,7 +147,10 @@
 		<script src="Projects/JS/projectHandler.js"></script>
 		<script src="Projects/JS/tableGenerator.js"></script>
 		<script src="Projects/JS/tableHandler.js"></script>
-		<script src="Projects/JS/renderDOM.js"></script>
+		<!-- Invoice -->
+		<script src="Invoice/JS/projectSelection.js"></script>
+
+		<script src="JS/renderDOM.js"></script>
 		<script src="Projects/JS/app.js"></script>
 	</body>
 </html>

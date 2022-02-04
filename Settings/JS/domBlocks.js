@@ -1,5 +1,5 @@
 let DOM_Blocks_Settings = {
-    colour_card: function (colourName, color){
+    colour_card: function (colourName, color, rate){
         return '<div class="colour_card">'
         +          `<div style="background-color: ${color}"></div>`
         +           `<div value="${colourName}"class="colour_options hidden">`
@@ -8,6 +8,7 @@ let DOM_Blocks_Settings = {
         +               '<button class"colour_pop_up_button" onclick="editColour()" style="width: 125px; height: 30px;">Edit Colour</button>'
         +           '</div>'
         +          `<p onclick="showColourOptions(event)">${colourName}</p>`
+        +          `<p>$${rate}</p>`
         +      '</div>';
 
     },

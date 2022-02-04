@@ -164,15 +164,20 @@
 		</div>
 
 		<div id="PAGE_print_invoice" class="page hidden">
-			<div class="inner">
-				<div id="invoice_sheet">
-					<div class="inner">
-						<div class="title">INVOICE</div>
+			<div class="inner" style="flex-direction: row;">
+				<button onclick="printInvoice()">Print Invoice</button>
+				<div id="PRINTtheTHING">
+					<div id="invoice_sheet">
+						<div class="inner">
+							<div class="title">INVOICE</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+		<script src="JS/jquery-3.6.0.min.js"></script>
 		<script src="JS/globalVariables.js"></script>
 		<script src="JS/nav.js"></script>
 		<script src="JS/fileIO.js"></script>
@@ -194,5 +199,6 @@
 
 		<script src="JS/renderDOM.js"></script>
 		<script src="Projects/JS/app.js"></script>
+		<script>if (window.module) module = window.module;</script>
 	</body>
 </html>

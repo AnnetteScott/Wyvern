@@ -27,14 +27,15 @@ function addNewUser(){
     let addTwo = document.getElementById('create_user_addTwo').value;
     let city = document.getElementById('create_user_city').value;
     let country = document.getElementById('create_user_country').value;
-    userMasterDict['user'][userName] = {'userName': userName, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country}
+    let contact = document.getElementById('create_user_contact').value;
+    userMasterDict['user'][userName] = {'userName': userName, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact}
     UpdateUser();
     changePage('PAGE_invoice');
 }
 
 function UpdateUser(){
-    let elem = '<label for="customerSelection">Choose A User</label>';
-    elem += '<select name="customerSelection" id="customerSelection">';
+    let elem = '<label for="userSelection">Choose A User</label>';
+    elem += '<select name="userSelection" id="userSelection">';
     Object.keys(userMasterDict["user"]).forEach(customerID => {
         elem += `<option value="${customerID}">${customerID}</option>`;
     });

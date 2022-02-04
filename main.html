@@ -157,7 +157,7 @@
 						<input id="invoice_ID" type="text"></input>
 					</div>
 				</div>
-				<button id="generate_invoice" onclick="changePage('PAGE_print_invoice')">Generate Invoice</button>
+				<button id="generate_invoice" onclick="generageInvoice()">Generate Invoice</button>
 			</div>
 		</div>
 
@@ -194,6 +194,8 @@
 					<input id="create_user_city" type="text"></input>
 					<label for="create_user_country">Country:</label>
 					<input id="create_user_country" type="text"></input>
+					<label for="create_user_contact">Contact</label>
+					<input id="create_user_contact" type="text"></input>
 					<button onclick="addNewUser()">Create New User</button>
 				</div>
 			</div>
@@ -203,42 +205,52 @@
 			<div class="inner" style="flex-direction: row;">
 				<button onclick="printInvoice()">Print Invoice</button>
 				<div id="PRINTtheTHING">
-					<div id="invoice_sheet">
+					<div style="-webkit-print-color-adjust: exact" id="invoice_sheet">
 						<div class="inner">
 							<div class="top_section">
 								<div class="top_left">
-									<h2>Zak Manley</h2>
-									<p>1508 / 37 Symonds Street</p>
-									<p>Grafton, Auckland, 1010</p>
-									<p>New Zealand</p>
-									<p>+64 21 0288 5455</p>
+									<h2 id="user_name_invoice">Zak Manley</h2>
+									<p id="user_addOne_invoice">1508 / 37 Symonds Street</p>
+									<p id="user_addTwo_invoice">Grafton</p>
+									<p id="user_city_invoice">Auckland, 1010</p>
+									<p id="user_country_invoice">New Zealand</p>
+									<p id="user_contact_invoice">+64 21 0288 5455</p>
 									<div class="box_with_heading">
 										<p>Client ID</p>
-										<p>Vircadia</p>
+										<p id="customer_id_invoice">Vircadia</p>
 									</div>
 									<div class="box_with_heading">
 										<p>Bill To</p>
-										<p>Kalila Lakeworth</p>
-										<p>Vircadia</p>
-										<p>Melbourne, Florida</p>
-										<p>United States</p>
+										<p id="customer_name_invoice">Kalila Lakeworth</p>
+										<p id="customer_addOne_invoice">Vircadia</p>
+										<p id="customer_addTwo_invoice">Melbourne</p>
+										<p id="customer_city_invoice">Florida</p>
+										<p id="customer_country_invoice">United States</p>
 									</div>
 								</div>
 								<div class="top_right">
 									<div class="title">INVOICE</div>
 									<div class="box_with_heading">
 										<p>Invloce #</p>
-										<p>VMW002</p>
+										<p id="invoice_id_invoice">VMW002</p>
+										<p id="invoice_date_invoice">VMW002</p>
 									</div>
 									<div class="box_with_heading">
 										<p>Invoice Period</p>
-										<p>Date - Date</p>
+										<p id="invoice_date_period">Date - Date</p>
 									</div>
 									<div class="box_with_heading">
 										<p>Invoice For</p>
-										<p>Web Design Services</p>
+										<p id="invoice_for_invoice">Web Design Services</p>
 									</div>
 								</div>
+							</div>
+						</div>
+					</div>
+					<div style="-webkit-print-color-adjust: exact" id="invoice_sheet_time">
+						<div class="inner">
+							<div id="invoice_timesheet_table">
+
 							</div>
 						</div>
 					</div>

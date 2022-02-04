@@ -14,5 +14,8 @@ let intervalId = window.setInterval(function(){
     save_Data();
 }, 300000);
 
+
+UpdateCustomer();
+UpdateUser();
 //This must be last
 TaskManager.start();

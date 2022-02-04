@@ -24,7 +24,11 @@ function tableGen(tableContainer = document.getElementById("project_table")){
                     tableHTML += `<div value="${cellID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
                 }
             }else{
-                tableHTML += `<div class="z_time_col" value="${cellID}">${timeList[row]}</div>`;
+                if(row >= rowCount - 2){
+                    tableHTML += `<div class="time_sheet_total_label" value="${cellID}">${timeList[row]}</div>`;
+                }else {
+                    tableHTML += `<div class="z_time_col" value="${cellID}">${timeList[row]}</div>`;
+                }
             }
         }
         tableHTML += '</div>';
@@ -72,9 +76,7 @@ function tableGen(tableContainer = document.getElementById("project_table")){
             totalColCellInt += 1;
         }
         totalColCell = col + totalColCellInt.toString();
-        let colourBorderCell = col + (totalColCellInt - 1).toString();
         document.querySelector(`[value="${totalColCell}"]`).innerHTML = totalHours.toString();
-        document.querySelector(`[value="${colourBorderCell}"]`).style.borderWidth = "5px thin";
     }
 
     //Set week border

@@ -18,3 +18,42 @@ function printInvoice(id = 'PRINTtheTHING'){
     let w = window.open("","print");
     if (w) { w.document.write(html); w.document.close() }
 }
+
+function generageInvoice(){
+	document.getElementById('invoice_date_invoice').innerHTML = reDoDate('invoice_date');
+	let startDate = reDoDate('invoice_start_date');
+	let endDate = reDoDate('invoice_end_date');
+	document.getElementById('invoice_date_period').innerHTML = startDate + " - " + endDate;
+	document.getElementById('invoice_for_invoice').innerHTML = document.getElementById('invoice_for').value;
+	document.getElementById('invoice_id_invoice').innerHTML = document.getElementById('invoice_ID').value;
+
+	let customerID = $("#customerSelection option:selected").text();
+	document.getElementById('customer_id_invoice').innerHTML = customerID;
+	document.getElementById('customer_name_invoice').innerHTML = userMasterDict['customer'][customerID]['customerName'];
+	document.getElementById('customer_addOne_invoice').innerHTML = userMasterDict['customer'][customerID]['addOne'];
+	document.getElementById('customer_addTwo_invoice').innerHTML = userMasterDict['customer'][customerID]['addTwo'];
+	document.getElementById('customer_city_invoice').innerHTML = userMasterDict['customer'][customerID]['city'];
+	document.getElementById('customer_country_invoice').innerHTML = userMasterDict['customer'][customerID]['country'];
+
+	let userName = $("#userSelection option:selected").text();
+	document.getElementById('user_name_invoice').innerHTML = userName;
+	document.getElementById('user_addOne_invoice').innerHTML= userMasterDict['user'][userName]['addOne'];
+	document.getElementById('user_addTwo_invoice').innerHTML = userMasterDict['user'][userName]['addTwo'];
+	document.getElementById('user_city_invoice').innerHTML = userMasterDict['user'][userName]['city'];
+	document.getElementById('user_country_invoice').innerHTML = userMasterDict['user'][userName]['country'];
+	document.getElementById('user_contact_invoice').innerHTML = userMasterDict['user'][userName]['contact'];
+
+	createTable();
+	changePage('PAGE_print_invoice');
+}
+
+
+function reDoDate(elem){
+	let startDateList = document.getElementById(elem).value.split("-")
+	let startDate = startDateList[2] + "/" + startDateList[1] + "/" + startDateList[0].substr(2, 3)
+	let day = parseInt(startDate.split("/")[0]);
+	let month = parseInt(startDate.split("/")[1]);
+	let year = parseInt(startDate.split("/")[2]);
+	let newDate = day.toString() + "/" + month.toString() + "/" + year.toString()
+	return newDate;
+}

@@ -119,13 +119,22 @@
 			</div>
 		</div>
 
+		<!-- Invoice Page -->
 		<div id="PAGE_invoice" class="page">
-			<div class="inner">
-				<div id="project_selection_box">
+			<div class="inner_project">
+				<div class="invoice_controls">
+					<div id="project_selection_box">
 					<!-- generated content -->
-				</div>
-				<div id="week_selection_box">
-					<!-- generated content -->
+					</div>
+					<div id="week_selection_box">
+						<!-- generated content -->
+					</div>
+					<div id="customer_selection_box">
+						<!-- generated content -->
+					</div>
+					<!-- <button onclick="createTable()">Create Invoice Table</button> -->
+					<button onclick="changePage('PAGE_create_new_customer')">Create New Customer</button>
+					<button onclick="createInvoice()">Generate Invoice</button>
 				</div>
 				<div id="invoice_timesheet_table">
 					<!-- generated content -->
@@ -133,9 +142,34 @@
 			</div>
 		</div>
 
+		<div id="PAGE_create_new_customer" class="page hidden">
+			<div class="inner">
+				<div class="creation_form">
+					<label for="create_customer_ID">Customer ID:</label>
+					<input id="create_customer_ID" type="text"></input>
+					<label for="create_customer_name">Bill To Name:</label>
+					<input id="create_customer_name" type="text"></input>
+					<label for="create_customer_addOne">Address line 1</label>
+					<input id="create_customer_addOne" type="text"></input>
+					<label for="create_customer_addTwo">Address line 2</label>
+					<input id="create_customer_addTwo" type="text"></input>
+					<label for="create_customer_city">City/State</label>
+					<input id="create_customer_city" type="text"></input>
+					<label for="create_customer_country">Country:</label>
+					<input id="create_customer_country" type="text"></input>
+					<button onclick="addNewCustomer()">Create Project</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="PAGE_invoice_print" class="page hidden">
+			<div class="inner">
+			</div>
+		</div>
+
 		<script src="JS/globalVariables.js"></script>
 		<script src="JS/nav.js"></script>
-		<script src="Projects/JS/fileIO.js"></script>
+		<script src="JS/fileIO.js"></script>
 		<!-- Settings -->
 		<script src="Settings/JS/domBlocks.js"></script>
 		<script src="Settings/JS/colourGenerator.js"></script>
@@ -148,7 +182,9 @@
 		<script src="Projects/JS/tableGenerator.js"></script>
 		<script src="Projects/JS/tableHandler.js"></script>
 		<!-- Invoice -->
-		<script src="Invoice/JS/projectSelection.js"></script>
+		<script src="Invoice/JS/projectHandler.js"></script>
+		<script src="Invoice/JS/customerHandler.js"></script>
+		<script src="Invoice/JS/InvoiceHandler.js"></script>
 
 		<script src="JS/renderDOM.js"></script>
 		<script src="Projects/JS/app.js"></script>

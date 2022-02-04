@@ -1,5 +1,6 @@
 let projectMasterDict = {};
 let colourMasterDict = {};
+let userMasterDict = {"user": {}, 'customer': {}};
 let currentPage = 'wyvern';
 let currentChosenProject = '';
 let currentTimeSheet = '';

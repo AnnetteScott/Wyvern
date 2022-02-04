@@ -1,0 +1,67 @@
+#invoice_timesheet_table #z_col{
+    width: 100px;
+    min-width: 100px;
+}
+
+.z_time_col{
+    width: 100px;
+    min-width: 100px;
+    font-size: 12px;
+    text-align: center;
+}
+
+#invoice_timesheet_table{
+    display: flex;
+    flex-direction: row;
+    margin: 50px 0px 0px 50px;
+    padding: 0px 50px 50px 0px;
+    overflow-y: auto;
+    height: calc(100% - 50px);
+}
+
+#invoice_timesheet_table > div{
+    display: flex;
+    flex-direction: column;
+    width: 75px;
+    min-width: 75px;
+    height: fit-content;
+    user-select: none;
+    text-align: center;
+}
+
+#invoice_timesheet_table > div > div:nth-child(97){
+    border-bottom: 3px solid black;
+}
+
+#invoice_timesheet_table > div > div{
+    border-left: 1px dashed black;
+    border-bottom: 1px solid black;
+    width: 100%;
+    height: 22px;
+    min-height: 22px;
+    background-color: white;
+    user-select: none;
+}
+
+#invoice_timesheet_table .time_sheet_totals{
+    width: calc(75px * 14);
+    text-align: center;
+}
+
+#invoice_timesheet_table .weeklyTotals{
+    width: calc(75px * 7);
+    text-align: center;
+}
+
+.invoice_controls div{
+    margin-left: 40px;
+}
+
+.invoice_controls button{
+    margin-left: 40px;
+}
+
+.invoice_controls{
+    display: flex;
+    flex-direction: row;
+}

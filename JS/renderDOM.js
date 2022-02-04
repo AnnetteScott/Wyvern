@@ -10,7 +10,6 @@ let TaskManager = {
         TaskManager.tasks.t_colours();
         TaskManager.tasks.t_colour_CheckBoxes();
         TaskManager.tasks.t_project_selection_box();
-        TaskManager.tasks.t_time_selection_box();
 
         if(TaskManager.enabled){window.requestAnimationFrame(TaskManager.render_loop);}
     },
@@ -80,15 +79,6 @@ let TaskManager = {
             TaskManager.cache.c_project_selection_box = currentChosenProject;
         },
         
-        
-        t_time_selection_box: function (){
-            let e = document.getElementById("timeSheetSelection");
-            currentTimeSheet = e.options[e.selectedIndex].text;
-            if(currentTimeSheet != TaskManager.cache.c_time_selection_box){
-                createTable();                
-            }
-            TaskManager.cache.c_time_selection_box = currentTimeSheet;
-        }
     },
 
     cache: {
@@ -96,7 +86,6 @@ let TaskManager = {
         c_colours: {},
         c_colour_checkBoxes: {},
         c_project_selection_box: '',
-        c_time_selection_box: '',
         c_navigation: null
     }
 }

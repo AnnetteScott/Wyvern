@@ -8,11 +8,12 @@ write_file = function(data, path = "./DATA/user.json"){
 }
 
 function save_Data(){
-    let masterJSON = {projectMasterDict: projectMasterDict, colourMasterDict: colourMasterDict}
+    let masterJSON = {projectMasterDict: projectMasterDict, colourMasterDict: colourMasterDict, userMasterDict: userMasterDict}
     write_file(JSON.stringify(masterJSON));
 }
 function read_Data(){
     let masterJSONRead = JSON.parse(read_file());
     projectMasterDict = masterJSONRead['projectMasterDict'];
     colourMasterDict = masterJSONRead['colourMasterDict'];
+    userMasterDict = masterJSONRead['userMasterDict'];
 }

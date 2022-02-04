@@ -20,10 +20,6 @@ function updateTimeSheetSelection(){
     elem += '</select>';
     document.getElementById("week_selection_box").innerHTML = elem;
     let e = document.getElementById("timeSheetSelection");
-    e.options[e.selectedIndex].text = "1 - 2"
-}
-
-function createTable(){
-    let tableContainer = document.getElementById("invoice_timesheet_table");
-    tableGen(tableContainer)
+    e.options[e.selectedIndex].text = "1 - 2";
+    UpdateCustomer();
 }

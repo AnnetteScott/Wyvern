@@ -1,5 +1,6 @@
 :root {
 	--i_page_margins: 40px;
+	--i_color: dodgerblue;
 }
 
 #invoice_sheet {
@@ -14,6 +15,7 @@
 	min-height: 29.7cm;
 	max-height: 29.7cm;
 	padding: var(--i_page_margins);
+	font-family: 'Calibri', sans-serif;
 	background-color: white;
 }
 #invoice_sheet > .inner {
@@ -25,8 +27,57 @@
 	min-height: 100%;
 	border: 1px dotted black;
 }
+
+#invoice_sheet .top_section {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+}
+#invoice_sheet .top_left {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 50%;
+}
+#invoice_sheet .top_right {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: flex-end;
+	width: 50%;
+}
 #invoice_sheet .title {
-	color: dodgerblue;
+	color: var(--i_color);
 	font-family: 'Oxanium';
 	font-size: 50px;
+}
+
+#invoice_sheet .box_with_heading {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 300px;
+	margin: 30px 0px;
+	text-align: left;
+}
+#invoice_sheet .box_with_heading p {
+	display: block;
+	width: 100%;
+	height: 20px;
+	padding: 0px 0px 0px 10px;
+}
+#invoice_sheet .box_with_heading p:nth-child(1) {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	color: white;
+	font-family: 'Oxanium';
+	font-size: 14px;
+	text-transform: uppercase;
+	background-color: var(--i_color);
 }

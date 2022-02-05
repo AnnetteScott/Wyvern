@@ -5,20 +5,19 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "package-win": "electron-packager . Wyvern --overwrite --asar=true --platform=win32 --arch=ia32 --icon=Images/WyvernIcon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Wyvern\"",
     "build-installer": "electron-builder"
   },
   "build": {
-	"appId": "wyvern-app",
+	"appId": "Wyvern-app",
 	"win": {
 	  "target": [
 		"nsis"
 	  ],
-	  "icon": "Images/TempIcon.ico"
+	  "icon": "Images/WyvernIcon.ico"
 	},
 	"nsis": {
-	  "installerIcon": "Images/TempIcon.ico",
-	  "uninstallerIcon": "Images/TempIcon.ico",
+	  "installerIcon": "Images/WyvernIcon.ico",
+	  "uninstallerIcon": "Images/WyvernIcon.ico",
 	  "uninstallDisplayName": "Wyvern",
 	  "oneClick": false,
 	  "allowToChangeInstallationDirectory": true

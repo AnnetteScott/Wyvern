@@ -157,7 +157,7 @@
 						<input id="invoice_ID" type="text"></input>
 					</div>
 				</div>
-				<button id="generate_invoice" onclick="generageInvoice()">Generate Invoice</button>
+				<button id="generate_invoice" onclick="generateInvoice()">Generate Invoice</button>
 			</div>
 		</div>
 
@@ -251,31 +251,34 @@
 								</div>
 							</div>
 							<div id="bottom_section">
-								<div style="display: flex; flex-direction: row; width: 19cm;">
-									<div id="description_invoice">
+								<div class="bottom_invoice">
+									<div class="description_invoice">
 										<div class="box_with_heading" style="width: 100%">
 											<p>Description</p>
 										</div>
 									</div>
-									<div id="qty_invoice">
+									<div class="qty_invoice">
 										<div class="box_with_heading" style="width: 100%">
 											<p>Qty</p>	
 										</div>
 									</div>
-									<div id="unit_price_invoice">
+									<div class="unit_price_invoice">
 										<div class="box_with_heading" style="width: 100%">
 											<p>Unit Price</p>		
 										</div>
 									</div>
-									<div id="amount_invoice">
+									<div class="amount_invoice">
 										<div class="box_with_heading" style="width: 100%">
 											<p>Amount</p>
 										</div>
 									</div>
 								</div>
-								<div id="invoice_bottom_table">
-									
-								</div>	
+								<div class="bottom_invoice">
+									<div class="description_invoice" id="description_invoice_table"></div>
+									<div class="qty_invoice" id="qty_invoice_table"></div>
+									<div class="unit_price_invoice" id="unit_price_invoice_table"></div>
+									<div class="amount_invoice" id="amount_invoice_table"></div>
+								</div>
 							</div>
 						</div>
 					</div>

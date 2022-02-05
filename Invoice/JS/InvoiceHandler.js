@@ -1,24 +1,93 @@
 function createTable(){
-    let tableContainer = document.getElementById("invoice_bottom_table");
-	tableContainer.innerHTML = '';
 	let invoiceCol = ['A', 'B', 'C', 'D'];
+	let invoiceLabel = ['SUBTOTAL', 'TAX', 'TOTAL'];
 	let tableHTML = '';
+	let rates = [];
+	let qty = [];
+	let invoiceTotal = 0.00
+	let projectWeekObj = projectMasterDict[currentChosenProject]["time_sheet_weeks"][currentTimeSheet]
+	
 	let colourList = []
 	Object.keys(colourMasterDict).forEach(name => {
         if(colourMasterDict[name][1]['yes'].includes(currentChosenProject)){
             colourList.push(name);
         }    
     })
+	let rowCount = colourList.length;
 
-	for(col in invoiceCol){
-		tableHTML += '<div>'
-		for(let row = 0; row < colourList.length; row++){
-			let cellID = invoiceCol[col] + row.toString();
-			tableHTML += `<div value="${cellID}"></div>`;
-		}
-		tableHTML += '</div>'
+	//Description Table
+	let tableContainerDESC = document.getElementById("description_invoice_table");
+	tableContainerDESC.innerHTML = '';
+	tableHTML = '<div>'
+	for(let row = 0; row < rowCount; row++){
+		let cellID = invoiceCol[0] + row.toString();
+		tableHTML += `<div class="cellInvoice" value="${cellID}">${colourList[row]}</div>`;
 	}
-	tableContainer.innerHTML = tableHTML;
+	tableHTML += '</div>'
+	tableContainerDESC.innerHTML = tableHTML;
+
+	//QTY table
+	let tableContainerQTY = document.getElementById("qty_invoice_table");
+	tableContainerQTY.innerHTML = '';
+	tableHTML = '<div>'
+	for(let row = 0; row < rowCount; row++){
+		let cellID = invoiceCol[1] + row.toString();
+		let totalColour = 0.00;
+		for (const [colour, value] of Object.entries(projectWeekObj['colour_totals'])) {
+			let colourName = Object.keys(colourMasterDict).find(key => colourMasterDict[key][0] === colour);
+			let compareName = colourList[row];
+			if(colourName == compareName){
+				rates.push(colourMasterDict[colourName][2]);
+				for (const [col, colourTotal] of Object.entries(value)) {
+					totalColour += colourTotal * 15 / 60;
+				}
+			} 
+			
+		}
+		qty.push(totalColour);
+		tableHTML += `<div class="cellInvoice" value="${cellID}">${totalColour}</div>`;
+	}
+	
+	let i = 0;
+	for(let row = rowCount; row < rowCount + 3; row++){
+		let cellID = invoiceCol[1] + row.toString();
+		tableHTML += `<div class="cellInvoiceTotalLabel" value="${cellID}">${invoiceLabel[i]}</div>`;
+		i++;
+	}
+	tableHTML += '</div>'
+	tableContainerQTY.innerHTML = tableHTML;
+
+	//unit price
+	let tableContainerUNIT = document.getElementById("unit_price_invoice_table");
+	tableContainerUNIT.innerHTML = '';
+	tableHTML = '<div>'
+	for(let row = 0; row < rowCount; row++){
+		let cellID = invoiceCol[2] + row.toString();
+		tableHTML += `<div class="cellInvoice" value="${cellID}">${rates[row]}</div>`;
+	}
+	tableHTML += '</div>'
+	tableContainerUNIT.innerHTML = tableHTML;
+
+	//total
+	let tableContainerAMOUNT = document.getElementById("amount_invoice_table");
+	tableContainerAMOUNT.innerHTML = '';
+	tableHTML = '<div>'
+	let lastRow = 0;
+	for(let row = 0; row < rowCount; row++){
+		let cellID = invoiceCol[3] + row.toString();
+		let rowTotal = parseFloat(rates[row]) * qty[row];
+		invoiceTotal += rowTotal;
+		tableHTML += `<div class="cellInvoice" value="${cellID}">$${rowTotal}</div>`;
+		lastRow = row;
+	}
+	tableHTML += `<div class="cellInvoiceTotal" value="D${lastRow + 1}">$${invoiceTotal.toFixed(2)}</div>`;
+	tableHTML += `<div class="cellInvoiceTotal" value="D${lastRow + 2}">$0.00</div>`;
+	tableHTML += `<div class="cellInvoiceTotal" value="D${lastRow + 3}">$${invoiceTotal.toFixed(2)}</div>`;
+	tableHTML += '</div>'
+	tableContainerAMOUNT.innerHTML = tableHTML;
+
+
+	
 
 }
 
@@ -36,7 +105,7 @@ function printInvoice(id = 'PRINTtheTHING'){
     if (w) { w.document.write(html); w.document.close() }
 }
 
-function generageInvoice(){
+function generateInvoice(){
 	document.getElementById('invoice_date_invoice').innerHTML = reDoDate('invoice_date');
 	let startDate = reDoDate('invoice_start_date');
 	let endDate = reDoDate('invoice_end_date');
@@ -61,6 +130,7 @@ function generageInvoice(){
 	document.getElementById('user_contact_invoice').innerHTML = userMasterDict['user'][userName]['contact'];
 	
 	currentChosenProject = $("#projectSelection option:selected").text();
+	currentTimeSheet = $("#timeSheetSelection option:selected").text();
 	createTable();
 	changePage('PAGE_print_invoice');
 

@@ -72,7 +72,7 @@
 #invoice_sheet .box_with_heading p {
 	display: block;
 	width: 100%;
-	height: 100%;
+	height: 16px;
 	padding: 0px 0px 0px 10px;
 }
 #invoice_sheet .box_with_heading p:nth-child(1) {
@@ -103,28 +103,34 @@
 	margin: 0px;
 }
 
-#invoice_sheet #description_invoice{
+#invoice_sheet .bottom_invoice{
+	display: flex; 
+	flex-direction: row; 
+	width: 19cm;
+}
+
+#invoice_sheet .description_invoice{
 	width: 45%;
 	min-width: 45%;
 	height: 18px;
 	min-height: 18px;
 	margin: 0px;
 }
-#invoice_sheet #qty_invoice{
+#invoice_sheet .qty_invoice{
 	width: 15%;
 	min-width: 15%;
 	height: 18px;
 	min-height: 18px;
 	margin: 0px;
 }
-#invoice_sheet #unit_price_invoice{
+#invoice_sheet .unit_price_invoice{
 	width: 20%;
 	min-width: 20%;
 	height: 18px;
 	min-height: 18px;
 	margin: 0px;
 }
-#invoice_sheet #amount_invoice{
+#invoice_sheet .amount_invoice{
 	width: 20%;
 	min-width: 20%;
 	height: 18px;
@@ -132,37 +138,39 @@
 	margin: 0px;
 }
 
-#invoice_sheet #invoice_bottom_table{
-	min-width: 100%;
-	width: 100%;
-	min-height: calc(100% - 18px);
-	height: calc(100% - 18px);
-	border: 1px solid var(--i_color);
-	display: flex;
-    flex-direction: row;
-}
-
-#invoice_sheet #invoice_bottom_table div{
-	border: 1px dotted black;
-	display: flex;
-    flex-direction: column;
-    width: 75px;
-    min-width: 75px;
-    height: fit-content;
-    user-select: none;
-    text-align: center;
-}
-
-#invoice_sheet #invoice_bottom_table div > div{
-	border-left: 1px dashed black;
-    border-bottom: 1px solid black;
+#invoice_sheet .cellInvoice{
+    border-top: 1px dotted black;
+    border-bottom: 1px dotted black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
     width: 100%;
     height: 22px;
     min-height: 22px;
     background-color: white;
     user-select: none;
-    font-size: 12px;
+    font-size: 15px;
+	padding-left: 7px;
 }
+
+#invoice_sheet .cellInvoiceTotalLabel{
+    width: 250%;
+    height: 22px;
+    min-height: 22px;
+    background-color: white;
+    user-select: none;
+    font-size: 15px;
+	padding-left: 17px;
+}
+#invoice_sheet .cellInvoiceTotal{
+    width: 100%;
+    height: 22px;
+    min-height: 22px;
+    background-color: white;
+    user-select: none;
+    font-size: 17px;
+	padding-left: 30%;
+}
+
 
 
 

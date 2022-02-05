@@ -7,22 +7,25 @@
     "start": "electron .",
     "build-installer": "electron-builder"
   },
-  "build": {
+"build": {
 	"appId": "Wyvern-app",
 	"win": {
-	  "target": [
+		"target": [
 		"nsis"
-	  ],
-	  "icon": "Images/WyvernIcon.ico"
+	],
+	"icon": "Images/WyvernIcon.ico"
 	},
-	"nsis": {
-	  "installerIcon": "Images/WyvernIcon.ico",
-	  "uninstallerIcon": "Images/WyvernIcon.ico",
-	  "uninstallDisplayName": "Wyvern",
-	  "oneClick": false,
-	  "allowToChangeInstallationDirectory": true
-	}
-  },
+		"nsis": {
+		"installerIcon": "Images/WyvernIcon.ico",
+		"uninstallerIcon": "Images/WyvernIcon.ico",
+		"uninstallDisplayName": "Wyvern",
+		"oneClick": false,
+		"allowToChangeInstallationDirectory": true
+	},
+	"extraFiles": [
+		"./DATA"
+	]
+},
 
   "repository": {
     "type": "git",

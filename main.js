@@ -25,7 +25,7 @@ app.on('ready', function(){
       app.quit();
     });
     // Open the DevTools.
-   // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   
     // Build menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -60,7 +60,7 @@ const mainMenuTemplate =  [
 ];
 
 // Enable live reload for all the files inside your project directory
-//require('electron-reload')(__dirname);
+require('electron-reload')(__dirname);
 
 
 function manual_save(){

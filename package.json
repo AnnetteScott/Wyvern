@@ -1,11 +1,31 @@
 {
   "name": "wyvern",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple Wyvern App",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package-win": "electron-packager . Wyvern --overwrite --asar=true --platform=win32 --arch=ia32 --icon=Images/WyvernIcon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Wyvern\"",
+    "build-installer": "electron-builder"
   },
+  "build": {
+	"appId": "cool-app",
+	"win": {
+	  "target": [
+		"nsis"
+	  ],
+	  "icon": "Images/TempIcon.ico"
+	},
+	"nsis": {
+	  "installerIcon": "Images/TempIcon.ico",
+	  "uninstallerIcon": "Images/TempIcon.ico",
+	  "uninstallDisplayName": "CPU Monitor",
+	  "license": "license.txt",
+	  "oneClick": false,
+	  "allowToChangeInstallationDirectory": true
+	}
+  },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NotNatural21/Wyvern.git"
@@ -18,7 +38,8 @@
   },
   "homepage": "https://github.com/NotNatural21/Wyvern#readme",
   "devDependencies": {
-    "electron": "16.0.7"
+    "electron": "16.0.7",
+    "electron-builder": "^22.14.5"
   },
   "dependencies": {
     "electron-reload": "^2.0.0-alpha.1"

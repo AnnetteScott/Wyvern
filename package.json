@@ -9,7 +9,7 @@
     "build-installer": "electron-builder"
   },
   "build": {
-	"appId": "cool-app",
+	"appId": "wyvern-app",
 	"win": {
 	  "target": [
 		"nsis"
@@ -19,8 +19,7 @@
 	"nsis": {
 	  "installerIcon": "Images/TempIcon.ico",
 	  "uninstallerIcon": "Images/TempIcon.ico",
-	  "uninstallDisplayName": "CPU Monitor",
-	  "license": "license.txt",
+	  "uninstallDisplayName": "Wyvern",
 	  "oneClick": false,
 	  "allowToChangeInstallationDirectory": true
 	}

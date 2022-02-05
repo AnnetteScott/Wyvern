@@ -1,8 +1,25 @@
 function createTable(){
-    let e = document.getElementById("timeSheetSelection");
-    currentTimeSheet = e.options[e.selectedIndex].text
-    let tableContainer = document.getElementById("invoice_timesheet_table");
-    tableGen(tableContainer);
+    let tableContainer = document.getElementById("invoice_bottom_table");
+	tableContainer.innerHTML = '';
+	let invoiceCol = ['A', 'B', 'C', 'D'];
+	let tableHTML = '';
+	let colourList = []
+	Object.keys(colourMasterDict).forEach(name => {
+        if(colourMasterDict[name][1]['yes'].includes(currentChosenProject)){
+            colourList.push(name);
+        }    
+    })
+
+	tableHTML = '<div>'
+	for(col in invoiceCol){
+		for(let row = 0; row < colourList.length; row++){
+			let cellID = invoiceCol[col] + row.toString();
+			tableHTML += `<div value="${cellID}"></div>`;
+		}
+		tableHTML += '</div>'
+	}
+	tableContainer.innerHTML = tableHTML;
+
 }
 
 
@@ -42,9 +59,12 @@ function generageInvoice(){
 	document.getElementById('user_city_invoice').innerHTML = userMasterDict['user'][userName]['city'];
 	document.getElementById('user_country_invoice').innerHTML = userMasterDict['user'][userName]['country'];
 	document.getElementById('user_contact_invoice').innerHTML = userMasterDict['user'][userName]['contact'];
-
+	
+	currentChosenProject = $("#projectSelection option:selected").text();
 	createTable();
 	changePage('PAGE_print_invoice');
+
+	
 }
 
 

@@ -87,6 +87,66 @@
 	background-color: var(--i_color);
 }
 
+#invoice_sheet .dual_box_heading{
+	display: flex;
+	width: 300px;
+}
+
+#invoice_sheet #bottom_section{
+	display: flex;
+	width: 19cm;
+	flex-direction: column;
+	height: 100%;
+}
+
+#invoice_sheet #bottom_section div > div{
+	margin: 0px;
+}
+
+#invoice_sheet #description_invoice{
+	width: 45%;
+	min-width: 45%;
+	height: 18px;
+	min-height: 18px;
+	margin: 0px;
+}
+#invoice_sheet #qty_invoice{
+	width: 15%;
+	min-width: 15%;
+	height: 18px;
+	min-height: 18px;
+	margin: 0px;
+}
+#invoice_sheet #unit_price_invoice{
+	width: 20%;
+	min-width: 20%;
+	height: 18px;
+	min-height: 18px;
+	margin: 0px;
+}
+#invoice_sheet #amount_invoice{
+	width: 20%;
+	min-width: 20%;
+	height: 18px;
+	min-height: 18px;
+	margin: 0px;
+}
+
+#invoice_sheet #invoice_bottom_table{
+	min-width: 100%;
+	width: 100%;
+	min-height: calc(100% - 18px);
+	height: calc(100% - 18px);
+	border: 1px solid var(--i_color);
+}
+
+#invoice_sheet #invoice_bottom_table div{
+	border: 1px dotted black;
+	width: 100%;
+	height: 100%;
+}
+
+
 
 #invoice_sheet_time {
 	display: flex;

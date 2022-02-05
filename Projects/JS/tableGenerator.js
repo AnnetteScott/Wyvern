@@ -3,7 +3,6 @@ function tableGen(tableContainer = document.getElementById("project_table")){
     let timeList = timeGen(projectWeekObj);
     document.querySelector(".navName").innerHTML = currentPage + " Weeks " + currentTimeSheet;
     tableContainer.innerHTML = '';
-    let colLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
     rowCount = 100 + colourCount;
     let tableHTML = '';
     let dateList = dateGen(projectWeekObj)

@@ -1,7 +1,9 @@
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
-const {app, BrowserWindow, Menu, ipcMain} = electron;
+let fs = require("fs");
+const {app, BrowserWindow, Menu, ipcMain, remote} = electron;
+const { dialog } = require('electron');
 let mainWindow;
 
 // Listen for app to be ready
@@ -23,7 +25,7 @@ app.on('ready', function(){
       app.quit();
     });
     // Open the DevTools.
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   
     // Build menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -43,9 +45,9 @@ const mainMenuTemplate =  [
                 click(){ mainWindow.webContents.send('save_Data') }
             },  
             {
-                label: 'Print', 
-                accelerator: process.platform === 'darwin' ? 'Ctrl+P' : 'Ctrl+P',
-                //click(){ app.quit() }
+                label: 'Manual Save', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+Shift+S' : 'Ctrl+Shift+S',
+                click(){ manual_save() }
             },
             {
                 label: 'Exit', 
@@ -58,6 +60,31 @@ const mainMenuTemplate =  [
 ];
 
 // Enable live reload for all the files inside your project directory
-//require('electron-reload')(__dirname);
+require('electron-reload')(__dirname);
 
-  
+
+function manual_save(){
+    let masterJSONRead = JSON.parse(read_file());
+    projectMasterDict = masterJSONRead['projectMasterDict'];
+    colourMasterDict = masterJSONRead['colourMasterDict'];
+    userMasterDict = masterJSONRead['userMasterDict'];
+
+    let masterJSON = {projectMasterDict: projectMasterDict, colourMasterDict: colourMasterDict, userMasterDict: userMasterDict}
+    dialog.showSaveDialog(mainWindow, {
+        properties: ['saveFile'],
+        filters: [{ name: 'json', extensions: ['json'] }]
+    }).then(result => {
+        let filepath = result.filePath;
+        console.log(filepath);
+        fs.writeFileSync(filepath, JSON.stringify(masterJSON));
+    }).catch(err => {
+        console.log(err)
+    });
+
+		
+}
+
+read_file = function(path = "./DATA/user.json"){
+    return fs.readFileSync(path, 'utf8');
+}
+

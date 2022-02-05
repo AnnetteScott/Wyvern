@@ -10,7 +10,7 @@ app.on('ready', function(){
     mainWindow = new BrowserWindow({
         width: 1200,
 		height: 800,
-		icon: __dirname + '/WyvernIcon.ico',
+		icon: __dirname + '/Images/WyvernIcon.ico',
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -23,7 +23,7 @@ app.on('ready', function(){
       app.quit();
     });
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
   
     // Build menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -58,6 +58,6 @@ const mainMenuTemplate =  [
 ];
 
 // Enable live reload for all the files inside your project directory
-require('electron-reload')(__dirname);
+//require('electron-reload')(__dirname);
 
   

@@ -10,8 +10,8 @@ function createTable(){
         }    
     })
 
-	tableHTML = '<div>'
 	for(col in invoiceCol){
+		tableHTML += '<div>'
 		for(let row = 0; row < colourList.length; row++){
 			let cellID = invoiceCol[col] + row.toString();
 			tableHTML += `<div value="${cellID}"></div>`;

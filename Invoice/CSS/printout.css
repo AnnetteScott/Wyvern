@@ -138,13 +138,32 @@
 	min-height: calc(100% - 18px);
 	height: calc(100% - 18px);
 	border: 1px solid var(--i_color);
+	display: flex;
+    flex-direction: row;
 }
 
 #invoice_sheet #invoice_bottom_table div{
 	border: 1px dotted black;
-	width: 100%;
-	height: 100%;
+	display: flex;
+    flex-direction: column;
+    width: 75px;
+    min-width: 75px;
+    height: fit-content;
+    user-select: none;
+    text-align: center;
 }
+
+#invoice_sheet #invoice_bottom_table div > div{
+	border-left: 1px dashed black;
+    border-bottom: 1px solid black;
+    width: 100%;
+    height: 22px;
+    min-height: 22px;
+    background-color: white;
+    user-select: none;
+    font-size: 12px;
+}
+
 
 
 

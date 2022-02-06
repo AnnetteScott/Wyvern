@@ -36,6 +36,7 @@ function addNewClient(){
         $("#create_client_country").val('')
 
         $('#client_pop_up').removeClass('input_box_open');
+        masterDict['clients'][clientID]['projects'] = [];
     }
  
 }

@@ -6,7 +6,11 @@ let VL = {
 		Object.keys(this).forEach((f) => {
 			if(f.toString().substring(0, 5) === 'task_'){
 				if(this.variableHasChanged(f.toString().split('task_')[1])){
-					this.cache[f.toString().split('task_')[1]] = window[f.toString().split('task_')[1]];
+					if(this.isObject(window[f.toString().split('task_')[1]])){
+						this.cache[f.toString().split('task_')[1]] = JSON.stringify(window[f.toString().split('task_')[1]]);
+					}else{
+						this.cache[f.toString().split('task_')[1]] = window[f.toString().split('task_')[1]];
+					}
 					this[f](); //Execute the function
 				}
 			}
@@ -28,8 +32,8 @@ let VL = {
 	},
 
 
-	variableHasChanged: function (v) {
-		return this.cache[v] !== window[v];
+	jsonEqual: function (jsonString, object) {
+		return jsonString === JSON.stringify(object);
 	},
 
 
@@ -48,6 +52,15 @@ let VL = {
 	},
 
 
+	variableHasChanged: function (v) {
+		if(this.isObject(window[v])){
+			return !this.jsonEqual(this.cache[v], window[v]);
+		}else{
+			return this.cache[v] !== window[v];
+		}
+	},
+
+
 	add: function (v, f) {
 		if(!v || typeof window[v] == 'undefined'){
 			console.error("Scope Error: Variable must be globally declared with 'var'.");
@@ -56,7 +69,11 @@ let VL = {
 			console.error("Argument Error: You must pass a function.");
 			return false;
 		}else{
-			this.cache[v] = window[v]; //Add the variable and its value to the cache.
+			if(this.isObject(window[v])){
+				this.cache[v] = JSON.stringify(window[v]); //Add the variable and its value to the cache.
+			}else{
+				this.cache[v] = window[v]; //Add the variable and its value to the cache.
+			}
 			this[`task_${v}`] = f; //Add the function to VL as a task.
 			return true;
 		}

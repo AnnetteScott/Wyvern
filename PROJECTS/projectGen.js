@@ -1,10 +1,11 @@
 function addNewProject(){
-    let projectClientID = $("#client_project_selection option:selected").val();
+    let ClientID = $("#client_project_selection option:selected").val();
     let projectName = $("#create_project_name").val();
     let projectStartDate = reDoDate('create_project_date');
     let projectDuration = parseInt($("#create_project_duration").val());
 
-    if(typeof projectClientID == 'undefined'){
+
+    if(typeof ClientID == 'undefined'){
         $("#client_project_selection").addClass('form_error');
     }else if(projectName == ''){
         $("#create_project_name").addClass('form_error');
@@ -16,18 +17,16 @@ function addNewProject(){
         $("#create_project_duration").addClass('form_error');
         $("#create_project_date").removeClass('form_error');
     }else{
+
         //Generate unique projectID 
         let projectID = generateID();
-        if(typeof masterDict['projects'][projectClientID] == 'undefined'){
-            masterDict['projects'][projectClientID] = {};
-        }
-        while(masterDict['projects'][projectClientID].hasOwnProperty(projectID)){
+        while(masterDict['projects'].hasOwnProperty(projectID)){
             projectID = generateID();
         }
 
-        masterDict['projects'][projectClientID][projectID] = {}
-        masterDict['projects'][projectClientID][projectID][projectName] = {}
-        masterDict['projects'][projectClientID][projectID][projectName]['weeks'] = {}
+        masterDict['projects'][projectID] = {'projectName': projectName};
+        masterDict['projects'][projectID]['colourList'] = [];
+        masterDict['projects'][projectID]['weeks'] = {};
 
         //Make project duration even
         if(projectDuration % 2 == 1){
@@ -38,13 +37,12 @@ function addNewProject(){
         for(let i = 1; i < projectDuration; i += 2){
             let weekTwo = i + 1;
             let weekTitle = i.toString() + " - " + weekTwo.toString();
-
-            masterDict['projects'][projectClientID]
             
-            masterDict['projects'][projectClientID][projectID][projectName]['weeks'][weekTitle] = {'startDate': previousDate, 'colourCells': {}, 'totalColour': {}, 'totalCol': {}}
+            masterDict['projects'][projectID]['weeks'][weekTitle] = {'startDate': previousDate, 'colourCells': {}, 'totalColour': {}, 'totalCol': {}}
             previousDate = addToDate(previousDate, 14)
         }
 
+        masterDict['clients'][ClientID]['projects'].push(projectID);
 
         $("#create_project_name").val('')
         $("#create_project_duration").val('')

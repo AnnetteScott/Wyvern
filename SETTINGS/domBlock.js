@@ -1,21 +1,33 @@
 let DOM_Blocks_Settings = {
-    colour_card: function (colourName, color, rate){
+    client_card: function (name, ID){
         return '<div class="colour_card">'
-        +          `<div style="background-color: ${color}"></div>`
-        +           `<div value="${colourName}"class="colour_options hidden">`
-        +               `<p>${colourName}</p>`
-        +               '<button class"colour_pop_up_button" onclick="deleteColour()" style="width: 125px; height: 30px;">Delete Colour</button>'
-        +               '<button class"colour_pop_up_button" onclick="editColour()" style="width: 125px; height: 30px;">Edit Colour</button>'
-        +           '</div>'
-        +          `<p onclick="showColourOptions(event)">${colourName}</p>`
-        +          `<p>$${rate}</p>`
+        +          `<p clientid="${ID}">${name}</p>`
         +      '</div>';
 
     },
-    checkboxes: function (colourID, projectID, projectName){
-        return '<div class="check_box">'
-        +           `<input onclick="addToDict(event)" title="Project: ${projectName}" type="checkbox" id="${colourID}_${projectID}" name="accept" value="${colourID}">`
+
+
+    project_card: function (name, ID){
+        return '<div class="colour_card">'
+        +          `<p projectid="${ID}">${name}</p>`
         +      '</div>';
+
+    },
+
+
+    colour_card: function (colourName, color, rate, colourID){
+        return '<div class="colour_card">'
+        +          `<div style="background-color: ${color}"></div>`
+        +          `<p colourid="${colourID}" onclick="editColour(event)">${colourName}</p>`
+        +          `<p>$${rate}</p>`
+        +          `<div class="colour_card_checkbox_list"></div>`
+        +      '</div>';
+
+    },
+
+
+    checkbox: function (projectName){
+        return `<input onclick="addToDict(event)" title="Project: ${projectName}" type="checkbox">`;
 
     }
 }

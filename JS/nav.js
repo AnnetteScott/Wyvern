@@ -1,46 +1,37 @@
-const burger = document.querySelector('.burger');
-const nav = document.querySelector('.nav-links');
-const navLinks = document.querySelectorAll('.nav-links li');
-
-function openNav(){
-    nav.classList.add('nav-active');
-
-    //Animate Links
-    navLinks.forEach((link, index) =>{
-        link.style.animation = link.style.animation ? '' : link.style.animation = `navLinkFade 0.2s ease forwards ${index / 7 + 0.15}s`;
-    });
-}
-
-function closeNav(){
-    nav.classList.remove('nav-active');
-
-    //Animate Links
-    navLinks.forEach((link, index) =>{
-        link.style.animation = link.style.animation ? '' : link.style.animation = `navLinkFade 0.2s ease forwards ${index / 7 + 0.15}s`;
-    });
-}
-
-function toggleNav(){
-    nav.classList.toggle('nav-active');
-
-    //Animate Links
-    navLinks.forEach((link, index) =>{
-        link.style.animation = link.style.animation ? '' : link.style.animation = `navLinkFade 0.2s ease forwards ${index / 7 + 0.15}s`;
-    });
+function changePage(pageID){
+    toggleNavMenu();
+    currentPage = pageID;
 }
 
 
-function changePage(page_id, clicked = false){
-    document.querySelectorAll(".page").forEach((page) => {
-        page.classList.add("hidden");
-    });
-
-    if(page_id != "PAGE_project"){
-        currentPage = page_id.split("_")[1] === "home" ? "wyvern" : page_id.split("PAGE_")[1].replaceAll("_", " ");       
-        document.querySelector(".navName").innerHTML = currentPage;
-    }
-    document.getElementById(page_id).classList.remove("hidden");
-    if(clicked){
-        closeNav();
+function toggleNavMenu(){
+    if($(elements['navMenu']).hasClass('active')){
+        $(elements['navMenu']).removeClass('active');
+        //Un-animate the navlinks
+        $('#nav_menu li').each(function (index) {
+            $(this).css('animation', 'unset');
+        });
+    }else{
+        $(elements['navMenu']).addClass('active');
+        //Animate the navlinks
+        $('#nav_menu li').each(function (index) {
+            $(this).css('animation', `a_navLinkFade 0.2s ease forwards ${index / 7 + 0.15}s`);
+        });
     }
 }
+
+
+VL.add('currentPageTitle', function(){
+    if(currentPageTitle === 'home'){
+        $(elements['navTitle']).text('wyvern');
+    }else{
+        $(elements['navTitle']).text(currentPageTitle);
+    }
+});
+
+
+VL.add('currentPage', function(){
+    $('.page').addClass('hidden');
+    $(`#PAGE_${currentPage}`).removeClass('hidden');
+    currentPageTitle = currentPage.replace("_", " ");
+});

@@ -1,60 +1,79 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>Home</title>
 		<link rel="stylesheet" href="CSS/root.css">
 		<link rel="stylesheet" href="CSS/nav.css">
 		<link rel="stylesheet" href="CSS/style.css">
-		<link rel="stylesheet" href="Projects/CSS/projectStyle.css">
-		<link rel="stylesheet" href="Settings/CSS/settings.css">
-		<link rel="stylesheet" href="Invoice/CSS/invoice.css">
-		<link rel="stylesheet" href="Invoice/CSS/printout.css">
+		<link rel="stylesheet" href="SETTINGS/CSS/settings.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
-		<title>Home</title>
 	</head>
 	<body>
 		<nav>
-			<div class="navName">wyvern</div>
-			<ul class="nav-links">
-				<li onclick="changePage('PAGE_home', true);">Home</li>
-				<li onclick="changePage('PAGE_settings', true);">Settings</li>
-				<li onclick="changePage('PAGE_projects', true);">Projects</li>
-				<li onclick="changePage('PAGE_budget', true);">Budget</li>
-				<li onclick="changePage('PAGE_invoice', true);">Invoice</li>
+			<div class="title">wyvern</div>
+			<ul id="nav_menu">
+				<li onclick="changePage('home');">Home</li>
+				<li onclick="changePage('settings');">Settings</li>
+				<li onclick="changePage('projects');">Projects</li>
+				<li onclick="changePage('budget');">Budget</li>
+				<li onclick="changePage('invoice');">Invoice</li>
 			</ul>
-			<div class="burger" onclick="toggleNav()">
-				<div class="line1"></div>
-				<div class="line2"></div>
-				<div class="line3"></div>
-			</div>
+			<span id="burger" onclick="toggleNavMenu()"></span>
 		</nav>
 
-
-		<div id="PAGE_home" class="page">
+		<div id="PAGE_home" class="page hidden">
 			<h1>Welcome To Wyvern!</h1>
 			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
 		</div>
 
-		<div id="PAGE_settings" class="page hidden">
-			<div class="inner_settings">
-				<div id="colour_container">
-					<div id="settings_colour_controls">
-						<div id="add_new_colour_button" title="New Colour" onclick="changeToNewColour()" style="background-image: url(Images/add_white_24dp.svg);"></div>
-					</div>
-					<div id="colourINFO">
-						<div id="colour_list">
-							<!--generated content-->
-						</div>
-						<div id="colour_list_checkboxes">
-							<!--generated content-->
-						</div>
-					</div>
-				</div>		
+		<div id="PAGE_settings" class="page">
+			<button onclick="currentPage = 'client_editor'">Create New Client</button>
+			<button onclick="currentPage = 'project_editor'">Create New Project</button>
+			<button onclick="currentPage = 'colour_editor'">Create New Colour</button>
+		</div>
+
+		<div id="PAGE_client_editor" class="page hidden">
+			<div class="inner">
+				<div class="creation_form">
+					<label for="create_client">Client:</label>
+					<input id="create_client" type="text"></input>
+					<label for="create_client_name">Bill To Name:</label>
+					<input id="create_client_name" type="text"></input>
+					<label for="create_client_addOne">Address line 1</label>
+					<input id="create_client_addOne" type="text"></input>
+					<label for="create_client_addTwo">Address line 2</label>
+					<input id="create_client_addTwo" type="text"></input>
+					<label for="create_client_city">City/State</label>
+					<input id="create_client_city" type="text"></input>
+					<label for="create_client_country">Country:</label>
+					<input id="create_client_country" type="text"></input>
+					<button onclick="addNewClient()">Save Client</button>
+				</div>
 			</div>
 		</div>
 
-		<div id="PAGE_add_new_colour" class="page hidden">
+
+		<div id="PAGE_project_editor" class="page hidden">
+			<div class="inner">
+				<div class="creation_form">
+					<label for="client_project_selection">Choose A Client</label>
+					<select name="client_project_selection" id="client_project_selection">
+						<!-- generated content -->
+					</select>
+					<label for="create_project_name">Project name:</label>
+					<input id="create_project_name" type="text"></input>
+					<label for="create_project_date">Project start date:</label>
+					<input id="create_project_date" type="date"></input>
+					<label for="create_project_duration">Project duration:</label>
+					<input id="create_project_duration" type="number"></input>
+					<button onclick="addNewProject()">Save Project</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="PAGE_colour_editor" class="page hidden">
 			<div class="inner">
 				<div class="creation_form">
 					<label for="colour_creation_name">Colour Name:</label>
@@ -65,257 +84,32 @@
 
 					<label for="colour_creation_colour">Colour:</label>
 					<input type="color" id="colour_creation_colour" name="head" value="#000000">
-					
-					<button id="create_new_colour_button" onclick="addColour()">Add Colour</button>
-					<button id="change_colour_button" onclick="changeColour()">Save Colour</button>
+					<button onclick="addNewColour()">Save Colour</button>
 				</div>
 			</div>
 		</div>
+
+
 
 		<div id="PAGE_projects" class="page hidden">
-			<div class="inner">
-				<div id="projects_container">
-					<div id="projects_controls">
-						<div title="New project" onclick="changePage('PAGE_create_project')" style="background-image: url(Images/add_white_24dp.svg);"></div>
-						<div title="Delete project" onclick="deleteAllProjects()" style="background-image: url(Images/delete_forever_white_24dp.svg);"></div>
-					</div>
-					<div id="projects_list">
-						<!--generated content-->
-					</div>
-				</div>
-			</div>
 		</div>
-
-		<div id="PAGE_create_project" class="page hidden">
-			<div class="inner">
-				<div class="creation_form">
-					<label for="create_project_name">Project name:</label>
-					<input id="create_project_name" type="text"></input>
-					<label for="create_project_date">Project start date:</label>
-					<input id="create_project_date" type="date"></input>
-					<label for="create_project_duration">Project duration:</label>
-					<input id="create_project_duration" type="number"></input>
-					<button onclick="createProject()">Create Project</button>
-				</div>
-			</div>
-		</div>
-
-		<!-- Project page -->
-		<div id="PAGE_project" class="page hidden">
-			<div id="project_ribbon">
-				<!--generated content-->
-			</div>
-			<div class="inner_project">
-				<div id="project_buttons">
-
-				</div>
-				<div id="user_selection_tip" class ="tool_tip hidden">Time: </div>
-				<div id="project_table">
-				</div>
-			</div>
-		</div>
-		
 		<div id="PAGE_budget" class="page hidden">
-			<div class="inner">
-			</div>
 		</div>
-
-		<!-- Invoice Page -->
 		<div id="PAGE_invoice" class="page hidden">
-			<div class="inner">
-				<div class="invoice_controls">
-					<div id="project_selection_box">
-					<!-- generated content -->
-					</div>
-					<div id="week_selection_box">
-						<!-- generated content -->
-					</div>
-					<div id="customer_selection_box">
-						<!-- generated content -->
-					</div>
-					<div id="user_selection_box"> 
-						<!-- generated content -->
-					</div>
-					<button onclick="changePage('PAGE_create_new_customer')">Create New Customer</button>
-					<button onclick="changePage('PAGE_create_new_user')">Create New User</button>
-				</div>
-				<div class="inner">
-					<div class="creation_form">
-						<label for="invoice_date">Invoice Date:</label>
-						<input id="invoice_date" type="date"></input>
-
-						<label for="invoice_start_date">Invoice Period Start Date:</label>
-						<input id="invoice_start_date" type="date"></input>
-
-						<label for="invoice_end_date">Invoice Period End Date:</label>
-						<input id="invoice_end_date" type="date"></input>
-
-						<label for="invoice_for">Invoice For:</label>
-						<input id="invoice_for" type="text"></input>
-						
-						<label for="invoice_ID">Invoice ID:</label>
-						<input id="invoice_ID" type="text"></input>
-					</div>
-				</div>
-				<button id="generate_invoice" onclick="generateInvoice()">Generate Invoice</button>
-			</div>
 		</div>
 
-		<div id="PAGE_create_new_customer" class="page hidden">
-			<div class="inner">
-				<div class="creation_form">
-					<label for="create_customer_ID">Customer ID:</label>
-					<input id="create_customer_ID" type="text"></input>
-					<label for="create_customer_name">Bill To Name:</label>
-					<input id="create_customer_name" type="text"></input>
-					<label for="create_customer_addOne">Address line 1</label>
-					<input id="create_customer_addOne" type="text"></input>
-					<label for="create_customer_addTwo">Address line 2</label>
-					<input id="create_customer_addTwo" type="text"></input>
-					<label for="create_customer_city">City/State</label>
-					<input id="create_customer_city" type="text"></input>
-					<label for="create_customer_country">Country:</label>
-					<input id="create_customer_country" type="text"></input>
-					<button onclick="addNewCustomer()">Create New Customer</button>
-				</div>
-			</div>
-		</div>
-		
-		<div id="PAGE_create_new_user" class="page hidden">
-			<div class="inner">
-				<div class="creation_form">
-					<label for="create_user_name">Name:</label>
-					<input id="create_user_name" type="text"></input>
-					<label for="create_user_addOne">Address line 1</label>
-					<input id="create_user_addOne" type="text"></input>
-					<label for="create_user_addTwo">Address line 2</label>
-					<input id="create_user_addTwo" type="text"></input>
-					<label for="create_user_city">City/State</label>
-					<input id="create_user_city" type="text"></input>
-					<label for="create_user_country">Country:</label>
-					<input id="create_user_country" type="text"></input>
-					<label for="create_user_contact">Contact</label>
-					<input id="create_user_contact" type="text"></input>
-					<button onclick="addNewUser()">Create New User</button>
-				</div>
-			</div>
-		</div>
 
-		<div id="PAGE_print_invoice" class="page hidden">
-			<div class="inner" style="flex-direction: row;">
-				<button onclick="printInvoice()">Print Invoice</button>
-				<div id="PRINTtheTHING">
-					<div style="-webkit-print-color-adjust: exact" id="invoice_sheet">
-						<div class="inner">
-							<div class="top_section">
-								<div class="top_left">
-									<h2 id="user_name_invoice"></h2>
-									<p id="user_addOne_invoice"></p>
-									<p id="user_addTwo_invoice"></p>
-									<p id="user_city_invoice"></p>
-									<p id="user_country_invoice"></p>
-									<p id="user_contact_invoice"></p>
-									<div class="box_with_heading">
-										<p>Client ID</p>
-										<p id="customer_id_invoice"></p>
-									</div>
-									<div class="box_with_heading">
-										<p>Bill To</p>
-										<p id="customer_name_invoice"></p>
-										<p id="customer_addOne_invoice"></p>
-										<p id="customer_addTwo_invoice"></p>
-										<p id="customer_city_invoice"></p>
-										<p id="customer_country_invoice"></p>
-									</div>
-								</div>
-								<div class="top_right">
-									<div class="title">INVOICE</div>
-									<div class="dual_box_heading">
-										<div class="box_with_heading">
-											<p>Invoice #</p>
-											<p id="invoice_id_invoice"></p>
-										</div>
-										<div class="box_with_heading">
-											<p>Date</p>
-											<p id="invoice_date_invoice"></p>
-										</div>
-									</div>
-									<div class="box_with_heading">
-										<p>Invoice Period</p>
-										<p id="invoice_date_period"></p>
-									</div>
-									<div class="box_with_heading">
-										<p>Invoice For</p>
-										<p id="invoice_for_invoice"></p>
-									</div>
-								</div>
-							</div>
-							<div id="bottom_section">
-								<div class="bottom_invoice">
-									<div class="description_invoice">
-										<div class="box_with_heading" style="width: 100%">
-											<p>Description</p>
-										</div>
-									</div>
-									<div class="qty_invoice">
-										<div class="box_with_heading" style="width: 100%">
-											<p>Qty</p>	
-										</div>
-									</div>
-									<div class="unit_price_invoice">
-										<div class="box_with_heading" style="width: 100%">
-											<p>Unit Price</p>		
-										</div>
-									</div>
-									<div class="amount_invoice">
-										<div class="box_with_heading" style="width: 100%">
-											<p>Amount</p>
-										</div>
-									</div>
-								</div>
-								<div class="bottom_invoice">
-									<div class="description_invoice" id="description_invoice_table"></div>
-									<div class="qty_invoice" id="qty_invoice_table"></div>
-									<div class="unit_price_invoice" id="unit_price_invoice_table"></div>
-									<div class="amount_invoice" id="amount_invoice_table"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- <div style="-webkit-print-color-adjust: exact" id="invoice_sheet_time">
-						<div class="inner">
-							<div id="invoice_timesheet_table">
-
-							</div>
-						</div>
-					</div> -->
-				</div>
-			</div>
-		</div>
-
-		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-		<script src="JS/jquery-3.6.0.min.js"></script>
-		<script src="JS/globalVariables.js"></script>
-		<script src="JS/nav.js"></script>
-		<script src="JS/fileIO.js"></script>
-		<!-- Settings -->
-		<script src="Settings/JS/domBlocks.js"></script>
-		<script src="Settings/JS/colourGenerator.js"></script>
-		<script src="Settings/JS/colourHandler.js"></script>
-		<!-- Projects -->		
-		<script src="Projects/JS/domBlocks.js"></script>
-		<script src="Projects/JS/template.js"></script>
-		<script src="Projects/JS/projectGenerator.js"></script>
-		<script src="Projects/JS/projectHandler.js"></script>
-		<script src="Projects/JS/tableGenerator.js"></script>
-		<script src="Projects/JS/tableHandler.js"></script>
-		<!-- Invoice -->
-		<script src="Invoice/JS/projectHandler.js"></script>
-		<script src="Invoice/JS/customerHandler.js"></script>
-		<script src="Invoice/JS/InvoiceHandler.js"></script>
-
-		<script src="JS/renderDOM.js"></script>
-		<script src="Projects/JS/app.js"></script>
-		<script>if (window.module) module = window.module;</script>
 	</body>
+
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="JS/jquery-3.6.0.min.js"></script>
+	<script src="JS/variableListener.js"></script>
+	<script src="JS/globalVariables.js"></script>
+	<script src="JS/nav.js"></script>
+	<script src="JS/generalFunctions.js"></script>
+	<script src="SETTINGS/userGen.js"></script>
+	<script src="SETTINGS/colourGen.js"></script>
+	<script src="PROJECTS/projectGen.js"></script>
+	<script>VL.init();</script>
+	<script>if (window.module) module = window.module;</script>
 </html>

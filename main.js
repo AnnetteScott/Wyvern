@@ -64,19 +64,14 @@ require('electron-reload')(__dirname);
 
 
 function manual_save(){
-    let masterJSONRead = JSON.parse(read_file());
-    projectMasterDict = masterJSONRead['projectMasterDict'];
-    colourMasterDict = masterJSONRead['colourMasterDict'];
-    userMasterDict = masterJSONRead['userMasterDict'];
-
-    let masterJSON = {projectMasterDict: projectMasterDict, colourMasterDict: colourMasterDict, userMasterDict: userMasterDict}
+    let masterDict = JSON.parse(read_file());
     dialog.showSaveDialog(mainWindow, {
         properties: ['saveFile'],
         filters: [{ name: 'json', extensions: ['json'] }]
     }).then(result => {
         let filepath = result.filePath;
         console.log(filepath);
-        fs.writeFileSync(filepath, JSON.stringify(masterJSON));
+        fs.writeFileSync(filepath, JSON.stringify(masterDict));
     }).catch(err => {
         console.log(err)
     });

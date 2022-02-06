@@ -20,7 +20,7 @@ function addNewColour(){
         //Add info to clients dict
         masterDict['colours'][colourID] = {'colourName': colourName,'colourRate': colourRate, 'colour': colour}
 
-        currentPage = "settings";
+        $('#colour_pop_up').removeClass('input_box_open');
     }
 
     

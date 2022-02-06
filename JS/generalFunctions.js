@@ -69,7 +69,12 @@ function addToDate(date, daysToAdd){
 	while(day > getMonthDays(month, year)){
 		day -= getMonthDays(month, year);
 		month++;
+        if(month > 12){
+            month -= 12;
+            year++;
+        }
 	}
+
 
     return day.toString() + "/" + month.toString() + "/" + year.toString()
 }

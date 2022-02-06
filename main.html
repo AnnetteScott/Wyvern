@@ -5,7 +5,7 @@
 		<link rel="stylesheet" href="CSS/root.css">
 		<link rel="stylesheet" href="CSS/nav.css">
 		<link rel="stylesheet" href="CSS/style.css">
-		<link rel="stylesheet" href="SETTINGS/CSS/settings.css">
+		<link rel="stylesheet" href="CSS/settings.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
@@ -29,30 +29,89 @@
 		</div>
 
 		<div id="PAGE_settings" class="page">
-			<button onclick="currentPage = 'client_editor'">Create New Client</button>
-			<button onclick="currentPage = 'project_editor'">Create New Project</button>
-			<button onclick="currentPage = 'colour_editor'">Create New Colour</button>
-		</div>
+			<div class="section">
+				<h1>Clients</h1>
+				<div class="row">
+					<button onclick="$('#client_pop_up').addClass('input_box_open');">Create New Client</button>
+					<div id="client_pop_up" class="input_box">
+						<div class="creation_form">
+							<label for="create_client">Client:</label>
+							<input id="create_client" type="text"></input>
+							<label for="create_client_name">Bill To Name:</label>
+							<input id="create_client_name" type="text"></input>
+							<label for="create_client_addOne">Address line 1</label>
+							<input id="create_client_addOne" type="text"></input>
+							<label for="create_client_addTwo">Address line 2</label>
+							<input id="create_client_addTwo" type="text"></input>
+							<label for="create_client_city">City/State</label>
+							<input id="create_client_city" type="text"></input>
+							<label for="create_client_country">Country:</label>
+							<input id="create_client_country" type="text"></input>
+							<button onclick="addNewClient()">Save Client</button>
+							<button onclick="$('#client_pop_up').removeClass('input_box_open');">Cancel</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="client_list" class="scrollable_list">
 
-		<div id="PAGE_client_editor" class="page hidden">
-			<div class="inner">
-				<div class="creation_form">
-					<label for="create_client">Client:</label>
-					<input id="create_client" type="text"></input>
-					<label for="create_client_name">Bill To Name:</label>
-					<input id="create_client_name" type="text"></input>
-					<label for="create_client_addOne">Address line 1</label>
-					<input id="create_client_addOne" type="text"></input>
-					<label for="create_client_addTwo">Address line 2</label>
-					<input id="create_client_addTwo" type="text"></input>
-					<label for="create_client_city">City/State</label>
-					<input id="create_client_city" type="text"></input>
-					<label for="create_client_country">Country:</label>
-					<input id="create_client_country" type="text"></input>
-					<button onclick="addNewClient()">Save Client</button>
+					</div>
+				</div>
+			</div>
+			<div class="section">
+				<h1>Projects</h1>
+				<div class="row">
+					<button onclick="$('#project_pop_up').addClass('input_box_open');">Create New Project</button>
+					<div id="project_pop_up" class="input_box">
+						<div class="creation_form">
+							<label for="client_project_selection">Choose A Client</label>
+							<select name="client_project_selection" id="client_project_selection">
+								<!-- generated content -->
+							</select>
+							<label for="create_project_name">Project name:</label>
+							<input id="create_project_name" type="text"></input>
+							<label for="create_project_date">Project start date:</label>
+							<input id="create_project_date" type="date"></input>
+							<label for="create_project_duration">Project duration:</label>
+							<input id="create_project_duration" type="number"></input>
+							<button onclick="addNewProject()">Save Project</button>
+							<button onclick="$('#project_pop_up').removeClass('input_box_open');">Cancel</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="project_list" class="scrollable_list">
+
+					</div>
+				</div>
+			</div>
+			<div class="section">
+				<h1>Colours</h1>
+				<div class="row">
+					<button onclick="$('#colour_pop_up').addClass('input_box_open');">Create New Colour</button>
+					<div id="colour_pop_up" class="input_box">
+						<div class="creation_form">
+							<label for="colour_creation_name">Colour Name:</label>
+							<input id="colour_creation_name" type="text"></input>
+							
+							<label for="colour_creation_rate">Colour Rate</label>
+							<input id="colour_creation_rate" type="number" step="0.01"></input>
+
+							<label for="colour_creation_colour">Colour:</label>
+							<input type="color" id="colour_creation_colour" name="head" value="#000000">
+							<button onclick="addNewColour()">Save Colour</button>
+							<button onclick="$('#colour_pop_up').removeClass('input_box_open');">Cancel</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="colour_list" class="scrollable_list">
+
+					</div>
 				</div>
 			</div>
 		</div>
+
 
 
 		<div id="PAGE_project_editor" class="page hidden">

@@ -1,6 +1,6 @@
 {
   "name": "wyvern",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A simple Wyvern App",
   "main": "main.js",
   "scripts": {
@@ -10,11 +10,12 @@
 "build": {
 	"appId": "Wyvern-app",
 	"win": {
-		"target": [
-		"nsis"
-	],
-	"icon": "Images/WyvernIcon.ico"
-	},
+		"target": "nsis",
+    "requestedExecutionLevel": "requireAdministrator"
+
+  },
+	"icon": "Images/WyvernIcon.ico",
+
 		"nsis": {
 		"installerIcon": "Images/WyvernIcon.ico",
 		"uninstallerIcon": "Images/WyvernIcon.ico",

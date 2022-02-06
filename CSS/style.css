@@ -70,3 +70,68 @@ button:hover {
     backdrop-filter: blur(5px);
     transition: 0.3s ease all;
 }
+
+
+
+
+
+#PAGE_settings {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100vw;
+    margin-top: var(--navbar_height);
+    padding: 20px;
+}
+#PAGE_settings .section {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    min-height: 300px;
+    max-height: 300px;
+    margin-top: 20px 0px;
+}
+#PAGE_settings h1 {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 22px;
+    border-bottom: 1px solid black;
+}
+#PAGE_settings .row {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+#PAGE_settings .scrollable_list {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    min-height: 100px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#PAGE_settings .input_box {
+    position: absolute;
+    inset: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    backdrop-filter: blur(5px);
+    transition: 0.2s ease all;
+    pointer-events: none;
+}
+#PAGE_settings .input_box_open {
+    opacity: 1;
+    pointer-events: all;
+}

@@ -48,6 +48,6 @@ function addNewProject(){
 
         $("#create_project_name").val('')
         $("#create_project_duration").val('')
-        currentPage = "settings";
+        $('#project_pop_up').removeClass('input_box_open');
     }
 }

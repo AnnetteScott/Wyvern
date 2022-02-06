@@ -35,7 +35,7 @@ function addNewClient(){
         $("#create_client_city").val('')
         $("#create_client_country").val('')
 
-        currentPage = "settings";
+        $('#client_pop_up').removeClass('input_box_open');
     }
  
 }

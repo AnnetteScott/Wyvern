@@ -30,8 +30,9 @@ function addNewColour(){
 		}
 		selectedColourID = '';
         $('#colour_pop_up').removeClass('input_box_open');
-		$("#colour_creation_rate").val('')
-        $("#create_client_name").val('#000000')
+		$("#colour_creation_name").val('');
+		$("#colour_creation_rate").val('');
+        $("#create_client_name").val('#000000');
     }
 }
 

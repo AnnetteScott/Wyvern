@@ -29,6 +29,7 @@ function updateAll(){
 	projectElementProjects.append(projectElem);
 
 
+
 	//place client options on project creation page
 	elem = ''
 	for (const [clientID, clientDict] of Object.entries(masterDict['clients'])) {

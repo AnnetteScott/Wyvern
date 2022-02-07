@@ -37,7 +37,7 @@ function addNewProject(){
 				let weekTwo = i + 1;
 				let weekTitle = i.toString() + " - " + weekTwo.toString();
 				
-				masterDict['projects'][projectID]['weeks'][weekTitle] = {'startDate': previousDate, 'colourCells': {}, 'totalColour': {}, 'totalCol': {}}
+				masterDict['projects'][projectID]['weeks'][weekTitle] = {'startDate': previousDate, 'colourCells': {}, 'totalColumnColour': {}, 'totalColumn': {}, 'totalColour$': {}}
 				previousDate = addToDate(previousDate, 14)
 			}
 			

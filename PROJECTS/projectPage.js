@@ -2,7 +2,7 @@ function loadProjectData(e){
     const projectID = $(e.target).attr('projectid');
     let projectDict = masterDict['projects'][projectID];
 
-    let elemRibbon = '<div class="color_button" onclick="" style="background-color: white;">White</div>';
+    let elemRibbon = `<div colourid="colourWhite" projectid="${projectID}" class="color_button" onclick="colourCell(event)" style="background-color: #ffffff;">White</div>`;
     if(projectDict['colourList'] != []){
         projectDict['colourList'].forEach(colourID => {
             let colour = masterDict['colours'][colourID]['colour']

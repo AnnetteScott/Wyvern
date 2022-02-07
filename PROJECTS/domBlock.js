@@ -5,11 +5,15 @@ let DOM_Blocks_projects = {
         +      '</div>';
 
     },
-    week_button: function (weekTitle){
-        return `<button onclick="" weekTitle="${weekTitle}" class="project_week_buttons">${weekTitle}</button>`
+    week_button: function (weekTitle, projectID){
+        return `<button onclick="timesheetGen(event)" weekTitle="${weekTitle}" projectid="${projectID}" class="project_week_buttons">${weekTitle}</button>`
     },
 
-    colour_ribbon: function (name, colour){
-        return `<div class="color_button" onclick="" style="background-color: ${colour};">${name}</div>`
+    colour_ribbon: function (name, colour, colourID){
+        return `<div colourid="${colourID}" class="color_button" onclick="" style="background-color: ${colour};">${name}</div>`
+    },
+    
+    timesheet_col: function (colID){
+        return `<div id="ts_col_${colID}" class="time_sheet_column"></div>`
     }
 }

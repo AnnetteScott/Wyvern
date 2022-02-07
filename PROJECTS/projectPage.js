@@ -1,12 +1,14 @@
 function loadProjectData(e){
-    let projectID = $(e.target).attr('projectid');
+    const projectID = $(e.target).attr('projectid');
     let projectDict = masterDict['projects'][projectID];
 
     let elemRibbon = '<div class="color_button" onclick="" style="background-color: white;">White</div>';
     if(projectDict['colourList'] != []){
         projectDict['colourList'].forEach(colourID => {
-        elemRibbon += DOM_Blocks_projects.colour_ribbon(masterDict['colours'][colourID]['colourName'], masterDict['colours'][colourID]['colour'])
-    });
+            let colour = masterDict['colours'][colourID]['colour']
+            let name = masterDict['colours'][colourID]['colourName']
+            elemRibbon += DOM_Blocks_projects.colour_ribbon(name, colour, colourID)
+        });
     }
     
     $('#colour_ribbon').empty();
@@ -14,7 +16,7 @@ function loadProjectData(e){
 
     let elemWeek = '';
     for (const [weekID, weekDict] of Object.entries(projectDict['weeks'])){
-        elemWeek += DOM_Blocks_projects.week_button(weekID)
+        elemWeek += DOM_Blocks_projects.week_button(weekID, projectID)
     }
 
     $('#weekly_buttons').empty();

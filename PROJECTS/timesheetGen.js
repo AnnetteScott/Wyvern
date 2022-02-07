@@ -16,11 +16,13 @@ function timesheetGen(e){
     $('#timesheet_container').append(colElem);
 
     //Generate First Column Text
-    let timeArr = [...timeList]
+    let timeArr = [...timeList];
+    let colourList = [];
     timeArr.unshift("Time|Date");
     if(masterDict['projects'][projectID]['colourList'] != []){
         masterDict['projects'][projectID]['colourList'].forEach(colourID => {
-            timeArr.push(masterDict['colours'][colourID]['colourName'])
+            timeArr.push(masterDict['colours'][colourID]['colourName']);
+            colourList.push(colourID);
         });
     }
     timeArr.push("Total Hours:");
@@ -29,23 +31,33 @@ function timesheetGen(e){
     timeArr.push("Timesheet Total $:");
     rowCount = timeArr.length;
 
+    //Generate Dates
+    let dateArr = [projWeek['startDate']]
+    for(let i = 1; i < 15; i++){
+        dateArr.push(addToDate(projWeek['startDate'], i));
+    }
+
+    let dateIndex = 0;
 	//Add Cells
 	$('.time_sheet_column').empty();	
     $('.time_sheet_column').each(function(col, obj) {
 		elem = "";
+        let colourIndex = 0;
 		for(let row = 0; row < rowCount; row++){
             const cellID = columnLetter[col] + row.toString();
             if(columnLetter[col] == "Z"){//First Col
                 elem += `<div class="timesheet_time"cellid="${cellID}">${timeArr[row]}</div>`;
             }
             else if(row == 0){//First Row
-                elem += `<div class="timesheet_date" cellid="${cellID}"></div>`;
+                elem += `<div class="timesheet_date" cellid="${cellID}">${dateArr[dateIndex]}</div>`;
+                dateIndex++;
             }
             else if(row <= timeList.length){//timeSheet Cells
                 elem += `<div class="timesheet_cells" cellid="${cellID}" projectid="${projectID}" weekid="${weekID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
             }
             else if(row >= timeList.length && row < rowCount - 4){//Colours
-                elem += `<div class="timesheet_colour_total"cellid="${cellID}"></div>`;
+                elem += `<div class="timesheet_colour_total" cellid="${cellID}" colourid="${colourList[colourIndex]}"></div>`;
+                colourIndex++;
             }
             else if(row == rowCount - 4){//Total Each Day
                 elem += `<div class="timesheet_day_total"cellid="${cellID}"></div>`;

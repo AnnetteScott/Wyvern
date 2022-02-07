@@ -28,7 +28,7 @@ function addNewProject(){
             while(masterDict['projects'].hasOwnProperty(projectID)){
                 projectID = generateID();
             }
-            masterDict['projects'][projectID] = {'projectName': projectName, 'projectStartDate': $("#create_project_date").val(), 'projectDuration': projectDuration};
+            masterDict['projects'][projectID] = {'projectName': projectName};
 
             masterDict['projects'][projectID]['colourList'] = [];
             masterDict['projects'][projectID]['weeks'] = {};

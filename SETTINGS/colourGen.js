@@ -45,3 +45,17 @@ function editColour(e){
 	$('#colour_pop_up').addClass('input_box_open');
 	selectedColourID = colourID;
 }
+
+function colourCheckBoxes(e){
+	let colourID = $(e.target).attr('colourid');
+	let projectID = $(e.target).attr('projectid');
+	if($(e.target).is(":checked")){
+		masterDict['projects'][projectID]['colourList'].push(colourID);
+
+	}else{
+		const index = masterDict['projects'][projectID]['colourList'].indexOf(colourID);
+		if (index > -1) {
+			masterDict['projects'][projectID]['colourList'].splice(colourID, 1);
+		}
+	}
+}

@@ -24,7 +24,6 @@ function updateAll(){
 	projectElement.append(elem);
 	//place client options on project creation page
 	elem = ''
-
 	for (const [clientID, clientDict] of Object.entries(masterDict['clients'])) {
 		elem += `<option value="${clientID}">${clientDict['client']}</option>`;
 	};
@@ -43,18 +42,21 @@ function updateAll(){
 	colourElement.append(elem);
 
 	//Checkboxes
-	elem = '';
-	let projectNameList = [];
-
-	for (const [projectID, projectDict] of Object.entries(masterDict['projects'])) {
-		projectNameList.push(projectDict['projectName']);
-	}
-
-	for (projectName in projectNameList) {
-		elem += DOM_Blocks_Settings.checkbox(projectNameList[projectName]);
-	}
 	$('.colour_card_checkbox_list').empty();
-	$('.colour_card_checkbox_list').append(elem);
+	let colourIDList = [];
+	for (const [colourID, colourDict] of Object.entries(masterDict['colours'])) {
+		colourIDList.push(colourID);
+	}
+	$('.colour_card_checkbox_list').each(function(i, obj) {
+		elem = "";
+		const colourID = colourIDList[i];
+		for (const [projectID, projectDict] of Object.entries(masterDict['projects'])) {
+			let checked = masterDict['projects'][projectID]['colourList'].includes(colourID);
+			elem += DOM_Blocks_Settings.checkbox(projectDict['projectName'], projectID, colourID, checked);
+		}
+		$(obj).append(elem)
+	});
+
 }
 
 

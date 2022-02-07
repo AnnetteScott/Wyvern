@@ -9,8 +9,8 @@ let DOM_Blocks_projects = {
         return `<button onclick="timesheetGen(event)" weekTitle="${weekTitle}" projectid="${projectID}" class="project_week_buttons">${weekTitle}</button>`
     },
 
-    colour_ribbon: function (name, colour, colourID){
-        return `<div colourid="${colourID}" class="color_button" onclick="" style="background-color: ${colour};">${name}</div>`
+    colour_ribbon: function (name, colour, colourID, projectID){
+        return `<div colourid="${colourID}" projectid="${projectID}" class="color_button" onclick="colourCell(event)" style="background-color: ${colour};">${name}</div>`
     },
     
     timesheet_col: function (colID){

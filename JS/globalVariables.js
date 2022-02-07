@@ -10,6 +10,8 @@ elements['navLinks'] = $('#nav_menu li');
 //Current state of App
 var currentPage = 'home';
 var currentPageTitle = 'wyvern';
+var cellIsClicked = false;
+var selectedCellsList = [];
 
 
 

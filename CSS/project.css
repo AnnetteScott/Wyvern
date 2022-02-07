@@ -152,5 +152,63 @@
     background-color: white;
     width: 100%;
     height: 25px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#timesheet_container #ts_col_Z{
+    width: 125px;
+    min-width: 125px;
+    left: 0px;
+    position: sticky;
+    margin-top: 25px;
+    z-index: 20;
+}
+#timesheet_container #ts_col_Z > div:nth-child(1){
+    position: fixed;
+    left: calc(20px + 150px + 5px);
+    top: calc(var(--navbar_height) + 20px + 10px);
+    width: 125px;
+    min-width: 125px;
+    z-index: 20;
+}
+
+#timesheet_container .timesheet_total{
+    width: calc(75px * 14);
+    min-width: calc(75px * 14);
     border: 1px solid black;
 }
+
+#timesheet_container .timesheet_week_total{
+    width: calc(75px * 7);
+    min-width: calc(75px * 7);
+    border: 1px solid black;
+}
+
+#timesheet_container .timesheet_day_total{
+    border: 1px solid black;
+}
+
+#timesheet_container .timesheet_colour_total{
+    border: 1px solid black;
+}
+
+#timesheet_container .timesheet_cells{
+    border-top: 1px dashed black;
+    border-bottom: 1px dashed black;
+}
+
+#timesheet_container .timesheet_date{
+    border-top: 1px dashed black;
+    border-bottom: 1px dashed black;
+    top: 0px;
+    position: sticky;
+    z-index: 1;
+}
+
+#timesheet_container .timesheet_time{
+    border-top: 1px dashed black;
+    border-bottom: 1px dashed black;
+    
+}
+

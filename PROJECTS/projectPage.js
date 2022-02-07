@@ -7,7 +7,7 @@ function loadProjectData(e){
         projectDict['colourList'].forEach(colourID => {
             let colour = masterDict['colours'][colourID]['colour']
             let name = masterDict['colours'][colourID]['colourName']
-            elemRibbon += DOM_Blocks_projects.colour_ribbon(name, colour, colourID)
+            elemRibbon += DOM_Blocks_projects.colour_ribbon(name, colour, colourID, projectID)
         });
     }
     

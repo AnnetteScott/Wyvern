@@ -1,7 +1,8 @@
 function timesheetGen(e){
     //Variables
-    const projectID = $(e.target).attr('projectid')
-    let projWeek = masterDict['projects'][projectID]['weeks'][$(e.target).attr('weekTitle')]
+    const projectID = $(e.target).attr('projectid');
+    const weekID = $(e.target).attr('weekTitle')
+    let projWeek = masterDict['projects'][projectID]['weeks'][weekID]
     let columnCount = columnLetter.length;
     let rowCount = 0;
 
@@ -33,8 +34,31 @@ function timesheetGen(e){
     $('.time_sheet_column').each(function(col, obj) {
 		elem = "";
 		for(let row = 0; row < rowCount; row++){
-			let cellID = columnLetter[col] + row.toString();
-			elem += `<div cellid="${cellID}"></div>`;
+            const cellID = columnLetter[col] + row.toString();
+            if(columnLetter[col] == "Z"){//First Col
+                elem += `<div class="timesheet_time"cellid="${cellID}">${timeArr[row]}</div>`;
+            }
+            else if(row == 0){//First Row
+                elem += `<div class="timesheet_date" cellid="${cellID}"></div>`;
+            }
+            else if(row <= timeList.length){//timeSheet Cells
+                elem += `<div class="timesheet_cells" cellid="${cellID}" projectid="${projectID}" weekid="${weekID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
+            }
+            else if(row >= timeList.length && row < rowCount - 4){//Colours
+                elem += `<div class="timesheet_colour_total"cellid="${cellID}"></div>`;
+            }
+            else if(row == rowCount - 4){//Total Each Day
+                elem += `<div class="timesheet_day_total"cellid="${cellID}"></div>`;
+            }
+            else if(row == rowCount - 3 && (columnLetter[col] == 'A' || columnLetter[col] == 'H')){//Total Each Week
+                elem += `<div class="timesheet_week_total" cellid="${cellID}"></div>`;
+            }
+            else if(row == rowCount - 2 && columnLetter[col] == 'A'){//Total TimeSheet hours
+                elem += `<div class="timesheet_total" cellid="${cellID}"></div>`;
+            }
+            else if(row == rowCount - 1 && columnLetter[col] == 'A'){//Total TimeSheet $
+                elem += `<div class="timesheet_total" cellid="${cellID}"></div>`;
+            }
 
 		}
 		$(obj).append(elem)
@@ -46,30 +70,57 @@ function timesheetGen(e){
 
 }
 
+let weekID = '';
 
+function cellClicked(e){
+    cellIsClicked = true;
+    const cellID = $(e.target).attr('cellid');
+    const projectID = $(e.target).attr('projectid');
+    weekID = $(e.target).attr('weekid');
+    cellSelect(e.target);
+    if(selectedCellsList != []){
+        selectedCellsList.forEach(cellIDR => {
+            let colouredCells = masterDict['projects'][projectID]['weeks'][weekID]['colourCells']
+            if(colouredCells.hasOwnProperty(cellIDR)){
+                cellDeSelect(cellIDR, colouredCells[cellIDR]);
+            } else {
+                cellDeSelect(cellIDR, "white");
+            }
+            
+        });
+    }
+    selectedCellsList = [cellID];
+}
 
-function timeGen(projectWeekObj){
-    let timeArr = [...timeList]
-    timeArr.unshift("Time|Date");
-    colourCount = 0;
-    Object.keys(colourMasterDict).forEach(name => {
-        if(colourMasterDict[name][1]['yes'].includes(currentChosenProject)){
-            timeArr.push(name);
-            colourCount++;
-            let colour = colourMasterDict[name][0];
-            projectWeekObj['colour_totals'][colour] = {"A": 0};
-            for(let i = 2; i < colLetter.length; i++){
-                let col = colLetter[i];
-                projectWeekObj['colour_totals'][colour][col] = 0;
-            }           
-        }    
+function cellHovered(e){
+    if(cellIsClicked){
+        const cellID = $(e.target).attr('cellid');
+        if(!selectedCellsList.includes(cellID)){
+            cellSelect(e.target);
+            selectedCellsList.push(cellID);
+        }   
+    }
+}
+
+function cellRelease(e){ 
+    cellIsClicked = false;
+}
+
+function cellSelect(element){
+    element.style.borderColor = "cyan";
+    element.style.background = "#D1D3D9";
+}
+
+function cellDeSelect(ID, colour){
+    $(`[cellid=${ID}]`).css({"background-color": colour,  "border-color": "black"});
+}
+
+function colourCell(e){
+    const colourID = $(e.target).attr('colourid');
+    const projectID = $(e.target).attr('projectid');
+    let weekObj = masterDict['projects'][projectID]['weeks'][weekID];
+    selectedCellsList.forEach(cellID => {
+        weekObj['colourCells'][cellID] = colourID;
+        $(`[cellid=${cellID}]`).css({"background-color": masterDict['colours'][colourID]['colour'], "border-color": "black"});
     });
-
-    timeArr.push("Total Hours:");
-    timeArr.push("Weekly Hours:");
-    timeArr.push("Timesheet Hours:");
-    timeArr.push("Timesheet Total $:");
-
-    return timeArr;
-
 }

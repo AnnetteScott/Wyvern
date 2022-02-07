@@ -47,6 +47,7 @@
     max-height: calc(((100vh - 40px - var(--navbar_height)) / 3) - 41px - 35px);
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-right: var(--scrollBar_padding);
 }
 
 #PAGE_settings .input_box {

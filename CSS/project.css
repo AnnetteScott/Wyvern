@@ -118,6 +118,7 @@
     flex-direction: column;
     height: 100%;
     width: 150px;
+    min-width: 150px;
     overflow-y: scroll;
     padding-right: var(--scrollBar_padding);
 }
@@ -166,7 +167,7 @@
 }
 #timesheet_container #ts_col_Z > div:nth-child(1){
     position: fixed;
-    left: calc(20px + 150px + 5px);
+    left: calc(20px + 150px + 25px);
     top: calc(var(--navbar_height) + 20px + 10px);
     width: 125px;
     min-width: 125px;

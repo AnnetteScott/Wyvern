@@ -82,7 +82,7 @@ function cellClicked(e){
         selectedCellsList.forEach(cellIDR => {
             let colouredCells = masterDict['projects'][projectID]['weeks'][weekID]['colourCells']
             if(colouredCells.hasOwnProperty(cellIDR)){
-                cellDeSelect(cellIDR, colouredCells[cellIDR]);
+                cellDeSelect(cellIDR, masterDict['colours'][colouredCells[cellIDR]]['colour']);
             } else {
                 cellDeSelect(cellIDR, "white");
             }

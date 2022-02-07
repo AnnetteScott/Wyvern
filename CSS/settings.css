@@ -59,6 +59,7 @@
     backdrop-filter: blur(5px);
     transition: 0.2s ease all;
     pointer-events: none;
+    z-index: 10;
 }
 #PAGE_settings .input_box_open {
     opacity: 1;
@@ -87,7 +88,6 @@
     border-radius: 5px;
     box-shadow: 0px 0px 9px -5px white inset, 0px 4px 16px -16px black;
     backdrop-filter: blur(7px);
-    z-index: -1;
 }
 .colour_card > * {
     position: relative;
@@ -95,4 +95,15 @@
     min-width: 18px;
     height: 18px;
     padding: 0px 5px;
+}
+
+.colour_card_checkbox_list{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.colour_card_checkbox_list input{
+    margin-top: 4px;
+    width: 30px;
 }

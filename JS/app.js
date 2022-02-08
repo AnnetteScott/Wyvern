@@ -6,11 +6,9 @@ ipcRenderer.on('save_Data', function (event) {
 ipcRenderer.on('read_Data', function (event) {
     read_Data();
 });
+ipcRenderer.on('PRINTtheTHING', function (event) {
+    PRINTtheTHING();
+});
 
 read_Data();
 
-/* 
-let intervalId = window.setInterval(function(){
-    save_Data();
-}, 300000);
- */

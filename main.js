@@ -50,6 +50,11 @@ const mainMenuTemplate =  [
                 click(){ manual_save() }
             },
             {
+                label: 'Print', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+P' : 'Ctrl+P',
+                click(){ mainWindow.webContents.print(); }
+            },
+            {
                 label: 'Exit', 
                 accelerator: process.platform === 'darwin' ? 'Ctrl+W' : 'Ctrl+W',
                 click(){ app.quit() }

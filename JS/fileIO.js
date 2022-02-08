@@ -1,3 +1,4 @@
+const { webContents } = require("electron");
 let fs = require("fs");
 read_file = function(path = "./DATA/user.json"){
     return fs.readFileSync(path, 'utf8');
@@ -12,4 +13,8 @@ function save_Data(){
 }
 function read_Data(){
     masterDict = JSON.parse(read_file());
+}
+
+function PRINTtheTHING(){
+    webContents.print();
 }

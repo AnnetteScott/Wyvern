@@ -98,7 +98,7 @@ function updateAll(){
 
 	//Add User
 	elem = '<label for="userSelection">Choose a user: </label>';
-    elem += '<select  name="clientSelection" id="userSelection">';
+    elem += '<select  name="userSelection" id="userSelection">';
 	for(const [userID, userDict] of Object.entries(masterDict['users'])){
 		elem += `<option userid="${userID}">${userDict['user']}</option>`;
 	}
@@ -113,7 +113,7 @@ function updateTimeSheetSelection(){
 	let elem = '<label for="timeSheetSelection">Choose A Week: </label>';
     elem += '<select id="timeSheetSelection">';
 	for(const [weekID] of Object.entries(masterDict['projects'][invoiceChosenProjectID]['weeks'])){
-		elem += `<option projectid="${invoiceChosenProjectID}">${weekID}</option>`;
+		elem += `<option projectid="${invoiceChosenProjectID}" weekid="${weekID}">${weekID}</option>`;
 	}
 	elem += '</select>';
 	

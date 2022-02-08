@@ -7,27 +7,24 @@
     "start": "electron .",
     "build-installer": "electron-builder"
   },
-"build": {
-	"appId": "Wyvern-app",
-	"win": {
-		"target": "nsis",
-    "requestedExecutionLevel": "requireAdministrator"
-
+  "build": {
+    "appId": "Wyvern-app",
+    "win": {
+      "target": "nsis",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "icon": "Images/WyvernIcon.ico",
+    "nsis": {
+      "installerIcon": "Images/WyvernIcon.ico",
+      "uninstallerIcon": "Images/WyvernIcon.ico",
+      "uninstallDisplayName": "Wyvern",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "extraFiles": [
+      "./DATA"
+    ]
   },
-	"icon": "Images/WyvernIcon.ico",
-
-		"nsis": {
-		"installerIcon": "Images/WyvernIcon.ico",
-		"uninstallerIcon": "Images/WyvernIcon.ico",
-		"uninstallDisplayName": "Wyvern",
-		"oneClick": false,
-		"allowToChangeInstallationDirectory": true
-	},
-	"extraFiles": [
-		"./DATA"
-	]
-},
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NotNatural21/Wyvern.git"
@@ -41,7 +38,7 @@
   "homepage": "https://github.com/NotNatural21/Wyvern#readme",
   "devDependencies": {
     "electron": "16.0.7",
-    "electron-builder": "^22.14.5"
+    "electron-builder": "^22.14.13"
   },
   "dependencies": {
     "electron-reload": "^2.0.0-alpha.1"

@@ -78,3 +78,5 @@ function addToDate(date, daysToAdd){
 
     return day.toString() + "/" + month.toString() + "/" + year.toString()
 }
+
+const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);

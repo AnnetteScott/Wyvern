@@ -27,6 +27,7 @@ function timesheetGen(e){
         });
     }
     timeArr.push("Total Hours:");
+    timeArr.push("Total $:");
     timeArr.push("Weekly Hours:");
     timeArr.push("Timesheet Hours:");
     timeArr.push("Timesheet Total $:");
@@ -56,12 +57,15 @@ function timesheetGen(e){
             else if(row <= timeList.length){//timeSheet Cells
                 elem += `<div class="timesheet_cells" cellid="${cellID}" projectid="${projectID}" weekid="${weekID}" onmousedown="cellClicked(event)" onmouseover="cellHovered(event)" onmouseup="cellRelease(event)"></div>`;
             }
-            else if(row >= timeList.length && row < rowCount - 4){//Colours
+            else if(row >= timeList.length && row < rowCount - 5){//Colours
                 elem += `<div class="timesheet_colour_total" cellid="${cellID}" colourid="${colourList[colourIndex]}">${projWeek['totalColumnColour'][(columnLetter[col])][(colourList[colourIndex])]}</div>`;
                 colourIndex++;
             }
-            else if(row == rowCount - 4){//Total Each Day
+            else if(row == rowCount - 5){//Total Each Day Hours
                 elem += `<div class="timesheet_day_total"cellid="${cellID}">${projWeek['totalColumn'][(columnLetter[col])]}</div>`;
+            }
+            else if(row == rowCount - 4){//Total Each Day Money
+                elem += `<div class="timesheet_money_total" cellid="${cellID}"></div>`;
             }
             else if(row == rowCount - 3 && (columnLetter[col] == 'A' || columnLetter[col] == 'H')){//Total Each Week
                 elem += `<div class="timesheet_week_total" cellid="${cellID}"></div>`;
@@ -78,33 +82,6 @@ function timesheetGen(e){
 	});
 	
     updateCellsTotals(projWeek, projectID);
-
-	let weekTotalOne = 0;
-	let weekTotalTwo = 0;
-	//Update total Hour Totals
-	$('.timesheet_day_total').each(function(index, obj) {
-		if($(obj).attr("cellid").charAt(0) < "H"){
-			weekTotalOne += projWeek['totalColumn'][$(obj).attr("cellid").charAt(0)];
-		}else{
-			weekTotalTwo += projWeek['totalColumn'][$(obj).attr("cellid").charAt(0)]
-		}
-	});
-
-	//Update Weekly
-	$('.timesheet_week_total').each(function(index, obj) {
-		if(index == 0){
-			$(obj).text(weekTotalOne);
-		}
-		else{
-			$(obj).text(weekTotalTwo);
-		}
-	});
-	//Update Time sheet hours
-	$('.timesheet_total').each(function(index, obj) {
-		if(index == 0){
-			$(obj).text(weekTotalOne + weekTotalTwo);
-		}
-	});
 }
 
 let weekID = '';
@@ -165,47 +142,14 @@ function colourCell(e){
             $(`[cellid=${cellID}]`).css({"background-color": masterDict['colours'][colourID]['colour'], "border-color": "black"});
         }
     });
+
     updateCellsTotals(weekObj, projectID)
-
-	//Update Colour Totals
-	$('.timesheet_colour_total').each(function(index, obj) {
-		$(obj).text(weekObj['totalColumnColour'][$(obj).attr("cellid").charAt(0)][$(obj).attr("colourid")]);
-	});
-	
-	let weekTotalOne = 0;
-	let weekTotalTwo = 0;
-	//Update total Hour Totals
-	$('.timesheet_day_total').each(function(index, obj) {
-		$(obj).text(weekObj['totalColumn'][$(obj).attr("cellid").charAt(0)]);
-		if($(obj).attr("cellid").charAt(0) < "H"){
-			weekTotalOne += weekObj['totalColumn'][$(obj).attr("cellid").charAt(0)];
-		}else{
-			weekTotalTwo += weekObj['totalColumn'][$(obj).attr("cellid").charAt(0)]
-		}
-	});
-
-	//Update Weekly
-	$('.timesheet_week_total').each(function(index, obj) {
-		if(index == 0){
-			$(obj).text(weekTotalOne);
-		}
-		else{
-			$(obj).text(weekTotalTwo);
-		}
-	});
-
-
-	//Update Time sheet hours
-	$('.timesheet_total').each(function(index, obj) {
-		if(index == 0){
-			$(obj).text(weekTotalOne + weekTotalTwo);
-		}
-	});
 }
 
 
 function updateCellsTotals(weekObj, projectID){
     weekObj['totalColumnColour'] = {};
+    weekObj['totalColour$'] = {};
     let colourList = masterDict['projects'][projectID]['colourList']
     for(let i = 1; i < columnLetter.length; i++){
         weekObj['totalColumnColour'][columnLetter[i]] = {}
@@ -217,9 +161,62 @@ function updateCellsTotals(weekObj, projectID){
     weekObj['totalColumn'] = {"A": 0, "B": 0, "C": 0, "D": 0, "E": 0, "F": 0, "G": 0, "H": 0, "I": 0, "J": 0, "K": 0, "L": 0, "M": 0, "N": 0}
 
    for(const [cellID, colourID] of Object.entries(weekObj['colourCells'])) {
-        weekObj['totalColumnColour'][cellID.charAt(0)][colourID] += 0.25;
-        weekObj['totalColumn'][cellID.charAt(0)] += 0.25;
-        $(`[cellid=${cellID}]`).css({"background-color": masterDict['colours'][colourID]['colour'], "border-color": "black"});
-		weekObj['totalColour$'][colourID] += (masterDict['colours'][colourID]['colourRate'] * 0.25)
+       if(colourList.includes(colourID)){
+            weekObj['totalColumnColour'][cellID.charAt(0)][colourID] += 0.25;
+            weekObj['totalColumn'][cellID.charAt(0)] += 0.25;
+            weekObj['totalColour$'][colourID] += (masterDict['colours'][colourID]['colourRate'] * 0.25)
+       }
+       $(`[cellid=${cellID}]`).css({"background-color": masterDict['colours'][colourID]['colour'], "border-color": "black"});
     }
+
+    //Update Colour Totals
+	$('.timesheet_colour_total').each(function(index, obj) {
+		$(obj).text(weekObj['totalColumnColour'][$(obj).attr("cellid").charAt(0)][$(obj).attr("colourid")] + " hrs");
+	});
+	
+    //Total Dayily Money
+    $('.timesheet_money_total').each(function(index, obj) {   
+        let total = 0;
+        for(const [colourID, hours] of Object.entries(weekObj['totalColumnColour'][$(obj).attr("cellid").charAt(0)])){
+            total += (masterDict['colours'][colourID]['colourRate'] * hours)
+        }
+		$(obj).text("$" + total);
+	});
+
+	let weekTotalOne = 0;
+	let weekTotalTwo = 0;
+	//Update total Hour Totals
+	$('.timesheet_day_total').each(function(index, obj) {
+		$(obj).text(weekObj['totalColumn'][$(obj).attr("cellid").charAt(0)] + " hrs");
+		if($(obj).attr("cellid").charAt(0) < "H"){
+			weekTotalOne += weekObj['totalColumn'][$(obj).attr("cellid").charAt(0)];
+		}else{
+			weekTotalTwo += weekObj['totalColumn'][$(obj).attr("cellid").charAt(0)]
+		}
+	});
+
+	//Update Weekly
+	$('.timesheet_week_total').each(function(index, obj) {
+		if(index == 0){
+			$(obj).text(weekTotalOne + " hrs");
+		}
+		else{
+			$(obj).text(weekTotalTwo + " hrs");
+		}
+	});
+
+    let totalMoney = 0;
+    for (const [colourID, money] of Object.entries(weekObj['totalColour$'])){
+        totalMoney += money;
+    }
+	//Update Time sheet hours
+	$('.timesheet_total').each(function(index, obj) {
+		if(index == 0){
+			$(obj).text(weekTotalOne + weekTotalTwo + " hrs");
+		}else{
+            $(obj).text("$" + totalMoney);
+        }
+	});
 }
+
+

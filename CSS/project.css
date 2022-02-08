@@ -180,6 +180,12 @@
     border: 1px solid black;
 }
 
+#timesheet_container .timesheet_week_money{
+    width: calc(75px * 7);
+    min-width: calc(75px * 7);
+    border: 1px solid black;
+}
+
 #timesheet_container .timesheet_week_total{
     width: calc(75px * 7);
     min-width: calc(75px * 7);

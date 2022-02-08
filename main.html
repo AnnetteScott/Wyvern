@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="CSS/style.css">
 		<link rel="stylesheet" href="CSS/settings.css">
 		<link rel="stylesheet" href="CSS/project.css">
+		<link rel="stylesheet" href="CSS/invoicePrint.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
@@ -113,7 +114,7 @@
 			</div>
 		</div>
 
-		<div id="PAGE_projects" class="page">
+		<div id="PAGE_projects" class="page hidden">
 			<div class="section">
 				<h1>Projects</h1>
 				<div class="row">
@@ -138,7 +139,141 @@
 
 		<div id="PAGE_budget" class="page hidden">
 		</div>
-		<div id="PAGE_invoice" class="page hidden">
+
+		<div id="PAGE_invoice" class="page">
+			<div class="inner">
+				<div class="invoice_controls">
+					<div id="project_selection_box">
+						<!-- generated content -->
+					</div>
+					<div id="week_selection_box">
+						<!-- generated content -->
+					</div>
+					<div id="customer_selection_box">
+						<!-- generated content -->
+					</div>
+					<div id="user_selection_box"> 
+						<!-- generated content -->
+					</div>
+					<button onclick="$('#user_pop_up').addClass('input_box_open');">Create New User</button>
+					<div id="user_pop_up" class="input_box">
+						<div class="creation_form">
+							<label for="create_user">Client:</label>
+							<input id="create_user" type="text"></input>
+							<label for="create_user_name">Bill To Name:</label>
+							<input id="create_user_name" type="text"></input>
+							<label for="create_user_addOne">Address line 1</label>
+							<input id="create_user_addOne" type="text"></input>
+							<label for="create_user_addTwo">Address line 2</label>
+							<input id="create_user_addTwo" type="text"></input>
+							<label for="create_user_city">City/State</label>
+							<input id="create_user_city" type="text"></input>
+							<label for="create_user_country">Country:</label>
+							<input id="create_user_country" type="text"></input>
+							<button onclick="addNewUser()">Save User</button>
+							<button onclick="$('#user_pop_up').removeClass('input_box_open');">Cancel</button>
+						</div>
+					</div>
+				</div>
+				<div class="inner">
+					<div class="creation_form">
+						<label for="invoice_date">Invoice Date:</label>
+						<input id="invoice_date" type="date"></input>
+
+						<label for="invoice_for">Invoice For:</label>
+						<input id="invoice_for" type="text"></input>
+						
+						<label for="invoice_ID">Invoice ID:</label>
+						<input id="invoice_ID" type="text"></input>
+					</div>
+				</div>
+				<button id="generate_invoice" onclick="generateInvoice()">Generate Invoice</button>
+			</div>
+		</div>
+
+		<div id="PAGE_print_invoice" class="page hidden">
+			<div class="inner" style="flex-direction: row;">
+				<button onclick="printInvoice()">Print Invoice</button>
+				<div id="PRINTtheTHING">
+					<div style="-webkit-print-color-adjust: exact" id="invoice_sheet">
+						<div class="inner">
+							<div class="top_section">
+								<div class="top_left">
+									<h2 id="user_name_invoice"></h2>
+									<p id="user_addOne_invoice"></p>
+									<p id="user_addTwo_invoice"></p>
+									<p id="user_city_invoice"></p>
+									<p id="user_country_invoice"></p>
+									<p id="user_contact_invoice"></p>
+									<div class="box_with_heading">
+										<p>Client ID</p>
+										<p id="customer_id_invoice"></p>
+									</div>
+									<div class="box_with_heading">
+										<p>Bill To</p>
+										<p id="customer_name_invoice"></p>
+										<p id="customer_addOne_invoice"></p>
+										<p id="customer_addTwo_invoice"></p>
+										<p id="customer_city_invoice"></p>
+										<p id="customer_country_invoice"></p>
+									</div>
+								</div>
+								<div class="top_right">
+									<div class="title">INVOICE</div>
+									<div class="dual_box_heading">
+										<div class="box_with_heading">
+											<p>Invoice #</p>
+											<p id="invoice_id_invoice"></p>
+										</div>
+										<div class="box_with_heading">
+											<p>Date</p>
+											<p id="invoice_date_invoice"></p>
+										</div>
+									</div>
+									<div class="box_with_heading">
+										<p>Invoice Period</p>
+										<p id="invoice_date_period"></p>
+									</div>
+									<div class="box_with_heading">
+										<p>Invoice For</p>
+										<p id="invoice_for_invoice"></p>
+									</div>
+								</div>
+							</div>
+							<div id="bottom_section">
+								<div class="bottom_invoice">
+									<div class="description_invoice">
+										<div class="box_with_heading" style="width: 100%">
+											<p>Description</p>
+										</div>
+									</div>
+									<div class="qty_invoice">
+										<div class="box_with_heading" style="width: 100%">
+											<p>Qty</p>	
+										</div>
+									</div>
+									<div class="unit_price_invoice">
+										<div class="box_with_heading" style="width: 100%">
+											<p>Unit Price</p>		
+										</div>
+									</div>
+									<div class="amount_invoice">
+										<div class="box_with_heading" style="width: 100%">
+											<p>Amount</p>
+										</div>
+									</div>
+								</div>
+								<div class="bottom_invoice">
+									<div class="description_invoice" id="description_invoice_table"></div>
+									<div class="qty_invoice" id="qty_invoice_table"></div>
+									<div class="unit_price_invoice" id="unit_price_invoice_table"></div>
+									<div class="amount_invoice" id="amount_invoice_table"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 
@@ -160,6 +295,7 @@
 	<script src="PROJECTS/projectPage.js"></script>
 	<script src="PROJECTS/timesheetGen.js"></script>
 	<script src="SETTINGS/updateAll.js"></script>
+	<script src="INVOICE/invoiceGen.js"></script>
 	<script>VL.init();</script>
 	<script>if (window.module) module = window.module;</script>
 </html>

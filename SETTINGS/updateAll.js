@@ -2,7 +2,6 @@ VL.add('masterDict', function(){
 	updateAll();
 });
 
-
 function updateAll(){
 	//Client Updater
 	let clientElement = $("#client_list");
@@ -27,8 +26,6 @@ function updateAll(){
 	projectElementProjects.empty();
 	projectElement.append(elem);
 	projectElementProjects.append(projectElem);
-
-
 
 	//place client options on project creation page
 	elem = ''
@@ -65,7 +62,33 @@ function updateAll(){
 		$(obj).append(elem)
 	});
 
+
+	//Update Invoice page selection boxes
+	elem = '<label for="projectSelection">Choose a Project: </label>';
+    elem += '<select onchange="updateTimeSheetSelection()" name="projectSelection" id="projectSelection">';
+	for(const [projctID, projctDict] of Object.entries(masterDict['projects'])){
+		elem += `<option projectid="${projctID}">${projctDict['projectName']}</option>`;
+	}
+	elem += '</select>';
+	$("#project_selection_box").empty();
+	$("#project_selection_box").append(elem);
+	invoiceChosenProjectID = $("#projectSelection option:selected").attr('projectid');
+	updateTimeSheetSelection()
 }
 
+
+function updateTimeSheetSelection(){
+	invoiceChosenProjectID = $("#projectSelection option:selected").attr('projectid');
+	let elem = '<label for="timeSheetSelection">Choose A Week: </label>';
+    elem += '<select id="timeSheetSelection">';
+	for(const [weekID] of Object.entries(masterDict['projects'][invoiceChosenProjectID]['weeks'])){
+		elem += `<option projectid="${invoiceChosenProjectID}">${weekID}</option>`;
+	}
+	elem += '</select>';
+	
+	$("#week_selection_box").empty();
+	$("#week_selection_box").append(elem);
+
+}
 
 updateAll();

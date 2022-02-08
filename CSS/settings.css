@@ -50,7 +50,7 @@
     padding-right: var(--scrollBar_padding);
 }
 
-#PAGE_settings .input_box {
+.input_box {
     position: absolute;
     inset: 0px;
     display: flex;
@@ -62,12 +62,12 @@
     pointer-events: none;
     z-index: 10;
 }
-#PAGE_settings .input_box_open {
+.input_box_open {
     opacity: 1;
     pointer-events: all;
 }
 
-#PAGE_settings .input_box_open button{
+.input_box_open button{
     width: 110px;
 }
 

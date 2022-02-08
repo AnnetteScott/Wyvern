@@ -1,4 +1,4 @@
-var masterDict = {"projects": {}, "clients": {}, "colours": {}}
+var masterDict = {"projects": {}, "clients": {}, "colours": {}, "users": {}}
 
 //Elements
 var elements = {};
@@ -12,6 +12,7 @@ var currentPage = 'home';
 var currentPageTitle = 'wyvern';
 var cellIsClicked = false;
 var selectedCellsList = [];
+var invoiceChosenProjectID = '';
 
 
 

@@ -30,7 +30,36 @@
 			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
 		</div>
 
-		<div id="PAGE_settings" class="page hidden">
+		<div id="PAGE_settings" class="page">
+			<div class="section">
+				<h1>Users</h1>
+				<div class="row">
+					<button onclick="$('#user_pop_up').addClass('input_box_open');">Create New User</button>
+					<div id="user_pop_up" class="input_box">
+						<div class="creation_form">
+							<label for="create_user">User:</label>
+							<input id="create_user" type="text"></input>
+							<label for="create_user_name">Name:</label>
+							<input id="create_user_name" type="text"></input>
+							<label for="create_user_addOne">Address line 1</label>
+							<input id="create_user_addOne" type="text"></input>
+							<label for="create_user_addTwo">Address line 2</label>
+							<input id="create_user_addTwo" type="text"></input>
+							<label for="create_user_city">City/State</label>
+							<input id="create_user_city" type="text"></input>
+							<label for="create_user_country">Country:</label>
+							<input id="create_user_country" type="text"></input>
+							<button onclick="addNewUser()">Save User</button>
+							<button onclick="$('#user_pop_up').removeClass('input_box_open');">Cancel</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="user_list" class="scrollable_list">
+
+					</div>
+				</div>
+			</div>
 			<div class="section">
 				<h1>Clients</h1>
 				<div class="row">
@@ -140,7 +169,7 @@
 		<div id="PAGE_budget" class="page hidden">
 		</div>
 
-		<div id="PAGE_invoice" class="page">
+		<div id="PAGE_invoice" class="page hidden">
 			<div class="inner">
 				<div class="invoice_controls">
 					<div id="project_selection_box">
@@ -149,30 +178,11 @@
 					<div id="week_selection_box">
 						<!-- generated content -->
 					</div>
-					<div id="customer_selection_box">
+					<div id="client_selection_box">
 						<!-- generated content -->
 					</div>
 					<div id="user_selection_box"> 
 						<!-- generated content -->
-					</div>
-					<button onclick="$('#user_pop_up').addClass('input_box_open');">Create New User</button>
-					<div id="user_pop_up" class="input_box">
-						<div class="creation_form">
-							<label for="create_user">Client:</label>
-							<input id="create_user" type="text"></input>
-							<label for="create_user_name">Bill To Name:</label>
-							<input id="create_user_name" type="text"></input>
-							<label for="create_user_addOne">Address line 1</label>
-							<input id="create_user_addOne" type="text"></input>
-							<label for="create_user_addTwo">Address line 2</label>
-							<input id="create_user_addTwo" type="text"></input>
-							<label for="create_user_city">City/State</label>
-							<input id="create_user_city" type="text"></input>
-							<label for="create_user_country">Country:</label>
-							<input id="create_user_country" type="text"></input>
-							<button onclick="addNewUser()">Save User</button>
-							<button onclick="$('#user_pop_up').removeClass('input_box_open');">Cancel</button>
-						</div>
 					</div>
 				</div>
 				<div class="inner">
@@ -288,7 +298,9 @@
 	<script src="JS/nav.js"></script>
 	<script src="JS/generalFunctions.js"></script>
 	<script src="SETTINGS/clientGen.js"></script>
+	<script src="SETTINGS/checkLists.js"></script>
 	<script src="SETTINGS/colourGen.js"></script>
+	<script src="SETTINGS/userGen.js"></script>
 	<script src="PROJECTS/projectGen.js"></script>
 	<script src="SETTINGS/domBlock.js"></script>
 	<script src="PROJECTS/domBlock.js"></script>

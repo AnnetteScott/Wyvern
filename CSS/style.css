@@ -29,8 +29,8 @@ input {
     width: 200px;
     margin-bottom: 15px;
     padding: 2px;
-    font-family: inherit;
-    font-size: inherit;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 15px;
     background-color: transparent;
     border: 1px solid white;
     border-bottom: 3px solid white;

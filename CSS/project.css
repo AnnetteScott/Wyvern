@@ -23,6 +23,7 @@
     margin-bottom: 10px;
     font-family: 'Segoe UI', sans-serif;
     font-size: 22px;
+    font-weight: 500;
     border-bottom: 1px solid black;
 }
 #PAGE_projects .row {
@@ -57,6 +58,7 @@
     max-height: 60px;
     margin: 8px 0px;
     padding: 0px 12px;
+    font-family: 'Segoe UI', sans-serif;
     background-color: #FFFFFF23;
     border-radius: 5px;
     box-shadow: 0px 0px 9px -5px white inset, 0px 4px 16px -16px black;
@@ -70,6 +72,9 @@
     padding: 0px 5px;
     font-size: 30px;
     pointer-events: none;
+}
+.project_item > p {
+    transform: translateY(-6px);
 }
 
 #PAGE_project_page{

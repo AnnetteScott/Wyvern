@@ -3,9 +3,18 @@ VL.add('masterDict', function(){
 });
 
 function updateAll(){
+	//User updater
+	let elem = '';
+	for(const [userID, userDict] of Object.entries(masterDict['users'])){
+		elem += DOM_Blocks_Settings.user_card(userID, userDict['user']);
+	}
+	$("#user_list").empty();
+	$("#user_list").append(elem);
+
+
 	//Client Updater
 	let clientElement = $("#client_list");
-	let elem = '';
+	elem = '';
 	for (const [clientID, clientDict] of Object.entries(masterDict['clients'])) {
 		elem += DOM_Blocks_Settings.client_card(clientDict['client'], clientID);
 	}
@@ -36,7 +45,6 @@ function updateAll(){
 	$("#client_project_selection").append(elem);
 
 
-
 	//Colour Updater
 	let colourElement = $("#colour_list");
 	elem = '';
@@ -45,8 +53,11 @@ function updateAll(){
 	}
 	colourElement.empty();
 	colourElement.append(elem);
+	$('.colour_card').each(function(i, obj){
+		$(obj).css({'z-index': ($('.colour_card').length - i)});
+	});
 
-	//Checkboxes
+	//Colour Checkboxes
 	$('.colour_card_checkbox_list').empty();
 	let colourIDList = [];
 	for (const [colourID, colourDict] of Object.entries(masterDict['colours'])) {
@@ -57,9 +68,9 @@ function updateAll(){
 		const colourID = colourIDList[i];
 		for (const [projectID, projectDict] of Object.entries(masterDict['projects'])) {
 			let checked = masterDict['projects'][projectID]['colourList'].includes(colourID);
-			elem += DOM_Blocks_Settings.checkbox(projectDict['projectName'], projectID, colourID, checked);
+			elem += DOM_Blocks_Settings.checklist_item(projectDict['projectName'], projectID, colourID, checked);
 		}
-		$(obj).append(elem)
+		$(obj).append(DOM_Blocks_Settings.checklist(elem))
 	});
 
 
@@ -74,6 +85,26 @@ function updateAll(){
 	$("#project_selection_box").append(elem);
 	invoiceChosenProjectID = $("#projectSelection option:selected").attr('projectid');
 	updateTimeSheetSelection()
+
+	//Add Clients
+	elem = '<label for="clientSelection">Choose a Client: </label>';
+    elem += '<select  name="clientSelection" id="clientSelection">';
+	for(const [clientID, clientDict] of Object.entries(masterDict['clients'])){
+		elem += `<option clientid="${clientID}">${clientDict['clientName']}</option>`;
+	}
+	elem += '</select>';
+	$("#client_selection_box").empty();
+	$("#client_selection_box").append(elem);
+
+	//Add User
+	elem = '<label for="userSelection">Choose a user: </label>';
+    elem += '<select  name="clientSelection" id="userSelection">';
+	for(const [userID, userDict] of Object.entries(masterDict['users'])){
+		elem += `<option userid="${userID}">${userDict['user']}</option>`;
+	}
+	elem += '</select>';
+	$("#user_selection_box").empty();
+	$("#user_selection_box").append(elem);
 }
 
 

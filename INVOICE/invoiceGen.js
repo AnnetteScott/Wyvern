@@ -28,6 +28,7 @@ function generateInvoice(){
 	let clientDict = masterDict['clients'][$("#clientSelection option:selected").attr('clientid')];
 	let userDict = masterDict['users'][($("#userSelection option:selected").attr('userid'))];
 	let projWeek = masterDict['projects'][invoiceChosenProjectID]['weeks'][$("#timeSheetSelection option:selected").attr('weekid')]
+	let projDict = masterDict['projects'][invoiceChosenProjectID];
 
 	//User
 	$('#user_name_invoice').text(userDict['userName']);
@@ -47,4 +48,45 @@ function generateInvoice(){
 	$('#client_country_invoice').text(clientDict['clientCountry']);
 
 	printInvoice();
+	invoiceBottomTable(projDict, projWeek);
 } 
+
+function invoiceBottomTable(projDict, weekObj){
+	//Generate Columns
+	let colElem = '';
+	for(let i = 1; i < 6; i++){
+        let colID = columnLetter[i]
+        colElem += DOM_Blocks_invoice.invoice_col(colID);
+    }
+	$('#bottom_section').empty();
+    $('#bottom_section').append(colElem);
+
+	//Add Cells
+	$('.invoice_sheet_column').empty();	 
+    $('.invoice_sheet_column').each(function(col, obj) {
+		let elem = "";
+		for(let i = 0; i < (projDict['colourList']).length; i++){
+			const cellID = columnLetter[col] + i.toString();
+			let colourName = masterDict['colours'][(projDict['colourList'][i])]['colourName'];
+			let colourRate = masterDict['colours'][(projDict['colourList'][i])]['colourRate'];
+			let colourQTY = weekObj['totalColour$'][(projDict['colourList'][i])];
+			colourQTY = colourQTY / colourRate;
+			let colourTotal = weekObj['totalColour$'][(projDict['colourList'][i])];
+			if(col == 0){
+				elem += `<div class="descpt_cell" cellid="${cellID}">${colourName}</div>`;
+			}
+			else if(col == 1){
+				elem += `<div class="qty_cell" cellid="${cellID}">${colourQTY}</div>`;
+			}
+			else if(col == 2){
+				elem += `<div class="unit_cell" cellid="${cellID}">${colourRate}</div>`;
+			}
+			else if(col == 3){
+				elem += `<div class="total_cell" cellid="${cellID}">${colourTotal}</div>`;
+			}
+		}
+		$(obj).append(elem)
+	});
+
+
+}

@@ -47,8 +47,8 @@ function addNewProject(){
             let weekTwo = i + 1;
             let weekTitle = i.toString() + " - " + weekTwo.toString();
             
-            masterDict['projects'][projectID]['weeks'][weekTitle] = {'startDate': previousDate, 'colourCells': {}, 'totalColumnColour': {}, 'totalColumn': {}, 'totalColour$': {}}
-            previousDate = addToDate(previousDate, 14)
+            masterDict['projects'][projectID]['weeks'][weekTitle] = {'startDate': previousDate, 'colourCells': {}, 'totalColumnColour': {}, 'totalColumn': {}, 'totalColour$': {}};
+            previousDate = addToDate(previousDate, 14);
         }
         
     }else{ //If this function was called on editing an existing project.
@@ -58,17 +58,17 @@ function addNewProject(){
             if (indexProj > -1) {
                 previousClientID = clientID;
             }
-        };
+        }
         masterDict['projects'][selectedProjectID]['projectName'] = projectName;
         const index = masterDict['clients'][previousClientID]['projects'].indexOf(selectedProjectID);
         masterDict['clients'][previousClientID]['projects'].splice(index, 1);
-        projectID = selectedProjectID
+        projectID = selectedProjectID;
     }
 
     //Create/Update the project in the masterDict.
     masterDict['clients'][ClientID]['projects'].push(projectID);
-    $("#create_project_name").val('')
-    $("#create_project_duration").val('')
+    $("#create_project_name").val('');
+    $("#create_project_duration").val('');
     $('#project_pop_up').removeClass('input_box_open');
     selectedID = ''; //Deselect any selected project.
     return true;
@@ -78,8 +78,8 @@ function editProject(e){
 	let projectID = $(e.target).attr('projectid');
     let projectDict = masterDict['projects'][projectID];
     $("#create_project_name").val(projectDict['projectName']);
-	$("#create_project_date").css({"filter": "blur(2px)", "pointer-events": "none"})
-	$("#create_project_duration").css({"filter": "blur(2px)", "pointer-events": "none"})
+	$("#create_project_date").css({"filter": "blur(2px)", "pointer-events": "none"});
+	$("#create_project_duration").css({"filter": "blur(2px)", "pointer-events": "none"});
 
 	$('#project_pop_up').addClass('input_box_open');
 	selectedProjectID = projectID;

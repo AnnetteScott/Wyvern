@@ -19,44 +19,15 @@ function generateID() {
     return result;
 }
 
+//Returs the number of days for a given month indexed with 1.
 function getMonthDays(month, year){
-    if( month == 1){ //Jan
-        return 31
-    } else if(month == 2){ // Feb
-        if(leapYear(year)){
-            return 29
-        } else {
-            return 28
-        }
-    } else if(month == 3){ // Mar
-        return 31
-    } else if(month == 4){ // Apr
-        return 30
-    } else if(month == 5){ // May
-        return 31
-    } else if(month == 6){ // Jun
-        return 30
-    } else if(month == 7){ // Jul
-        return 31
-    } else if(month == 8){ // Aug
-        return 31
-    } else if(month == 9){ // Sep
-        return 30
-    } else if(month == 10){ // Oct
-        return 31
-    } else if(month == 11){ // Nov
-        return 30
-    } else if(month == 12){ // Dec
-        return 31
-    } else {
-        return 30
-    }
-
+    let days_per_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return leapYear(year) && month == 2 ? 29 : days_per_month[month - 1];
 }
 
-function leapYear(year)
-{
-  return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+//Check if the current year is a leap year. Returns boolean.
+function leapYear(year){
+    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
 }
 
 function addToDate(date, daysToAdd){
@@ -75,8 +46,5 @@ function addToDate(date, daysToAdd){
         }
 	}
 
-
     return day.toString() + "/" + month.toString() + "/" + year.toString()
 }
-
-const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);

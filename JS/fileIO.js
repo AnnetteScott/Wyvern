@@ -1,10 +1,16 @@
 const { webContents } = require("electron");
 let fs = require("fs");
-read_file = function(path = "./DATA/user.json"){
+
+
+//Read a file from a given location.
+function read_file(path = "./DATA/user.json"){
     return fs.readFileSync(path, 'utf8');
 }
 
-write_file = function(data, path = "./DATA/user.json"){
+//Writes a file to a given location.
+//If the file is inside a folder, that folder must already exist.
+//If the file doesn't exist, creates a new one with the given name. If it does, replaces the file's contents.
+function write_file(data, path = "./DATA/user.json"){
     fs.writeFileSync(path, data);
 }
 

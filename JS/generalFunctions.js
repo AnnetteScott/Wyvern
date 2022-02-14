@@ -19,7 +19,7 @@ function generateID() {
     return result;
 }
 
-//Returs the number of days for a given month indexed with 1.
+//Gets the number of days for a given month indexed with 1. Returns number.
 function getMonthDays(month, year){
     let days_per_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     return leapYear(year) && month == 2 ? 29 : days_per_month[month - 1];

@@ -47,8 +47,8 @@ function generateInvoice(){
 	$('#client_city_invoice').text(clientDict['clientCity']);
 	$('#client_country_invoice').text(clientDict['clientCountry']);
 
-	printInvoice();
 	invoiceBottomTable(projDict, projWeek);
+	printInvoice();
 } 
 
 function invoiceBottomTable(projDict, weekObj){

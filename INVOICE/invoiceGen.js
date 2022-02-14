@@ -1,5 +1,5 @@
 function printInvoice(id = 'PRINTtheTHING'){
-    let html = "";
+    let html = "<title>Print Preview</title><link rel='shortcut icon' href='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE5IDhINWMtMS42NiAwLTMgMS4zNC0zIDN2Nmg0djRoMTJ2LTRoNHYtNmMwLTEuNjYtMS4zNC0zLTMtM3ptLTMgMTFIOHYtNWg4djV6bTMtN2MtLjU1IDAtMS0uNDUtMS0xcy40NS0xIDEtMSAxIC40NSAxIDEtLjQ1IDEtMSAxem0tMS05SDZ2NGgxMlYzeiIvPjwvc3ZnPg=='>";
   
     $('link').each(function() { // find all <link tags that have
       if ($(this).attr('rel').indexOf('stylesheet') !=-1) { // rel="stylesheet"
@@ -62,7 +62,23 @@ function invoiceBottomTable(projDict, weekObj){
     $('#bottom_section').append(colElem);
 
 	//Add Cells
-	$('.invoice_sheet_column').empty();	 
+	$('.invoice_sheet_column').empty();
+    $('.invoice_sheet_column').each(function(col, obj) {
+		let elem = "";
+		if(col == 0){
+			elem += `<div class="cell heading">Description</div>`;
+		}
+		else if(col == 1){
+			elem += `<div class="cell heading">Rate</div>`;
+		}
+		else if(col == 2){
+			elem += `<div class="cell heading">Quantity</div>`;
+		}
+		else if(col == 3){
+			elem += `<div class="cell heading">Total</div>`;
+		}
+		$(obj).append(elem)
+	});
     $('.invoice_sheet_column').each(function(col, obj) {
 		let elem = "";
 		for(let i = 0; i < (projDict['colourList']).length; i++){
@@ -73,16 +89,16 @@ function invoiceBottomTable(projDict, weekObj){
 			colourQTY = colourQTY / colourRate;
 			let colourTotal = weekObj['totalColour$'][(projDict['colourList'][i])];
 			if(col == 0){
-				elem += `<div class="descpt_cell" cellid="${cellID}">${colourName}</div>`;
+				elem += `<div class="cell" cellid="${cellID}">${colourName}</div>`;
 			}
 			else if(col == 1){
-				elem += `<div class="qty_cell" cellid="${cellID}">${colourQTY}</div>`;
+				elem += `<div class="cell" cellid="${cellID}">${colourRate}</div>`;
 			}
 			else if(col == 2){
-				elem += `<div class="unit_cell" cellid="${cellID}">${colourRate}</div>`;
+				elem += `<div class="cell" cellid="${cellID}">${colourQTY}</div>`;
 			}
 			else if(col == 3){
-				elem += `<div class="total_cell" cellid="${cellID}">${colourTotal}</div>`;
+				elem += `<div class="cell" cellid="${cellID}">${colourTotal}</div>`;
 			}
 		}
 		$(obj).append(elem)

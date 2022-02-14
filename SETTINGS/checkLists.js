@@ -1,7 +1,5 @@
+//Toggles open/closed the dropdown of a specified checklist.
+//Called from the click listener of a checklist element.
 function toggleChecklist(e){
-	if($(e.target).parent().hasClass('visible')){
-		$(e.target).parent().removeClass('visible');
-	}else{
-		$(e.target).parent().addClass('visible');
-	}
+	$(e.target).parent().toggleClass('visible');
 }

@@ -2,6 +2,7 @@
 //Is called from the Projects selection page when a project item is selected.
 function loadProjectData(e){
     const projectID = $(e.target).attr('projectid');
+    currentProjectID = projectID;
     let projectDict = masterDict['projects'][projectID];
 
     //Create the colour ribbon.

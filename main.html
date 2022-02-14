@@ -143,7 +143,7 @@
 			</div>
 		</div>
 
-		<div id="PAGE_projects" class="page hidden">
+		<div id="PAGE_projects" class="page">
 			<div class="section">
 				<h1>Projects</h1>
 				<div class="row">
@@ -157,8 +157,10 @@
 		<div id="PAGE_project_page" class="page hidden">
 			<div id="colour_ribbon"></div>
 			<div class="inner_project">
-				<div id="weekly_buttons">
-
+				<div id="timesheet_controls">
+					<button id="timesheet_clock_in" onclick="clockIn()">Clock In</button>
+					<button id="timesheet_clock_out" onclick="clockOut()">Clock Out</button>
+					<div id="weekly_buttons"></div>
 				</div>
 				<div id="timesheet_container">
 
@@ -279,6 +281,7 @@
 	<script src="PROJECTS/domBlock.js"></script>
 	<script src="PROJECTS/projectPage.js"></script>
 	<script src="PROJECTS/timesheetGen.js"></script>
+	<script src="PROJECTS/timesheetFunc.js"></script>
 	<script src="SETTINGS/updateAll.js"></script>
 	<script src="INVOICE/domBlocks.js"></script>
 	<script src="INVOICE/invoiceGen.js"></script>

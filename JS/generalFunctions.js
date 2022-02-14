@@ -48,3 +48,10 @@ function addToDate(date, daysToAdd){
 
     return day.toString() + "/" + month.toString() + "/" + year.toString()
 }
+
+function mericaDate(date){
+    let day = parseInt(date.split("/")[0]);
+    let month = parseInt(date.split("/")[1]);
+    let year = parseInt(date.split("/")[2]);
+    return month + "/" + day + "/" + year
+}

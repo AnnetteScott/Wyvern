@@ -118,6 +118,24 @@
     padding: 10px 20px 40px;
 }
 
+#timesheet_controls{
+    display: flex;
+    flex-direction: column;
+}
+
+#timesheet_clock_in{
+    background: linear-gradient(45deg, #043b02, #15c206);
+}
+
+#timesheet_clock_out{
+    background: linear-gradient(45deg, #580303, #c20606);
+}
+
+#timesheet_clock_in:hover,
+#timesheet_clock_out:hover{
+   background: linear-gradient(45deg, #9a05f0, #9b0662);
+}
+
 #weekly_buttons{
     display: flex;
     flex-direction: column;

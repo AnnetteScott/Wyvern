@@ -1,7 +1,15 @@
-function timesheetGen(e){
+function timesheetGen(e, chosenID = '', chosenWeek = ''){
     //Variables
-    const projectID = $(e.target).attr('projectid');
-    const weekID = $(e.target).attr('weekTitle')
+    let projectID;
+    let weekID;
+    if(chosenID == ''){
+        projectID = $(e.target).attr('projectid');
+        weekID = $(e.target).attr('weekTitle');
+    }else{
+        projectID = chosenID;
+        weekID = chosenWeek;
+    }
+    
     const projWeek = masterDict['projects'][projectID]['weeks'][weekID]
     let columnCount = columnLetter.length;
     let rowCount = 0;
@@ -102,7 +110,7 @@ function cellClicked(e){
             if(colouredCells.hasOwnProperty(cellIDR)){
                 cellDeSelect(cellIDR, masterDict['colours'][colouredCells[cellIDR]]['colour']);
             } else {
-                cellDeSelect(cellIDR, "white");
+                cellDeSelect(cellIDR, "white"); 
             }
             
         });
@@ -122,7 +130,7 @@ function cellHovered(e){
 
 function cellRelease(e){ 
     cellIsClicked = false;
-}
+} 
 
 function cellSelect(element){
     element.style.borderColor = "cyan";
@@ -147,6 +155,7 @@ function colourCell(e){
         }
     });
 
+    selectedCellsList = [];  
     updateCellsTotals(weekObj, projectID)
 }
 

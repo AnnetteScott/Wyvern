@@ -13,6 +13,7 @@ var currentPageTitle = 'wyvern';
 var cellIsClicked = false;
 var selectedCellsList = [];
 var invoiceChosenProjectID = '';
+var currentProjectID = '';
 
 
 

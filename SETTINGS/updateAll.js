@@ -109,17 +109,18 @@ function updateAll(){
 
 
 function updateTimeSheetSelection(){
-	invoiceChosenProjectID = $("#projectSelection option:selected").attr('projectid');
-	let elem = '<label for="timeSheetSelection">Choose A Week: </label>';
-    elem += '<select id="timeSheetSelection">';
-	for(const [weekID] of Object.entries(masterDict['projects'][invoiceChosenProjectID]['weeks'])){
-		elem += `<option projectid="${invoiceChosenProjectID}" weekid="${weekID}">${weekID}</option>`;
+	if(Object.keys(masterDict['projects']).length != 0){
+		invoiceChosenProjectID = $("#projectSelection option:selected").attr('projectid');
+		let elem = '<label for="timeSheetSelection">Choose A Week: </label>';
+    	elem += '<select id="timeSheetSelection">';
+		for(const [weekID] of Object.entries(masterDict['projects'][invoiceChosenProjectID]['weeks'])){
+			elem += `<option projectid="${invoiceChosenProjectID}" weekid="${weekID}">${weekID}</option>`;
+		}
+		elem += '</select>';
+		
+		$("#week_selection_box").empty();
+		$("#week_selection_box").append(elem);
 	}
-	elem += '</select>';
-	
-	$("#week_selection_box").empty();
-	$("#week_selection_box").append(elem);
-
 }
 
 updateAll();

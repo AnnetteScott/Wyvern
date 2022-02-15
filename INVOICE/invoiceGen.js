@@ -103,6 +103,18 @@ function invoiceBottomTable(projDict, weekObj){
 		}
 		$(obj).append(elem)
 	});
-
+	for(let i = 0; i < 3; i++){
+		let elem = "";
+		$('.invoice_sheet_column').each(function(col, obj) {
+			if(col == 1){
+				elem += `<div class="cell heading">Title</div>`;
+			}
+			else if(col == 3){
+				elem += `<div class="cell heading">Total</div>`;
+			}
+			
+		});
+		$(obj).append(elem)
+	}
 
 }

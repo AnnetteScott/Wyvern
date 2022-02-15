@@ -8,7 +8,10 @@ function printInvoice(id = 'PRINTtheTHING'){
     });
     html += '<body onload="window.focus(); window.print()">'+$("#"+id).html()+'</body>';
     let w = window.open("","print");
-    if (w) { w.document.write(html); w.document.close() }
+    if (w) { 
+		w.document.write(html); 
+		//w.document.close() 
+	}
 }
 
 function generateInvoice(){
@@ -79,6 +82,7 @@ function invoiceBottomTable(projDict, weekObj){
 		}
 		$(obj).append(elem)
 	});
+	let invoiceTotal = 0;
     $('.invoice_sheet_column').each(function(col, obj) {
 		let elem = "";
 		for(let i = 0; i < (projDict['colourList']).length; i++){
@@ -99,22 +103,42 @@ function invoiceBottomTable(projDict, weekObj){
 			}
 			else if(col == 3){
 				elem += `<div class="cell" cellid="${cellID}">${colourTotal}</div>`;
+				invoiceTotal += colourTotal;
 			}
 		}
 		$(obj).append(elem)
 	});
-	for(let i = 0; i < 3; i++){
-		let elem = "";
-		$('.invoice_sheet_column').each(function(col, obj) {
-			if(col == 1){
-				elem += `<div class="cell heading">Title</div>`;
-			}
-			else if(col == 3){
-				elem += `<div class="cell heading">Total</div>`;
-			}
-			
-		});
+
+	$('.invoice_sheet_column').each(function(col, obj) {
+		let elem = '';
+		if(col == 2){
+			elem += `<div class="cell">Subtotal</div>`;
+		}
+		else if(col == 3){
+			elem += `<div class="cell">$${invoiceTotal}</div>`;
+		}
 		$(obj).append(elem)
-	}
+	});
+	$('.invoice_sheet_column').each(function(col, obj) {
+		let elem = '';
+		if(col == 2){
+			elem += `<div class="cell">Tax</div>`;
+		}
+		else if(col == 3){
+			elem += `<div class="cell">$0</div>`;
+		}
+		$(obj).append(elem)
+	});
+	$('.invoice_sheet_column').each(function(col, obj) {
+		let elem = '';
+		if(col == 2){
+			elem += `<div class="cell">Total</div>`;
+		}
+		else if(col == 3){
+			elem += `<div class="cell">$${invoiceTotal}</div>`;
+		}
+		$(obj).append(elem)
+	});
+	
 
 }

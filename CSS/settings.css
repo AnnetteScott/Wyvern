@@ -95,7 +95,6 @@
 .colour_card > * {
     position: relative;
     display: block;
-    min-width: 18px;
     height: 18px;
     padding: 0px 5px;
     border-radius: 3px;

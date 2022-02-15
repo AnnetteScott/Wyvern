@@ -25,7 +25,7 @@
 			<span id="burger" onclick="toggleNavMenu()"></span>
 		</nav>
 
-		<div id="PAGE_home" class="page">
+		<div id="PAGE_home" class="page hidden">
 			<h1>Welcome To Wyvern!</h1>
 			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
 		</div>
@@ -49,6 +49,8 @@
 							<input id="create_user_city" type="text"></input>
 							<label for="create_user_country">Country:</label>
 							<input id="create_user_country" type="text"></input>
+							<label for="create_user_contact">Contact</label>
+							<input id="create_user_contact" type="text"></input>
 							<button onclick="addNewUser()">Save User</button>
 							<button onclick="$('#user_pop_up').removeClass('input_box_open');">Cancel</button>
 						</div>
@@ -143,7 +145,7 @@
 			</div>
 		</div>
 
-		<div id="PAGE_projects" class="page">
+		<div id="PAGE_projects" class="page hidden">
 			<div class="section">
 				<h1>Projects</h1>
 				<div class="row">
@@ -171,7 +173,7 @@
 		<div id="PAGE_budget" class="page hidden">
 		</div>
 
-		<div id="PAGE_invoice" class="page hidden">
+		<div id="PAGE_invoice" class="page">
 			<div class="inner">
 				<div class="invoice_controls">
 					<div id="project_selection_box">

@@ -104,10 +104,8 @@
 }
 
 #invoice_sheet .invoice_sheet_column{
-	min-height: 5cm;
 	border-top: 1px solid black;
 	border-right: 1px solid black;
-	border-bottom: 1px solid black;
 }
 #invoice_sheet .invoice_sheet_column:nth-child(1){ /* Description */
 	width: 100%;
@@ -137,4 +135,8 @@
 }
 #invoice_sheet .cell{
 	border-bottom: 1px dashed black;
+	min-height: 20px;
+}
+#invoice_sheet .cell:last-child{
+	border-bottom: 1px solid black;
 }

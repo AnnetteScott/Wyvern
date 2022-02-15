@@ -10,7 +10,7 @@ function printInvoice(id = 'PRINTtheTHING'){
     let w = window.open("","print");
     if (w) { 
 		w.document.write(html); 
-		//w.document.close() 
+		w.document.close() 
 	}
 }
 
@@ -39,7 +39,7 @@ function generateInvoice(){
 	$('#user_addTwo_invoice').text(userDict['userAddressTwo']);
 	$('#user_city_invoice').text(userDict['userCity']);
 	$('#user_country_invoice').text(userDict['userCountry']);
-	$('#user_contact_invoice').text(userDict['userCountry']);
+	$('#user_contact_invoice').text(userDict['userContact']);
 
 	
 	//client
@@ -111,8 +111,33 @@ function invoiceBottomTable(projDict, weekObj){
 
 	$('.invoice_sheet_column').each(function(col, obj) {
 		let elem = '';
+		if(col == 0){
+			elem += `<div class="cell"></div>`;
+			elem += `<div class="cell"></div>`;
+			elem += `<div class="cell"></div>`;
+		}
+		else if(col == 1){
+			elem += `<div class="cell"></div>`;
+			elem += `<div class="cell"></div>`;
+			elem += `<div class="cell"></div>`;
+		}
+		else if(col == 2){
+			elem += `<div class="cell"></div>`;
+			elem += `<div class="cell"></div>`;
+			elem += `<div class="cell"></div>`;
+		}
+		else if(col == 3){
+			elem += `<div class="cell"></div>`;
+			elem += `<div class="cell"></div>`;
+			elem += `<div class="cell"></div>`;
+		}
+		$(obj).append(elem)
+	});
+
+	$('.invoice_sheet_column').each(function(col, obj) {
+		let elem = '';
 		if(col == 2){
-			elem += `<div class="cell">Subtotal</div>`;
+			elem += `<div class="cell" style="border-left: 1px solid black">Subtotal</div>`;
 		}
 		else if(col == 3){
 			elem += `<div class="cell">$${invoiceTotal}</div>`;
@@ -122,7 +147,7 @@ function invoiceBottomTable(projDict, weekObj){
 	$('.invoice_sheet_column').each(function(col, obj) {
 		let elem = '';
 		if(col == 2){
-			elem += `<div class="cell">Tax</div>`;
+			elem += `<div class="cell" style="border-left: 1px solid black">Tax</div>`;
 		}
 		else if(col == 3){
 			elem += `<div class="cell">$0</div>`;
@@ -132,7 +157,7 @@ function invoiceBottomTable(projDict, weekObj){
 	$('.invoice_sheet_column').each(function(col, obj) {
 		let elem = '';
 		if(col == 2){
-			elem += `<div class="cell">Total</div>`;
+			elem += `<div class="cell" style="border-left: 1px solid black">Total</div>`;
 		}
 		else if(col == 3){
 			elem += `<div class="cell">$${invoiceTotal}</div>`;

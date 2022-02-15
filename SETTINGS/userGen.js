@@ -7,6 +7,7 @@ function addNewUser(){
     let userAddressTwo = $("#create_user_addTwo").val();
     let userCity = $("#create_user_city").val();
     let userCountry = $("#create_user_country").val();
+    let userContact = $("#create_user_contact").val();
 
     let userID = generateID();
     if(selectedUserID == ''){
@@ -24,6 +25,7 @@ function addNewUser(){
         masterDict['users'][selectedUserID]['userAddressTwo'] = userAddressTwo;
         masterDict['users'][selectedUserID]['userCity'] = userCity;
         masterDict['users'][selectedUserID]['userCountry'] = userCountry;
+        masterDict['users'][selectedUserID]['userContact'] = userContact;
         clientID = selectedUserID;
     }
 

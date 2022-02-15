@@ -5,6 +5,7 @@ let fs = require("fs");
 const {app, BrowserWindow, Menu, ipcMain, remote} = electron;
 const { dialog } = require('electron');
 let mainWindow;
+let devMode = false;
 
 // Listen for app to be ready
 app.on('ready', function(){
@@ -24,8 +25,11 @@ app.on('ready', function(){
     mainWindow.on('closed', function(){
       app.quit();
     });
-    // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    if(devMode){
+        // Open the DevTools.
+        mainWindow.webContents.openDevTools();
+    }
+   
   
     // Build menu from template
     const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -64,8 +68,12 @@ const mainMenuTemplate =  [
     }
 ];
 
-// Enable live reload for all the files inside your project directory
-require('electron-reload')(__dirname);
+if(devMode){
+    // Enable live reload for all the files inside your project directory
+    require('electron-reload')(__dirname);
+}
+
+
 
 
 function manual_save(){

@@ -18,8 +18,6 @@ if (!fs.existsSync(app.getPath('userData') + "\\data")){
 app.on('ready', function(){
     // Create new window
     mainWindow = new BrowserWindow({
-        width: 1200,
-		height: 800,
 		icon: __dirname + '/Images/WyvernIcon.ico',
         webPreferences: {
             nodeIntegration: true,
@@ -28,6 +26,7 @@ app.on('ready', function(){
     });
     // Load html in window
     mainWindow.loadFile('main.html');
+    mainWindow.maximize();
     // Quit app when closed
     mainWindow.on('closed', function(){
       app.quit();

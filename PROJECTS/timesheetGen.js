@@ -94,12 +94,13 @@ function timesheetGen(e, chosenID = '', chosenWeek = ''){
 	});
 	
     updateCellsTotals(projWeek, projectID);
-    let cellTip = $('#user_selection_tip');
-    const onMouseMove = (e) =>{
-        cellTip.style.left = e.pageX + 55 + 'px';
-        cellTip.style.top = e.pageY - 20 + 'px';
-    }
 
+    const onMouseMove = (e) =>{
+        $('#user_selection_tip').css({
+            left: e.pageX + 55 + 'px',
+            top: e.pageY - 20 + 'px'
+        })
+    }
     document.addEventListener('mousemove', onMouseMove);
 
 
@@ -126,9 +127,36 @@ function cellClicked(e){
     }
     selectedCellsList = [cellID];
 
-    let firstTime = "Z" + cellID.substring(1);
+    let firstTimeID = "Z" + cellID.substring(1);
+    let firstTime = ($(`[cellid=${firstTimeID}]`).text()).split(":");
+    let timePeriod = `${firstTime[0]}:${firstTime[1]} - ${firstTime[0]}:${parseInt(firstTime[1]) + 14}`
+    $('#user_selection_tip').text(`Time Selected: 00.25H\n${timePeriod} `);
+    $('#user_selection_tip').removeClass('hidden');
 
 }
+
+
+function minCell(arr){
+	let smallestNum = arr[0].substring(1);
+	for(let i = 0; i < arr.length; i++){
+		if(parseInt(arr[i].substring(1)) < smallestNum){
+			smallestNum = parseInt(arr[i].substring(1))
+		}
+	}
+	return smallestNum;
+}
+
+function maxCell(arr){
+	let smallestNum = arr[0].substring(1);
+	for(let i = 0; i < arr.length; i++){
+		if(parseInt(arr[i].substring(1)) > smallestNum){
+			smallestNum = parseInt(arr[i].substring(1))
+		}
+	}
+	return smallestNum;
+}
+
+
 
 function cellHovered(e){
     if(cellIsClicked){
@@ -136,12 +164,22 @@ function cellHovered(e){
         if(!selectedCellsList.includes(cellID)){
             cellSelect(e.target);
             selectedCellsList.push(cellID);
+            
+            let timeSelected = selectedCellsList.length * 0.25;
+            let minTimeCell = "Z" + minCell(selectedCellsList);
+            let maxTimeCell = "Z" + maxCell(selectedCellsList);
+			let maxTime = ($(`[cellid=${maxTimeCell}]`).text()).split(":");
+
+			let timePeriod = `${$(`[cellid=${minTimeCell}]`).text()} - ${maxTime[0]}:${parseInt(maxTime[1]) + 14}`;
+            $('#user_selection_tip').text(`Time Selected: ${timeSelected}H\n${timePeriod} `);
         }   
     }
 }
 
 function cellRelease(e){ 
     cellIsClicked = false;
+    $('#user_selection_tip').addClass('hidden');
+
 } 
 
 function cellSelect(element){

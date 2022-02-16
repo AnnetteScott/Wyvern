@@ -1,17 +1,21 @@
-const electron = require('electron');
-const ipcRenderer = electron.ipcRenderer;
+var ipcRenderer = require("electron").ipcRenderer;
 
-//Listen for commands from the Electron host window.
-ipcRenderer.on('save_Data', function (event) {
-    save_Data();
+ipcRenderer.send('master_dict_reade');
+ipcRenderer.on('master_dict_reading', function(event, data) {
+    masterDict = {...data}
+})
+
+ipcRenderer.on('read_from_var', function(event, arg) {
+    event.sender.send('readed_var', masterDict);
+
 });
 
-ipcRenderer.on('read_Data', function (event) {
-    read_Data();
-});
-
-ipcRenderer.on('PRINTtheTHING', function (event) {
-    PRINTtheTHING();
-});
-
-read_Data();
+/* let minutes = 5;
+let the_interval = minutes * 60 * 1000;
+let backUpNum = 0;
+setInterval(function() {
+    let path = `./DATA/Backups/backup${backUpNum}.json`;
+    write_file(JSON.stringify(masterDict), path);
+    backUpNum++;
+    backUpNum = backUpNum % 3;
+}, the_interval); */

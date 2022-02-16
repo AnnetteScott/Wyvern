@@ -2,10 +2,17 @@ const electron = require('electron');
 const path = require('path');
 const url = require('url');
 let fs = require("fs");
-const {app, BrowserWindow, Menu, ipcMain, remote} = electron;
+const {app, BrowserWindow, Menu, ipcMain} = electron;
 const { dialog } = require('electron');
 let mainWindow;
 let devMode = true;
+let saveFilePath = app.getPath('userData') + "\\data\\user.json"
+if (!fs.existsSync(app.getPath('userData') + "\\data")){
+    fs.mkdirSync(app.getPath('userData') + "\\data");
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}}));
+
+}
+
 
 // Listen for app to be ready
 app.on('ready', function(){
@@ -46,7 +53,7 @@ const mainMenuTemplate =  [
             {
                 label: 'Save', 
                 accelerator: process.platform === 'darwin' ? 'Ctrl+S' : 'Ctrl+S',
-                click(){ mainWindow.webContents.send('save_Data') }
+                click(){ save_Data() }
             },  
             {
                 label: 'Manual Save', 
@@ -75,9 +82,22 @@ if(devMode){
 
 
 
+//Read a file from a given location.
+function read_file(path){
+    return fs.readFileSync(path, 'utf8');
+}
+
+
+function save_Data(){
+    mainWindow.webContents.send("read_from_var")
+    ipcMain.on('readed_var', function(event, data) {
+        console.log(data);
+        fs.writeFileSync(saveFilePath , JSON.stringify(data));
+    })
+}
 
 function manual_save(){
-    let masterDict = JSON.parse(read_file("./DATA/user.json"));
+    let masterDict = JSON.parse(read_file(saveFilePath));
     dialog.showSaveDialog(mainWindow, {
         properties: ['saveFile'],
         filters: [{ name: 'json', extensions: ['json'] }]
@@ -91,10 +111,6 @@ function manual_save(){
 		
 }
 
-read_file = function(path){
-    return fs.readFileSync(path, 'utf8');
-}
-
 
 function open_file(){
     dialog.showOpenDialog(mainWindow, {
@@ -103,10 +119,17 @@ function open_file(){
     }).then(result => {
         let path = result['filePaths'][0];
         let masterDict = JSON.parse(read_file(path));
-        fs.writeFileSync("./DATA/user.json", JSON.stringify(masterDict));
+        fs.writeFileSync(saveFilePath, JSON.stringify(masterDict));
         require('electron-reload')(__dirname);
     }).catch(err => {
         console.log(err)
     });
 
 }
+
+
+ipcMain.on('master_dict_read', function(event, arg) {
+    let masterDict = JSON.parse(read_file(saveFilePath));
+    event.sender.send('master_dict_reading', masterDict);
+
+});

@@ -5,7 +5,7 @@ let fs = require("fs");
 const {app, BrowserWindow, Menu, ipcMain, remote} = electron;
 const { dialog } = require('electron');
 let mainWindow;
-let devMode = false;
+let devMode = true;
 
 // Listen for app to be ready
 app.on('ready', function(){
@@ -54,9 +54,9 @@ const mainMenuTemplate =  [
                 click(){ manual_save() }
             },
             {
-                label: 'Print', 
-                accelerator: process.platform === 'darwin' ? 'Ctrl+P' : 'Ctrl+P',
-                click(){ mainWindow.webContents.print(); }
+                label: 'Open', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+O' : 'Ctrl+O',
+                click(){ open_file() }
             },
             {
                 label: 'Exit', 
@@ -70,20 +70,19 @@ const mainMenuTemplate =  [
 
 if(devMode){
     // Enable live reload for all the files inside your project directory
-    require('electron-reload')(__dirname);
+    //require('electron-reload')(__dirname);
 }
 
 
 
 
 function manual_save(){
-    let masterDict = JSON.parse(read_file());
+    let masterDict = JSON.parse(read_file("./DATA/user.json"));
     dialog.showSaveDialog(mainWindow, {
         properties: ['saveFile'],
         filters: [{ name: 'json', extensions: ['json'] }]
     }).then(result => {
         let filepath = result.filePath;
-        console.log(filepath);
         fs.writeFileSync(filepath, JSON.stringify(masterDict));
     }).catch(err => {
         console.log(err)
@@ -92,7 +91,22 @@ function manual_save(){
 		
 }
 
-read_file = function(path = "./DATA/user.json"){
+read_file = function(path){
     return fs.readFileSync(path, 'utf8');
 }
 
+
+function open_file(){
+    dialog.showOpenDialog(mainWindow, {
+        properties: ['openFile'],
+        filters: [{ name: 'json', extensions: ['json'] }]
+    }).then(result => {
+        let path = result['filePaths'][0];
+        let masterDict = JSON.parse(read_file(path));
+        fs.writeFileSync("./DATA/user.json", JSON.stringify(masterDict));
+        require('electron-reload')(__dirname);
+    }).catch(err => {
+        console.log(err)
+    });
+
+}

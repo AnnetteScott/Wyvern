@@ -9,7 +9,12 @@ function clockIn(){
     if (minutes == 0){
         minutes = '00'
     }
-    let time = today.getHours() + ":" + minutes;
+    let hours = parseInt(today.getHours());
+    if (today.getMinutes() >= 53){
+        hours++;
+        hours = hours % 24;
+    }
+    let time = hours + ":" + minutes;
 
     cellNum = timeList.indexOf(time) + 1;
     let weeksDict = masterDict['projects'][currentProjectID]['weeks'];

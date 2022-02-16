@@ -1,6 +1,6 @@
 var ipcRenderer = require("electron").ipcRenderer;
 
-ipcRenderer.send('master_dict_reade');
+ipcRenderer.send('master_dict_read');
 ipcRenderer.on('master_dict_reading', function(event, data) {
     masterDict = {...data}
 })

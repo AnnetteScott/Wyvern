@@ -94,6 +94,15 @@ function timesheetGen(e, chosenID = '', chosenWeek = ''){
 	});
 	
     updateCellsTotals(projWeek, projectID);
+    let cellTip = $('#user_selection_tip');
+    const onMouseMove = (e) =>{
+        cellTip.style.left = e.pageX + 55 + 'px';
+        cellTip.style.top = e.pageY - 20 + 'px';
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+
+
 }
 
 let weekID = '';
@@ -116,6 +125,9 @@ function cellClicked(e){
         });
     }
     selectedCellsList = [cellID];
+
+    let firstTime = "Z" + cellID.substring(1);
+
 }
 
 function cellHovered(e){

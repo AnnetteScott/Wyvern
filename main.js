@@ -90,7 +90,6 @@ function read_file(path){
 function save_Data(){
     mainWindow.webContents.send("read_from_var")
     ipcMain.on('readed_var', function(event, data) {
-        console.log(data);
         fs.writeFileSync(saveFilePath , JSON.stringify(data));
     })
 }

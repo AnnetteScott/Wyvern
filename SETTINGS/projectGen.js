@@ -28,7 +28,7 @@ function addNewProject(){
         return false;
     }
     if(selectedProjectID != ''){
-        if(projectDuration <  masterDict['projects'][selectedProjectID]['projectDur']){
+        if(projectDuration <  parseInt(Object.keys(masterDict['projects'][selectedProjectID]['weeks']).length * 2)){
             $("#create_project_duration").addClass('form_error');
             return false;
         }
@@ -70,7 +70,7 @@ function addNewProject(){
         const index = masterDict['clients'][previousClientID]['projects'].indexOf(selectedProjectID);
         masterDict['clients'][previousClientID]['projects'].splice(index, 1);
         projectID = selectedProjectID;
-        let currProjDur = masterDict['projects'][selectedProjectID]['projectDur'];
+        let currProjDur = parseInt(Object.keys(masterDict['projects'][projectID]['weeks']).length * 2);
         if(projectDuration >  currProjDur){
             let lastWeek = (currProjDur - 1) + " - " + (currProjDur);
             let previousDate = addToDate(masterDict['projects'][selectedProjectID]['weeks'][lastWeek]['startDate'], 14);
@@ -96,11 +96,9 @@ function addNewProject(){
 function editProject(e){
 	let projectID = $(e.target).attr('projectid');
     let projectDict = masterDict['projects'][projectID];
-    masterDict['projects'][projectID]['projectDur'] = parseInt(Object.keys(masterDict['projects'][projectID]['weeks']).length * 2);
-    let projectDur = masterDict['projects'][projectID]['projectDur']
     $("#create_project_name").val(projectDict['projectName']);
 	$("#create_project_date").css({"filter": "blur(2px)", "pointer-events": "none"});
-    $("#create_project_duration").val(projectDur);
+    $("#create_project_duration").val(parseInt(Object.keys(masterDict['projects'][projectID]['weeks']).length * 2));
 	$('#project_pop_up').addClass('input_box_open');
 	selectedProjectID = projectID;
 }

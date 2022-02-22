@@ -82,12 +82,15 @@ function addNewProject(){
                 previousDate = addToDate(previousDate, 14);
             }
         }
+        $("#create_project_date").css({"filter": "none", "pointer-events": "unset"});
     }
 
     //Create/Update the project in the masterDict.
     masterDict['clients'][ClientID]['projects'].push(projectID);
+    //Clear Input
     $("#create_project_name").val('');
     $("#create_project_duration").val('');
+    $("#create_project_date").val();
     $('#project_pop_up').removeClass('input_box_open');
     selectedID = ''; //Deselect any selected project.
     return true;
@@ -97,6 +100,7 @@ function editProject(e){
 	let projectID = $(e.target).attr('projectid');
     let projectDict = masterDict['projects'][projectID];
     $("#create_project_name").val(projectDict['projectName']);
+    $("#create_project_date").val();
 	$("#create_project_date").css({"filter": "blur(2px)", "pointer-events": "none"});
     $("#create_project_duration").val(parseInt(Object.keys(masterDict['projects'][projectID]['weeks']).length * 2));
 	$('#project_pop_up').addClass('input_box_open');

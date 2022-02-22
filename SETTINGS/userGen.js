@@ -10,23 +10,30 @@ function addNewUser(){
     let userContact = $("#create_user_contact").val();
 
     let userID = generateID();
-    if(selectedUserID == ''){
-        //Generate unique projectID 
-    
-        while(masterDict['users'].hasOwnProperty(userID)){
-            userID = generateID();
-        }    
-        //Add info to clients dict
-        masterDict['users'][userID] = {'user': user,'userName': userName, 'userAddressOne': userAddressOne, 'userAddressTwo': userAddressTwo, 'userCity': userCity, 'userCountry': userCountry}
+    if(user == ''){
+        $("#create_user").addClass('form_error');
+    }else if(userName == ''){
+        $("#create_user_name").addClass('form_error');
+        $("#create_user").removeClass('form_error');
     }else{
-        masterDict['users'][selectedUserID]['user'] = user;
-        masterDict['users'][selectedUserID]['userName'] = userName;
-        masterDict['users'][selectedUserID]['userAddressOne'] = userAddressOne;
-        masterDict['users'][selectedUserID]['userAddressTwo'] = userAddressTwo;
-        masterDict['users'][selectedUserID]['userCity'] = userCity;
-        masterDict['users'][selectedUserID]['userCountry'] = userCountry;
-        masterDict['users'][selectedUserID]['userContact'] = userContact;
-        clientID = selectedUserID;
+        if(selectedUserID == ''){
+            //Generate unique projectID 
+        
+            while(masterDict['users'].hasOwnProperty(userID)){
+                userID = generateID();
+            }    
+            //Add info to clients dict
+            masterDict['users'][userID] = {'user': user,'userName': userName, 'userAddressOne': userAddressOne, 'userAddressTwo': userAddressTwo, 'userCity': userCity, 'userCountry': userCountry}
+        }else{
+            masterDict['users'][selectedUserID]['user'] = user;
+            masterDict['users'][selectedUserID]['userName'] = userName;
+            masterDict['users'][selectedUserID]['userAddressOne'] = userAddressOne;
+            masterDict['users'][selectedUserID]['userAddressTwo'] = userAddressTwo;
+            masterDict['users'][selectedUserID]['userCity'] = userCity;
+            masterDict['users'][selectedUserID]['userCountry'] = userCountry;
+            masterDict['users'][selectedUserID]['userContact'] = userContact;
+            clientID = selectedUserID;
+        }
     }
 
     //Clear input

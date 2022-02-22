@@ -52,7 +52,7 @@
 							<label for="create_user_contact">Contact</label>
 							<input id="create_user_contact" type="text"></input>
 							<button onclick="addNewUser()">Save User</button>
-							<button onclick="$('#user_pop_up').removeClass('input_box_open');">Cancel</button>
+							<button onclick="cancelPopUp()">Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -81,7 +81,7 @@
 							<label for="create_client_country">Country:</label>
 							<input id="create_client_country" type="text"></input>
 							<button onclick="addNewClient()">Save Client</button>
-							<button onclick="$('#client_pop_up').removeClass('input_box_open');">Cancel</button>
+							<button onclick="cancelPopUp()">Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -108,7 +108,7 @@
 							<label for="create_project_date">Project start date:</label>
 							<input id="create_project_date" type="date"></input>
 							<button onclick="addNewProject()">Save Project</button>
-							<button onclick="$('#project_pop_up').removeClass('input_box_open');">Cancel</button>
+							<button onclick="cancelPopUp()">Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -274,6 +274,7 @@
 	<script src="JS/app.js"></script>
 	<script src="JS/nav.js"></script>
 	<script src="JS/generalFunctions.js"></script>
+	<script src="SETTINGS/cancel.js"></script>
 	<script src="SETTINGS/clientGen.js"></script>
 	<script src="SETTINGS/checkLists.js"></script>
 	<script src="SETTINGS/colourGen.js"></script>

@@ -14,6 +14,7 @@ function addNewClient(){
         $("#create_client_name").addClass('form_error');
         $("#create_client").removeClass('form_error');
     }else{
+        $("#create_client_name").removeClass('form_error');
         let clientID = generateID();
         if(selectedID == ''){
 			//Generate unique projectID 

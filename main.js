@@ -5,7 +5,7 @@ let fs = require("fs");
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 const { dialog } = require('electron');
 let mainWindow;
-let devMode = true;
+let devMode = false;
 let saveFilePath = app.getPath('userData') + "\\data\\user.json"
 if (!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
@@ -28,8 +28,13 @@ app.on('ready', function(){
     mainWindow.loadFile('main.html');
     mainWindow.maximize();
     // Quit app when closed
-    mainWindow.on('closed', function(){
-      app.quit();
+    mainWindow.on('close', function(e) { //   <---- Catch close event
+		e.preventDefault();
+        save_Data();
+		setTimeout(function(){
+			e.defaultPrevented = false;
+			app.exit();
+		}, 1500)
     });
     if(devMode){
         // Open the DevTools.
@@ -131,3 +136,11 @@ ipcMain.on('master_dict_read', function(event, arg) {
     event.sender.send('master_dict_reading', masterDict);
 
 });
+
+
+//auto save
+let minutes = 5;
+let time = minutes * 60 * 1000;
+setInterval(function() {
+    save_Data();
+}, time); 

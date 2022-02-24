@@ -107,7 +107,6 @@ function timesheetGen(e, chosenID = '', chosenWeek = ''){
 }
 
 let weekID = '';
-
 function cellClicked(e){
     cellIsClicked = true;
     const cellID = $(e.target).attr('cellid');
@@ -125,7 +124,11 @@ function cellClicked(e){
             
         });
     }
-    selectedCellsList = [cellID];
+    if(!(selectedCellsList.includes(cellID) && selectedCellsList.length == 1)){
+        selectedCellsList = [cellID];
+    }else{
+        selectedCellsList = []
+    }
 
     let firstTimeID = "Z" + cellID.substring(1);
     let firstTime = ($(`[cellid=${firstTimeID}]`).text()).split(":");

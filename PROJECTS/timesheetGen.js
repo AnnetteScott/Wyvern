@@ -156,23 +156,34 @@ function maxCell(arr){
 	return smallestNum;
 }
 
-
-
+let previousDate = 'A';
+let previousTime = '1';
 function cellHovered(e){
-    if(cellIsClicked){
-        const cellID = $(e.target).attr('cellid');
-        if(!selectedCellsList.includes(cellID)){
-            cellSelect(e.target);
-            selectedCellsList.push(cellID);
-            
-            let timeSelected = selectedCellsList.length * 0.25;
-            let minTimeCell = "Z" + minCell(selectedCellsList);
-            let maxTimeCell = "Z" + maxCell(selectedCellsList);
-			let maxTime = ($(`[cellid=${maxTimeCell}]`).text()).split(":");
+    const cellID = $(e.target).attr('cellid');
+    if(cellIsClicked && (!selectedCellsList.includes(cellID))){
+        cellSelect(e.target);
+        selectedCellsList.push(cellID);
+        
+        let timeSelected = selectedCellsList.length * 0.25;
+        let minTimeCell = "Z" + minCell(selectedCellsList);
+        let maxTimeCell = "Z" + maxCell(selectedCellsList);
+        let maxTime = ($(`[cellid=${maxTimeCell}]`).text()).split(":");
 
-			let timePeriod = `${$(`[cellid=${minTimeCell}]`).text()} - ${maxTime[0]}:${parseInt(maxTime[1]) + 14}`;
-            $('#user_selection_tip').text(`Time Selected: ${timeSelected}H\n${timePeriod} `);
-        }   
+        let timePeriod = `${$(`[cellid=${minTimeCell}]`).text()} - ${maxTime[0]}:${parseInt(maxTime[1]) + 14}`;
+        $('#user_selection_tip').text(`Time Selected: ${timeSelected}H\n${timePeriod} `);
+    }
+
+    const cellCol = cellID[0];
+    const cellNum = cellID.substring(1);
+    $(`[cellid=${cellCol}0]`).css({"background-color": "#D1D3D9"});
+    $(`[cellid=Z${cellNum}]`).css({"background-color": "#D1D3D9"});
+    if(previousDate != cellCol){
+        $(`[cellid=${previousDate}0]`).css({"background-color": "#ffffff"});
+        previousDate = cellCol;
+    }
+    if(previousTime != cellNum){
+        $(`[cellid=Z${previousTime}]`).css({"background-color": "#ffffff"});
+        previousTime = cellNum;
     }
 }
 

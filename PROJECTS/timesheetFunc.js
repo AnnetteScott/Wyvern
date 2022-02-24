@@ -48,7 +48,7 @@ function clockIn(){
             $(`[cellid=${cellID}]`).css({"background-color": "#D1D3D9",  "border-color": "cyan"});
             weekID = $(`[cellid=${cellID}]`).attr('weekid');
 
-            $(`[cellid=${cellID}]`)[0].scrollIntoView();   
+            $(`[cellid=${cellID}]`)[0].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });    
             break;
         }
       

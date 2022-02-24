@@ -1,5 +1,3 @@
-let selectedBudgetID = '';
-
 function addNewBudget(){
     //Get input data from the Create New Budget dialogue box.
     const budgetName = $("#create_budget_name").val();
@@ -20,10 +18,15 @@ function addNewBudget(){
             budgetID = generateID();
         }
         let today = new Date();
-        masterDict['budgets'][budgetID] = {'budgetName': budgetName, 'startYear': (today.getFullYear()), 'endYear': (today.getFullYear() + 1)}
+        let thisYear = today.getFullYear().toString();
+        let nextYear = (today.getFullYear() + 1).toString();
+        masterDict['budgets'][budgetID] = {'budgetName': budgetName, 'startYear': thisYear, 'endYear': nextYear, 'years': {}}
+        masterDict['budgets'][budgetID]['years'][thisYear] = {'Jan':{}, 'Feb':{}, 'Mar':{}, 'Apr':{}, 'May':{}, 'Jun':{}, 'Jul':{}, 'Aug':{}, 'Sep':{}, 'Oct':{}, 'Nov':{}, 'Dec':{}};
+        masterDict['budgets'][budgetID]['years'][nextYear] = {'Jan':{}, 'Feb':{}, 'Mar':{}, 'Apr':{}, 'May':{}, 'Jun':{}, 'Jul':{}, 'Aug':{}, 'Sep':{}, 'Oct':{}, 'Nov':{}, 'Dec':{}};
+
         
     }else{ //If this function was called on editing an existing project.
-        
+        console.log("Hi")
     }
     $('#budget_pop_up').removeClass('input_box_open');
     return true;

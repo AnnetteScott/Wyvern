@@ -53,6 +53,9 @@ button {
 button:hover {
     background: linear-gradient(45deg, #c30cdb, #44058d);
 }
+.active_button {
+    background: linear-gradient(180deg, #db0c0c, #8d0505);
+}
 #project_buttons button{
     width: 50px;
     padding: 4px;

@@ -31,7 +31,7 @@ function clockIn(){
                 colID = columnLetter[colIndex];
                 nextDate = mericaDate($(`[cellid=${colID}0]`).text());
             }
-            let cellID = colID + cellNum.toString();
+            const cellID = colID + cellNum.toString();
     
             
             if(selectedCellsList != []){
@@ -47,10 +47,11 @@ function clockIn(){
             }
             $(`[cellid=${cellID}]`).css({"background-color": "#D1D3D9",  "border-color": "cyan"});
             weekID = $(`[cellid=${cellID}]`).attr('weekid');
-            selectedCellsList = [cellID];
+
+            $(`[cellid=${cellID}]`)[0].scrollIntoView();   
             break;
         }
-
+      
     }
     
 }

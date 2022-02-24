@@ -26,7 +26,7 @@
 			<span id="burger" onclick="toggleNavMenu()"></span>
 		</nav>
 
-		<div id="PAGE_home" class="page">
+		<div id="PAGE_home" class="page hidden">
 			<h1>Welcome To Wyvern!</h1>
 			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
 		</div>
@@ -172,14 +172,22 @@
 			<div id="user_selection_tip" class ="tool_tip hidden">Time: </div>
 		</div>
 
-		<div id="PAGE_budget" class="page hidden">
+		<div id="PAGE_budget" class="page">
 			<div class="section">
-				<h1>Budgets</h1>
-				<div class="row">
-					<div id="budget_year_list" class="scrollable_list">
-
+				<div class="top">
+					<h1>Budgets</h1>
+					<button onclick="$('#budget_pop_up').addClass('input_box_open');">Create New Budget</button>
+					<div id="budget_pop_up" class="input_box">
+						<div class="creation_form">
+							<label for="create_budget_name">Budget Name:</label>
+							<input id="create_budget_name" type="text"></input>
+							<button onclick="addNewBudget()">Save Budget</button>
+							<button onclick="cancelPopUp()">Cancel</button>
+						</div>
 					</div>
+					
 				</div>
+				<div id="budget_year_list" class="scrollable_list"></div>
 			</div>
 		</div>
 
@@ -300,9 +308,11 @@
 	<script src="PROJECTS/projectPage.js"></script>
 	<script src="PROJECTS/timesheetGen.js"></script>
 	<script src="PROJECTS/timesheetFunc.js"></script>
-	<script src="SETTINGS/updateAll.js"></script>
 	<script src="INVOICE/domBlocks.js"></script>
 	<script src="INVOICE/invoiceGen.js"></script>
+	<script src="BUDGET/domBlock.js"></script>
+	<script src="BUDGET/budgetGen.js"></script>
+	<script src="SETTINGS/updateAll.js"></script>
 	<script>VL.init();</script>
 	<script>if (window.module) module = window.module;</script>
 </html>

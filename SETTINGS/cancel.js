@@ -33,4 +33,7 @@ function cancelPopUp(){
     $("#create_project_date").removeClass('form_error');
     $("#create_project_duration").removeClass('form_error');
     $("#create_project_date").css({"filter": "none", "pointer-events": "unset"});
+
+    //Budget
+    $('#budget_pop_up').removeClass('input_box_open');
 }

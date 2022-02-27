@@ -14,7 +14,7 @@ var cellIsClicked = false;
 var selectedCellsList = [];
 var invoiceChosenProjectID = '';
 var currentProjectID = '';
-var selectedBudgetID;
+var selectedBudgetID = '';
 var selectedBudgetYear;
 
 

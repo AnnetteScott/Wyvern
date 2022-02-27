@@ -1,4 +1,3 @@
-
 //Loads data for, and populates an individual project's page.
 //Is called from the Projects selection page when a project item is selected.
 function loadBudgetData(e){
@@ -46,5 +45,7 @@ function budgetGenTable(e){
         $(year_button).removeClass('active_button');
     });
     $(e.target).addClass('active_button');
+    let budgetMonth = masterDict['budgets'][selectedBudgetID]['years'][selectedBudgetYear];
+    let columnList = ['startDate', 'endDate']
 
 }

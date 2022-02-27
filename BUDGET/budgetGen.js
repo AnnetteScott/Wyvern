@@ -21,12 +21,13 @@ function addNewBudget(){
         let thisYear = today.getFullYear().toString();
         let nextYear = (today.getFullYear() + 1).toString();
         masterDict['budgets'][budgetID] = {'budgetName': budgetName, 'startYear': thisYear, 'endYear': nextYear, 'years': {}}
-        masterDict['budgets'][budgetID]['years'][thisYear] = {'Jan':{}, 'Feb':{}, 'Mar':{}, 'Apr':{}, 'May':{}, 'Jun':{}, 'Jul':{}, 'Aug':{}, 'Sep':{}, 'Oct':{}, 'Nov':{}, 'Dec':{}};
-        masterDict['budgets'][budgetID]['years'][nextYear] = {'Jan':{}, 'Feb':{}, 'Mar':{}, 'Apr':{}, 'May':{}, 'Jun':{}, 'Jul':{}, 'Aug':{}, 'Sep':{}, 'Oct':{}, 'Nov':{}, 'Dec':{}};
+        masterDict['budgets'][budgetID]['years'][thisYear] = getDateList(parseInt(thisYear));
+        masterDict['budgets'][budgetID]['years'][nextYear] = getDateList(parseInt(nextYear));
 
         
     }else{ //If this function was called on editing an existing project.
         console.log("Hi")
+        console.log(selectedBudgetID)
     }
     $('#budget_pop_up').removeClass('input_box_open');
     return true;
@@ -41,4 +42,27 @@ function editProject(e){
     $("#create_project_duration").val(parseInt(Object.keys(masterDict['projects'][projectID]['weeks']).length * 2));
 	$('#project_pop_up').addClass('input_box_open');
 	selectedProjectID = projectID;
+}
+
+function getFirstMonday(year) {
+    let dateObj = new Date();
+    dateObj.setDate(1);
+    dateObj.setMonth(0);
+    dateObj.setFullYear(year);
+    // Get the first Monday in the month
+    while (dateObj.getDay() !== 1) {
+        dateObj.setDate(dateObj.getDate() + 1);
+    }
+    let day = dateObj.getDate();
+    return day;
+}
+
+function getDateList(year){
+    let firstDate = "0" + getFirstMonday(year) + "/" + "01";
+    let dateList = {}
+    dateList[firstDate] = {}
+    for(let i = 2; i <= 52; i++){
+        dateList[addToDateNoYear(Object.keys(dateList)[i - 2], 7, year)] = {}
+    }
+    return dateList
 }

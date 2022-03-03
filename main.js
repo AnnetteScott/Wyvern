@@ -3,6 +3,7 @@ const path = require('path');
 const url = require('url');
 let fs = require("fs");
 const {app, BrowserWindow, Menu, ipcMain} = electron;
+const {download} = require("electron-dl");
 const { dialog } = require('electron');
 let mainWindow;
 let devMode = false;
@@ -36,6 +37,11 @@ app.on('ready', function(){
 			app.exit();
 		}, 1500)
     });
+    ipcMain.on("downloadUpdate", (event, info) => {
+        download(BrowserWindow.getFocusedWindow(), info.url, app.getPath('downloads'))
+            .then(dl => mainWindow.webContents.send("download complete", dl.getSavePath()));
+    });
+
     if(devMode){
         // Open the DevTools.
         mainWindow.webContents.openDevTools();

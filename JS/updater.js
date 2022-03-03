@@ -35,11 +35,20 @@ function showUpdate(update_data){
 	$('#update_version').html(`${wyvern_version} > <b>${update_data[0].tag_name.split('V')[1]}</b>`);
 	$('#update_release_link').attr('src', update_data[0].assets[0].browser_download_url);
     $('#update_pop_up').addClass('input_box_open');
+	
 }
 
 function noUpdate(){
     $('#no_update_pop_up').addClass('input_box_open');
+	console.log('This ran')
 	window.setTimeout(() => {
     	cancelPopUp();
 	}, 3000);
+}
+
+function downloadUpdate(){
+	ipcRenderer.send("downloadUpdate", {
+		url: $('#update_release_link').attr('src')
+	});
+	cancelPopUp();
 }

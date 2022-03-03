@@ -1,3 +1,5 @@
+var wyvern_version = '2.5.2';
+
 var masterDict = {"projects": {}, "clients": {}, "colours": {}, "users": {}, "budgets": {}}
 
 //Elements

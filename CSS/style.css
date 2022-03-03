@@ -64,16 +64,18 @@ input {
 input:focus {
     border-color: blue;
 }
-button {
+button, .button {
     margin: 5px 0px;
     padding: 5px 20px;
     color: white;
+    font-family: 'Segoe UI', sans-serif;
+    text-decoration: none;
     background: linear-gradient(45deg, #05e0f0, #050779);
     border: unset;
     border-radius: 5px;
     cursor: pointer;
 }
-button:hover {
+button:hover, .button:hover {
     background: linear-gradient(45deg, #c30cdb, #44058d);
 }
 #project_buttons button{

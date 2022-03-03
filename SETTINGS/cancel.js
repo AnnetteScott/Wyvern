@@ -40,4 +40,9 @@ function cancelPopUp(){
     $("#colour_creation_rate").val('');
     $("#colour_creation_colour").val('');
     $('#colour_pop_up').removeClass('input_box_open');
+
+
+    //Update
+    $('#update_pop_up').removeClass('input_box_open');
+    $('#no_update_pop_up').removeClass('input_box_open');
 }

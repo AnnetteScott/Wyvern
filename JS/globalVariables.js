@@ -1,4 +1,4 @@
-var wyvern_version = '2.6.2';
+var wyvern_version = '2.6.3';
 
 var masterDict = {"projects": {}, "clients": {}, "colours": {}, "users": {}, "budgets": {}}
 

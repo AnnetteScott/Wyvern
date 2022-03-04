@@ -9,14 +9,6 @@
 	box-sizing: border-box;
 }
 
-body {
-	background: linear-gradient(180deg, #14aef1, #1495f1);
-	background-repeat: no-repeat;
-	overflow: hidden; 
-	color: black;
-	height: 100vh;
-
-}
 
 label {
 	font-family: 'Segoe UI', sans-serif;

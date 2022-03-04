@@ -1,6 +1,6 @@
 {
   "name": "Wyvern",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "A simple Wyvern App",
   "main": "main.js",
   "scripts": {

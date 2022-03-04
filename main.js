@@ -37,8 +37,10 @@ app.on('ready', function(){
 			app.exit();
 		}, 1500)
     });
+    mainWindow.webContents.send("download_folder", app.getPath('downloads'));
     ipcMain.on("downloadUpdate", (event, info) => {
-        download(BrowserWindow.getFocusedWindow(), info.url, app.getPath('downloads'))
+        info.properties.onProgress = status => mainWindow.webContents.send("download progress", status);
+        download(BrowserWindow.getFocusedWindow(), info.url, info.properties)
             .then(dl => mainWindow.webContents.send("download complete", dl.getSavePath()));
     });
 
@@ -99,7 +101,7 @@ function read_file(path){
 
 
 function save_Data(){
-    mainWindow.webContents.send("read_from_var")
+    mainWindow.webContents.send("read_from_var");
     ipcMain.on('readed_var', function(event, data) {
         fs.writeFileSync(saveFilePath , JSON.stringify(data));
     })

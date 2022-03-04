@@ -1,6 +1,8 @@
-var wyvern_version = '2.6.1';
+var wyvern_version = '2.6.2';
 
 var masterDict = {"projects": {}, "clients": {}, "colours": {}, "users": {}, "budgets": {}}
+
+var downloadsFolder = '';
 
 //Elements
 var elements = {};

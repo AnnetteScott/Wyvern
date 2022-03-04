@@ -45,4 +45,5 @@ function cancelPopUp(){
     //Update
     $('#update_pop_up').removeClass('input_box_open');
     $('#no_update_pop_up').removeClass('input_box_open');
+    $('#download_pop_up').removeClass('input_box_open');
 }

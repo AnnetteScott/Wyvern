@@ -46,9 +46,11 @@ function noUpdate(){
 	}, 3000);
 }
 
+
 function downloadUpdate(){
 	ipcRenderer.send("downloadUpdate", {
-		url: $('#update_release_link').attr('src')
+		url: $('#update_release_link').attr('src'),
+		properties: {directory: downloadsFolder}
 	});
 	cancelPopUp();
 }

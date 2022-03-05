@@ -60,9 +60,9 @@ function getFirstMonday(year) {
 function getDateList(year){
     let firstDate = "0" + getFirstMonday(year) + "/" + "01";
     let dateList = {}
-    dateList[firstDate] = {}
+    dateList[firstDate] = {'income': {}, 'outgoings': {}};
     for(let i = 2; i <= 52; i++){
-        dateList[addToDateNoYear(Object.keys(dateList)[i - 2], 7, year)] = {}
+        dateList[addToDateNoYear(Object.keys(dateList)[i - 2], 7, year)] = {'income': {}, 'outgoings': {}}
     }
     return dateList
 }

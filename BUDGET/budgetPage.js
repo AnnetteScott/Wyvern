@@ -31,7 +31,7 @@ function loadMonthData(e){
     });
     $(e.target).addClass('active_button');
 
-    $('#monthly_buttons').empty();
+   
     let budgetDict = masterDict['budgets'][selectedBudgetID];
     let selectedYearDict = budgetDict['years'][$(e.target).attr('year')];
     selectedBudgetYear = $(e.target).attr('year');
@@ -41,8 +41,9 @@ function loadMonthData(e){
     for (const [month, monthDict] of Object.entries(selectedYearDict)){
         elem += DOM_Blocks_Budget.month_button(month);
     }
-
+    
     //Add the week selection buttons to the page.
+    $('#monthly_buttons').empty();
     $('#monthly_buttons').append(elem);
 }
 
@@ -51,7 +52,20 @@ function budgetGenTable(e){
         $(year_button).removeClass('active_button');
     });
     $(e.target).addClass('active_button');
-    let budgetMonth = masterDict['budgets'][selectedBudgetID]['years'][selectedBudgetYear];
-    let columnList = ['startDate', 'endDate']
+
+    let weekDate = $(e.target).attr('month')
+    let budgetWeek = masterDict['budgets'][selectedBudgetID]['years'][selectedBudgetYear][weekDate];
+    let budgetWeekIncome = budgetWeek['income'];
+
+    //Create the income table.
+    let elem = DOM_Blocks_Budget.income_line('Income', 'Amount');
+    for (const [income, amount] of Object.entries(budgetWeekIncome)){
+        elem += DOM_Blocks_Budget.income_line(income, amount);
+    }
+
+    //Add the income to the page.
+    $('#income_week').empty();
+    $('#income_week').append(elem);
+    console.log(elem)
 
 }

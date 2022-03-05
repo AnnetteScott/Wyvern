@@ -139,8 +139,8 @@ ipcMain.on('master_dict_read', function(event, arg) {
 
 
 //auto save
-let minutes = 5;
+/* let minutes = 5;
 let time = minutes * 60 * 1000;
 setInterval(function() {
     save_Data();
-}, time); 
+}, time);  */

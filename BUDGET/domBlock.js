@@ -12,4 +12,11 @@ let DOM_Blocks_Budget = {
         +      '</div>';
 
     },
+    income_line: function (income, amount){
+        return `<div style="cursor: none;">`
+        +       `<div>${income}</div>`
+        +       `<div>${amount}</div>`
+        +      '</div>';
+
+    },
 }

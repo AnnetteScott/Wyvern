@@ -18,11 +18,11 @@ function addNewBudget(){
             budgetID = generateID();
         }
         let today = new Date();
-        let thisYear = today.getFullYear().toString();
-        let nextYear = (today.getFullYear() + 1).toString();
+        let thisYear = today.getFullYear();
+        let nextYear = (today.getFullYear() + 1);
         masterDict['budgets'][budgetID] = {'budgetName': budgetName, 'startYear': thisYear, 'endYear': nextYear, 'years': {}}
-        masterDict['budgets'][budgetID]['years'][thisYear] = getDateList(parseInt(thisYear));
-        masterDict['budgets'][budgetID]['years'][nextYear] = getDateList(parseInt(nextYear));
+        masterDict['budgets'][budgetID]['years'][thisYear.toString()] = getDateList(parseInt(thisYear));
+        masterDict['budgets'][budgetID]['years'][nextYear.toString()] = getDateList(parseInt(nextYear));
 
         
     }else{ //If this function was called on editing an existing project.

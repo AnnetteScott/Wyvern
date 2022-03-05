@@ -104,7 +104,7 @@
 #yearly_buttons{
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: calc(100% - 60px);
     width: 90px;
     min-width: 90px;
     overflow-y: scroll;
@@ -114,7 +114,7 @@
 #yearly_buttons button{
     width: 100%;
     height: 32px;
-}
+} 
 
 #monthly_buttons{
     display: flex;

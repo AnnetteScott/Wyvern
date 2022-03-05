@@ -114,6 +114,21 @@ function updateAll(){
 	}
 	budgetElement.empty();
 	budgetElement.append(elem);
+
+	let budgetDict = masterDict['budgets'][selectedBudgetID];
+	if(selectedBudgetID != ''){
+		//Create the week selection buttons.
+		elem = '';
+		for (const [year, yearDict] of Object.entries(budgetDict['years'])){
+			elem += DOM_Blocks_Budget.year_button(year);
+		}
+		//Add the week selection buttons to the page.
+		$('#yearly_buttons').empty();
+		$('#yearly_buttons').append(elem);
+	}	
+
+    
+
 }
 
 

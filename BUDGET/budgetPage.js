@@ -1,22 +1,28 @@
-//Loads data for, and populates an individual project's page.
-//Is called from the Projects selection page when a project item is selected.
+//Loads data for, and populates an individual budget's page.
+//Is called from the budgets selection page when a budget item is selected.
 function loadBudgetData(e){
     const budgetID = $(e.target).attr('budgetid');
     let budgetDict = masterDict['budgets'][budgetID];
     selectedBudgetID = budgetID;
 
     //Create the week selection buttons.
-    let elem = '';
+    elem = '';
     for (const [year, yearDict] of Object.entries(budgetDict['years'])){
         elem += DOM_Blocks_Budget.year_button(year);
     }
-
     //Add the week selection buttons to the page.
     $('#yearly_buttons').empty();
     $('#yearly_buttons').append(elem);
 
-    //Change to the individual project page.
+    //Change to the individual budget page.
     currentPage = 'budget_page';
+}
+
+function addNewYear(){
+    let budgetDict = masterDict['budgets'][selectedBudgetID];
+    let newEndYear = budgetDict['endYear'] + 1;
+    budgetDict['endYear'] = newEndYear;
+    budgetDict['years'][newEndYear] = getDateList(parseInt(newEndYear));
 }
 
 function loadMonthData(e){ 

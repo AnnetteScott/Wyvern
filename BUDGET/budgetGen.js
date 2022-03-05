@@ -14,7 +14,7 @@ function addNewBudget(){
     let budgetID = generateID();
 
     if(selectedBudgetID == ''){ //If this function was called on a new project.
-        while(masterDict['projects'].hasOwnProperty(budgetID)){
+        while(masterDict['budgets'].hasOwnProperty(budgetID)){
             budgetID = generateID();
         }
         let today = new Date();
@@ -33,6 +33,7 @@ function addNewBudget(){
     return true;
 }
 
+////////////////////////////////Refactor////////////////////////////////////
 function editProject(e){
 	let projectID = $(e.target).attr('projectid');
     let projectDict = masterDict['projects'][projectID];
@@ -60,9 +61,9 @@ function getFirstMonday(year) {
 function getDateList(year){
     let firstDate = "0" + getFirstMonday(year) + "/" + "01";
     let dateList = {}
-    dateList[firstDate] = {'income': {}, 'outgoings': {}};
+    dateList[firstDate] = {};
     for(let i = 2; i <= 52; i++){
-        dateList[addToDateNoYear(Object.keys(dateList)[i - 2], 7, year)] = {'income': {}, 'outgoings': {}}
+        dateList[addToDateNoYear(Object.keys(dateList)[i - 2], 7, year)] = {}
     }
     return dateList
 }

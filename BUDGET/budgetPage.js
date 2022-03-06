@@ -53,14 +53,16 @@ function budgetGenTable(e){
     });
     $(e.target).addClass('active_button');
 
-    let weekDate = $(e.target).attr('month')
+    const weekDate = $(e.target).attr('month')
     let budgetWeek = masterDict['budgets'][selectedBudgetID]['years'][selectedBudgetYear][weekDate];
-    let budgetWeekIncome = budgetWeek['income'];
 
     //Create the income table.
+    console.log(Object.entries(budgetWeek))
     let elem = DOM_Blocks_Budget.income_line('Income', 'Amount');
-    for (const [income, amount] of Object.entries(budgetWeekIncome)){
-        elem += DOM_Blocks_Budget.income_line(income, amount);
+    for (const [incomeName] of Object.entries(masterDict['budgets']['income'])){
+        if(Object.entries(budgetWeek).includes(incomeName)){
+            elem += DOM_Blocks_Budget.income_line(income, amount);
+        }
     }
 
     //Add the income to the page.

@@ -57,8 +57,8 @@ function budgetGenTable(e){
     let budgetWeek = masterDict['budgets'][selectedBudgetID]['years'][selectedBudgetYear][weekDate];
 
     //Create the income table.
-    let elem = DOM_Blocks_Budget.income_line('Income', 'Amount');
-    for (const [incomeName] of Object.entries(masterDict['budgets']['income'])){
+    let elem = DOM_Blocks_Budget.income_line('Income', '$');
+    for (const [incomeName] of Object.entries(budgetWeek['income'])){
         if(Object.entries(budgetWeek).includes(incomeName)){
             elem += DOM_Blocks_Budget.income_line(income, amount);
         }

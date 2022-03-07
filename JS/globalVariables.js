@@ -1,4 +1,4 @@
-var masterDict = {"projects": {}, "clients": {}, "colours": {}, "users": {}, "budgets": {"income": [], "expense":[]}}
+var masterDict = {"projects": {}, "clients": {}, "colours": {}, "users": {}, "budgets": {}}
 
 //Elements
 var elements = {};

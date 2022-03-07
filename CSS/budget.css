@@ -95,11 +95,18 @@
     padding: 10px 20px 40px;
 }
 
+.inner_budget > div{
+    padding: 0px 10px 10px 0px;
+}
+
 #selection_buttons{
     display: flex;
     flex-direction: row;
 }
 
+#year_container{
+    padding-right: var(--scrollBar_padding);
+}
 
 #yearly_buttons{
     display: flex;
@@ -157,8 +164,10 @@
 #income_week > div > p{
     width: 100%;
     border: 1px solid black;
+    background-color: white;
 }
 
 #income_week > div > p:nth-child(2){
     text-align: right;
+    color: green;
 }

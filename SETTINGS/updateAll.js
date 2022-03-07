@@ -110,9 +110,7 @@ function updateAll(){
 	let budgetElement = $("#budget_year_list");
 	elem = '';
 	for (const [budgetID, budgetDict] of Object.entries(masterDict['budgets'])){
-		if(budgetID != "income" && budgetID != "expense"){
-			elem += DOM_Blocks_Budget.budget_card(budgetDict['budgetName'], budgetID, budgetDict['startYear'], budgetDict['endYear']);
-		}
+		elem += DOM_Blocks_Budget.budget_card(budgetDict['budgetName'], budgetID, budgetDict['startYear'], budgetDict['endYear']);
 	}
 	budgetElement.empty();
 	budgetElement.append(elem);

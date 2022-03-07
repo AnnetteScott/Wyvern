@@ -57,7 +57,6 @@ function budgetGenTable(e){
     let budgetWeek = masterDict['budgets'][selectedBudgetID]['years'][selectedBudgetYear][weekDate];
 
     //Create the income table.
-    console.log(Object.entries(budgetWeek))
     let elem = DOM_Blocks_Budget.income_line('Income', 'Amount');
     for (const [incomeName] of Object.entries(masterDict['budgets']['income'])){
         if(Object.entries(budgetWeek).includes(incomeName)){
@@ -68,6 +67,5 @@ function budgetGenTable(e){
     //Add the income to the page.
     $('#income_week').empty();
     $('#income_week').append(elem);
-    console.log(elem)
 
 }

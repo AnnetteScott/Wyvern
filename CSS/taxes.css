@@ -25,6 +25,10 @@
     width: 100%;
     border-bottom: 1px solid black;
 }
+
+#PAGE_tax_overview button {
+    width: 200px;
+}
 #PAGE_tax_overview h1 {
     display: block;
     width: 100%;
@@ -32,7 +36,6 @@
     font-family: 'Segoe UI', sans-serif;
     font-size: 22px;
     font-weight: 500;
-    border-bottom: 1px solid black;
 }
 #PAGE_tax_overview .scrollable_list {
     display: flex;
@@ -47,7 +50,7 @@
     padding-right: var(--scrollBar_padding);
 }
 
-.budget_item {
+.tax_item {
     position: relative;
     display: flex;
     flex-flow: row nowrap;
@@ -66,7 +69,7 @@
     backdrop-filter: blur(7px);
     
 }
-.budget_item > * {
+.tax_item > * {
     position: relative;
     display: block;
     height: 50%;
@@ -74,101 +77,51 @@
     font-size: 30px;
     pointer-events: none;
 }
-.budget_item > p {
+.tax_item > p {
     transform: translateY(-6px);
 }
 
-#PAGE_budget_page{
+
+#PAGE_tax_page {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 100%;
+    width: 100vw;
     margin-top: var(--navbar_height);
+    padding: 20px;
 }
 
-.inner_budget{
+#tables{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-flow: row;
+    width: 100%;
+    height: 85%;
+}
+
+#tables > div{
     width: 100%;
     height: 100%;
-    padding: 10px 20px 40px;
+    overflow-y: scroll;
 }
 
-.inner_budget > div{
-    padding: 0px 10px 10px 0px;
-}
-
-#selection_buttons{
+.tax_row{
     display: flex;
     flex-direction: row;
-}
-
-#year_container{
-    padding-right: var(--scrollBar_padding);
-}
-
-#yearly_buttons{
-    display: flex;
-    flex-direction: column;
-    height: calc(100% - 60px);
-    width: 90px;
-    min-width: 90px;
-    overflow-y: scroll;
-    padding-right: var(--scrollBar_padding);
-}
-
-#yearly_buttons button{
-    width: 100%;
-    height: 32px;
-} 
-
-#monthly_buttons{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 90px;
-    min-width: 90px;
-    overflow-y: scroll;
-    padding-right: var(--scrollBar_padding);
-}
-
-#monthly_buttons button{
-    width: 100%;
-    height: 32px;
-}
-
-#budget_container{
-    display: flex;
-    flex-direction: row;
-    height: 100vh;
-    width: 100%;
-    padding-right: var(--scrollBar_padding);
-    margin-left: 25px;
-}
-
-#budget_container > div{
-    display: flex;
-    flex-direction: column; 
-    width: 50%;
-    height: fit-content;
-}
-
-#income_week > div{
-    display: flex;
-    flex-direction: row; 
-    height: 20px;
-    cursor: default;
-}
-
-#income_week > div > p{
-    width: 100%;
-    border: 1px solid black;
     background-color: white;
 }
 
-#income_week > div > p:nth-child(2){
-    text-align: right;
-    color: green;
+.tax_row p:nth-child(1){
+    width: 110px;
+    min-width: 110px;
 }
+
+.tax_row p:nth-child(2){
+    width: 100%;
+}
+
+.tax_row p:nth-child(3){
+    width: 80px;
+    min-width: 80px;
+}
+

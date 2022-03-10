@@ -174,9 +174,20 @@
 
 		<div id="PAGE_tax_overview" class="page">
 			<div class="section">
-				<h1>Tax Years</h1>
+				<div class="top">
+					<h1>Tax Years</h1>
+					<button onclick="createNewTaxYear()">Create New Tax Year</button>
+				</div>
 				<div id="tax_year_list" class="scrollable_list"></div>
 			</div>
+		</div>
+		
+		<div id="PAGE_tax_page" class="page">
+			<div id="tables">
+				<div id="tax_income"></div>
+				<div id="tax_expense"></div>
+			</div>
+			<div id="total_tax">$0.00</div>
 		</div>
 
 		<div id="PAGE_invoice" class="page hidden">
@@ -285,6 +296,7 @@
 	<script src="JS/app.js"></script>
 	<script src="JS/nav.js"></script>
 	<script src="JS/generalFunctions.js"></script>
+
 	<script src="SETTINGS/cancel.js"></script>
 	<script src="SETTINGS/clientGen.js"></script>
 	<script src="SETTINGS/checkLists.js"></script>
@@ -292,12 +304,18 @@
 	<script src="SETTINGS/userGen.js"></script>
 	<script src="SETTINGS/projectGen.js"></script>
 	<script src="SETTINGS/domBlock.js"></script>
+
 	<script src="PROJECTS/domBlock.js"></script>
 	<script src="PROJECTS/projectPage.js"></script>
 	<script src="PROJECTS/timesheetGen.js"></script>
 	<script src="PROJECTS/timesheetFunc.js"></script>
+
 	<script src="INVOICE/domBlocks.js"></script>
 	<script src="INVOICE/invoiceGen.js"></script>
+
+	<script src="TAXES/taxYear.js"></script>
+	<script src="TAXES/domBlock.js"></script>
+
 	<script src="SETTINGS/updateAll.js"></script>
 	<script>VL.init();</script>
 	<script>if (window.module) module = window.module;</script>

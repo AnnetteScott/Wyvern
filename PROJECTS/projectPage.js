@@ -27,6 +27,9 @@ function loadProjectData(e){
     $('#weekly_buttons').empty();
     $('#weekly_buttons').append(elemWeek);
 
+    //Clear timesheet table
+    $('#timesheet_container').empty();
+
     //Change to the individual project page.
     currentPage = 'project_page';
 }

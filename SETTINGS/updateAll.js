@@ -122,6 +122,14 @@ function updateTimeSheetSelection(){
 		$("#week_selection_box").empty();
 		$("#week_selection_box").append(elem);
 	}
+
+	//Taxes Updater
+	elem = '';
+	for (const [taxYear, taxDict] of Object.entries(masterDict['taxes'])) {
+		elem += DOM_Blocks_taxes.tax_card(taxYear);
+	}
+	$('#tax_year_list').empty();
+	$('#tax_year_list').append(elem);
 }
 
 //updateAll();

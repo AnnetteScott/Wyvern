@@ -123,7 +123,7 @@ function open_file(){
         let path = result['filePaths'][0];
         let masterDict = JSON.parse(read_file(path));
         fs.writeFileSync(saveFilePath, JSON.stringify(masterDict));
-        require('electron-reload')(__dirname);
+        mainWindow.reload()
     }).catch(err => {
         console.log(err)
     });

@@ -106,26 +106,6 @@ function updateAll(){
 	$("#user_selection_box").empty();
 	$("#user_selection_box").append(elem);
 
-	//Budget Updater
-	let budgetElement = $("#budget_year_list");
-	elem = '';
-	for (const [budgetID, budgetDict] of Object.entries(masterDict['budgets'])){
-		elem += DOM_Blocks_Budget.budget_card(budgetDict['budgetName'], budgetID, budgetDict['startYear'], budgetDict['endYear']);
-	}
-	budgetElement.empty();
-	budgetElement.append(elem);
-
-	let budgetDict = masterDict['budgets'][selectedBudgetID];
-	if(selectedBudgetID != '' && currentPage === 'budget_page'){
-		//Create the week selection buttons.
-		elem = '';
-		for (const [year, yearDict] of Object.entries(budgetDict['years'])){
-			elem += DOM_Blocks_Budget.year_button(year);
-		}
-		//Add the week selection buttons to the page.
-		$('#yearly_buttons').empty();
-		$('#yearly_buttons').append(elem);
-	}	
 }
 
 

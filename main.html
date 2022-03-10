@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="CSS/settings.css">
 		<link rel="stylesheet" href="CSS/project.css">
 		<link rel="stylesheet" href="CSS/invoicePrint.css">
-		<link rel="stylesheet" href="CSS/budget.css">
+		<link rel="stylesheet" href="CSS/taxes.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
 				<li onclick="changePage('home');">Home</li>
 				<li onclick="changePage('settings');">Settings</li>
 				<li onclick="changePage('projects');">Projects</li>
-				<li onclick="changePage('budget');">Budget</li>
+				<li onclick="changePage('tax_overview');">Tax Overview</li>
 				<li onclick="changePage('invoice');">Invoice</li>
 			</ul>
 			<span id="burger" onclick="toggleNavMenu()"></span>
@@ -28,7 +28,7 @@
 
 		<div id="PAGE_home" class="page hidden">
 			<h1>Welcome To Wyvern!</h1>
-			<h2>An Invoicing, Timesheet and Financial Budgeting Software</h2>
+			<h2>An Invoicing, Timesheet and Financial Tax Overview Software</h2>
 		</div>
 
 		<div id="PAGE_settings" class="page hidden">
@@ -172,41 +172,10 @@
 			<div id="user_selection_tip" class ="tool_tip hidden">Time: </div>
 		</div>
 
-		<div id="PAGE_budget" class="page">
+		<div id="PAGE_tax_overview" class="page">
 			<div class="section">
-				<div class="top">
-					<h1>Budgets</h1>
-					<button onclick="$('#budget_pop_up').addClass('input_box_open');">Create New Budget</button>
-					<div id="budget_pop_up" class="input_box">
-						<div class="creation_form">
-							<label for="create_budget_name">Budget Name:</label>
-							<input id="create_budget_name" type="text"></input>
-							<button onclick="addNewBudget()">Save Budget</button>
-							<button onclick="cancelPopUp()">Cancel</button>
-						</div>
-					</div>
-					
-				</div>
-				<div id="budget_year_list" class="scrollable_list"></div>
-			</div>
-		</div>
-
-		<div id="PAGE_budget_page" class="page hidden">
-			<div class="inner_budget">
-				<div id="selection_buttons">
-					<div id="year_container">
-						<button onclick="addNewYear()" class="budget_year_buttons">Add A New Year</button>
-						<div id="yearly_buttons"></div>
-					</div>
-					<div id="monthly_buttons"></div>
-				</div>
-				<div id="budget_controls">
-					<button onclick="addNewYear()">Add Income</button>
-				</div>
-				<div id="budget_container">
-					<div id="income_week"></div>
-					<div id="outgoing_week"></div>
-				</div>
+				<h1>Tax Years</h1>
+				<div id="tax_year_list" class="scrollable_list"></div>
 			</div>
 		</div>
 
@@ -329,9 +298,6 @@
 	<script src="PROJECTS/timesheetFunc.js"></script>
 	<script src="INVOICE/domBlocks.js"></script>
 	<script src="INVOICE/invoiceGen.js"></script>
-	<script src="BUDGET/domBlock.js"></script>
-	<script src="BUDGET/budgetGen.js"></script>
-	<script src="BUDGET/budgetPage.js"></script>
 	<script src="SETTINGS/updateAll.js"></script>
 	<script>VL.init();</script>
 	<script>if (window.module) module = window.module;</script>

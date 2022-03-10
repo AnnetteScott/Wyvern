@@ -1,4 +1,4 @@
-#PAGE_budget {
+#PAGE_tax_overview {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
@@ -7,7 +7,7 @@
     margin-top: var(--navbar_height);
     padding: 20px;
 }
-#PAGE_budget .section {
+#PAGE_tax_overview .section {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
@@ -17,7 +17,7 @@
     max-height: calc((100vh - 40px - var(--navbar_height)) / 3);
     margin-top: 20px 0px;
 }
-#PAGE_budget .top {
+#PAGE_tax_overview .top {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -25,15 +25,16 @@
     width: 100%;
     border-bottom: 1px solid black;
 }
-#PAGE_budget h1 {
+#PAGE_tax_overview h1 {
     display: block;
+    width: 100%;
     margin-bottom: 10px;
     font-family: 'Segoe UI', sans-serif;
     font-size: 22px;
     font-weight: 500;
-    
+    border-bottom: 1px solid black;
 }
-#PAGE_budget .scrollable_list {
+#PAGE_tax_overview .scrollable_list {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;

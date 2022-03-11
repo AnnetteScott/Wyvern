@@ -7,7 +7,7 @@ function printInvoice(id = 'PRINTtheTHING'){
       }
     });
     html += '<body onload="window.focus(); window.print()">'+$("#"+id).html()+'</body>';
-    let w = window.open("","print");
+    let w = window.open("","print", 'width=800,height=900');
     if (w) { 
 		w.document.write(html); 
 		w.document.close() 
@@ -91,7 +91,13 @@ function invoiceBottomTable(projDict, weekObj){
 			let colourRate = masterDict['colours'][(projDict['colourList'][i])]['colourRate'];
 			let colourQTY = weekObj['totalColour$'][(projDict['colourList'][i])];
 			colourQTY = colourQTY / colourRate;
+			if(isNaN(colourQTY)){
+				colourQTY = 0;
+			}
 			let colourTotal = weekObj['totalColour$'][(projDict['colourList'][i])];
+			if(colourTotal == undefined){
+				colourTotal = 0;
+			}
 			if(col == 0){
 				elem += `<div class="cell" cellid="${cellID}">${colourName}</div>`;
 			}
@@ -180,6 +186,7 @@ function invoiceBottomTable(projDict, weekObj){
 	while(masterDict['taxes'][dictKey]['income'].hasOwnProperty(incomeID)){
 		incomeID = generateID();
 	}
+	console.log(invoiceTotal)
 	masterDict['taxes'][dictKey]['income'][incomeID] = {'date': incomeDate, 'description': `Project: ${masterDict['projects'][invoiceChosenProjectID]['projectName']}, Weeks: ${$("#timeSheetSelection option:selected").attr('weekid')}`, 'amount': invoiceTotal}
 	
 

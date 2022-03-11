@@ -6,7 +6,7 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 const {download} = require("electron-dl");
 const { dialog } = require('electron');
 let mainWindow;
-let devMode = false;
+let devMode = true;
 let saveFilePath = app.getPath('userData') + "\\data\\user.json"
 if (!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");

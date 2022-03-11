@@ -18,24 +18,29 @@ function createNewTaxYear(){
 function loadTaxData(e){
     const taxYear = $(e.target).attr('taxYear');
     currentTaxYear = taxYear;
-    let taxDict = masterDict['taxes'][taxYear];
+    tax_table();
+    currentPage = 'tax_page';
+}
+
+function tax_table(){
+    let taxDict = masterDict['taxes'][currentTaxYear];
     let incomeTotal = 0;
     let netProfitTotal = 0;
     let expenseTotal = 0;
     let totalTax = 0;
     
-    let elem = DOM_Blocks_taxes.tax_row('Date', 'Description', 'Amount');
+    let elem = DOM_Blocks_taxes.tax_header('Date', 'Description', 'Amount');
     for (const [incomeID, incomeDict] of Object.entries(taxDict['income'])) {
-		elem += DOM_Blocks_taxes.tax_row(incomeDict['date'], incomeDict['description'], incomeDict['amount']);
+		elem += DOM_Blocks_taxes.tax_row('income', incomeID, incomeDict['date'], incomeDict['description'], incomeDict['amount']);
         incomeTotal += incomeDict['amount'];
         netProfitTotal += incomeDict['amount'];
 	}
     $('#tax_income').empty();
     $('#tax_income').append(elem);
     
-    elem = DOM_Blocks_taxes.tax_row('Date', 'Description', 'Amount');
+    elem = DOM_Blocks_taxes.tax_header('Date', 'Description', 'Amount');
     for(const [expenseID, expenseDict] of Object.entries(taxDict['expense'])){
-        elem += DOM_Blocks_taxes.tax_row(expenseDict['date'], expenseDict['description'], expenseDict['amount']);
+        elem += DOM_Blocks_taxes.tax_row('expense', expenseID, expenseDict['date'], expenseDict['description'], expenseDict['amount']);
         expenseTotal += expenseDict['amount'];
         netProfitTotal -= expenseDict['amount'];
 
@@ -54,8 +59,6 @@ function loadTaxData(e){
     taxDict['expenseTotal'] = expenseTotal;
     taxDict['netProfitTotal'] = netProfitTotal;
     taxDict['totalTax'] = totalTax;
-
-    currentPage = 'tax_page';
 }
 
 function calculateTax(amount){

@@ -115,6 +115,7 @@ function invoiceBottomTable(projDict, weekObj){
 		$(obj).append(elem)
 	});
 
+	invoiceTotal = parseFloat(invoiceTotal.toFixed(2));
 	$('.invoice_sheet_column').each(function(col, obj) {
 		let elem = '';
 		if(col == 0){
@@ -170,24 +171,28 @@ function invoiceBottomTable(projDict, weekObj){
 		}
 		$(obj).append(elem)
 	});
-	let thisYear = new Date().getFullYear();
-    let thisMonth = new Date().getMonth();
-    let dictKey;
-    if(thisMonth <= 2){
-        dictKey = `${thisYear - 1} - ${thisYear}`;
-    }else{
-        dictKey = `${thisYear} - ${thisYear + 1}`;
-    }
 
-	let incomeDate = $('#invoice_date').val() ? $('#invoice_date').val() : new Date().toDateString();
-	incomeDate = incomeDate.substring(4, incomeDate.length)
-
-	let incomeID = generateID();
-	while(masterDict['taxes'][dictKey]['income'].hasOwnProperty(incomeID)){
-		incomeID = generateID();
+	//Adds income total to tax overview
+	if($('#check_inovice_tax').is(":checked")){
+		let thisYear = new Date().getFullYear();
+		let thisMonth = new Date().getMonth();
+		let dictKey;
+		if(thisMonth <= 2){
+			dictKey = `${thisYear - 1} - ${thisYear}`;
+		}else{
+			dictKey = `${thisYear} - ${thisYear + 1}`;
+		}
+	
+		let incomeDate = $('#invoice_date').val() ? $('#invoice_date').val() : new Date().toDateString();
+		incomeDate = incomeDate.substring(4, incomeDate.length)
+	
+		let incomeID = generateID();
+		while(masterDict['taxes'][dictKey]['income'].hasOwnProperty(incomeID)){
+			incomeID = generateID();
+		}
+		console.log(invoiceTotal)
+		masterDict['taxes'][dictKey]['income'][incomeID] = {'date': incomeDate, 'description': `Project: ${masterDict['projects'][invoiceChosenProjectID]['projectName']}, Weeks: ${$("#timeSheetSelection option:selected").attr('weekid')}`, 'amount': invoiceTotal}
 	}
-	console.log(invoiceTotal)
-	masterDict['taxes'][dictKey]['income'][incomeID] = {'date': incomeDate, 'description': `Project: ${masterDict['projects'][invoiceChosenProjectID]['projectName']}, Weeks: ${$("#timeSheetSelection option:selected").attr('weekid')}`, 'amount': invoiceTotal}
 	
 
 }

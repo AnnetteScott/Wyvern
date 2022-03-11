@@ -92,6 +92,13 @@
     padding: 20px;
 }
 
+#tax_page_controls{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 #tables{
     display: flex;
     flex-flow: row;

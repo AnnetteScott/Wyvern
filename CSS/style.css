@@ -64,6 +64,11 @@ input {
 input:focus {
     border-color: blue;
 }
+
+#check_inovice_tax{
+    width: 15px;
+}
+
 button, .button {
     margin: 5px 0px;
     padding: 5px 20px;

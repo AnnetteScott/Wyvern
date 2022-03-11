@@ -4,7 +4,7 @@ let clockInDate;
 
 function clockIn(){
     let today = new Date();
-    clockInDate = (today.getMonth() + 1) + "/" + today.getDate() + "/" + (today.getFullYear () - 2000);
+    clockInDate = (today.getMonth() + 1) + "/" + today.getDate() + "/" + (today.getFullYear() - 2000);
     let minutes = (((today.getMinutes() + 7.5)/15 | 00) * 15) % 60;
     if (minutes == 0){
         minutes = '00'

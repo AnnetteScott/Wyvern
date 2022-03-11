@@ -45,8 +45,40 @@ function addToDate(date, daysToAdd){
             year++;
         }
 	}
+    if(day < 10 && month < 10){
+        return "0" + day.toString() + "/" + "0" + month.toString() + "/" + year.toString()
+    }else if(day < 10 && month >= 10){
+        return "0" + day.toString() + "/" + month.toString() + "/" + year.toString()
+    }else if(day >= 10 && month < 10){
+        return day.toString() + "/" + "0" +  month.toString() + "/" + year.toString()
+    }else{
+        return day.toString() + "/" + month.toString() + "/" + year.toString()
+    } 
+}
 
-    return day.toString() + "/" + month.toString() + "/" + year.toString()
+function addToDateNoYear(date, daysToAdd, year = 0){
+    let day = parseInt(date.split("/")[0]);
+    let month = parseInt(date.split("/")[1]);
+
+	day += daysToAdd;
+
+	while(day > getMonthDays(month, year)){
+		day -= getMonthDays(month, year);
+		month++;
+        if(month > 12){
+            month -= 12;
+            year++;
+        }
+	}
+    if(day < 10 && month < 10){
+        return "0" + day.toString() + "/" + "0" + month.toString()
+    }else if(day < 10 && month >= 10){
+        return "0" + day.toString() + "/" + month.toString()
+    }else if(day >= 10 && month < 10){
+        return day.toString() + "/" + "0" +  month.toString()
+    }else{
+        return day.toString() + "/" + month.toString()
+    } 
 }
 
 function mericaDate(date){

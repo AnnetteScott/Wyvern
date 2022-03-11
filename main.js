@@ -6,11 +6,11 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 const {download} = require("electron-dl");
 const { dialog } = require('electron');
 let mainWindow;
-let devMode = false;
+let devMode = true;
 let saveFilePath = app.getPath('userData') + "\\data\\user.json"
 if (!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "budgets": {}}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}}));
 
 }
 
@@ -131,7 +131,7 @@ function open_file(){
         let path = result['filePaths'][0];
         let masterDict = JSON.parse(read_file(path));
         fs.writeFileSync(saveFilePath, JSON.stringify(masterDict));
-        require('electron-reload')(__dirname);
+        mainWindow.reload()
     }).catch(err => {
         console.log(err)
     });
@@ -147,8 +147,8 @@ ipcMain.on('master_dict_read', function(event, arg) {
 
 
 //auto save
-let minutes = 5;
+/* let minutes = 5;
 let time = minutes * 60 * 1000;
 setInterval(function() {
     save_Data();
-}, time); 
+}, time);  */

@@ -30,8 +30,8 @@ function generateInvoice(){
 
 	let clientDict = masterDict['clients'][$("#clientSelection option:selected").attr('clientid')];
 	let userDict = masterDict['users'][($("#userSelection option:selected").attr('userid'))];
-	let projWeek = masterDict['projects'][invoiceChosenProjectID]['weeks'][$("#timeSheetSelection option:selected").attr('weekid')]
 	let projDict = masterDict['projects'][invoiceChosenProjectID];
+	let projWeek = projDict['weeks'][$("#timeSheetSelection option:selected").attr('weekid')];
 
 	//User
 	$('#user_name_invoice').text(userDict['userName']);
@@ -164,6 +164,23 @@ function invoiceBottomTable(projDict, weekObj){
 		}
 		$(obj).append(elem)
 	});
+	let thisYear = new Date().getFullYear();
+    let thisMonth = new Date().getMonth();
+    let dictKey;
+    if(thisMonth <= 2){
+        dictKey = `${thisYear - 1} - ${thisYear}`;
+    }else{
+        dictKey = `${thisYear} - ${thisYear + 1}`;
+    }
+
+	let incomeDate = $('#invoice_date').val() ? $('#invoice_date').val() : new Date().toDateString();
+	incomeDate = incomeDate.substring(4, incomeDate.length)
+
+	let incomeID = generateID();
+	while(masterDict['taxes'][dictKey]['income'].hasOwnProperty(incomeID)){
+		incomeID = generateID();
+	}
+	masterDict['taxes'][dictKey]['income'][incomeID] = {'date': incomeDate, 'description': `Project: ${masterDict['projects'][invoiceChosenProjectID]['projectName']}, Weeks: ${$("#timeSheetSelection option:selected").attr('weekid')}`, 'amount': invoiceTotal}
 	
 
 }

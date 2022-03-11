@@ -105,6 +105,7 @@ function updateAll(){
 	elem += '</select>';
 	$("#user_selection_box").empty();
 	$("#user_selection_box").append(elem);
+
 }
 
 
@@ -121,6 +122,33 @@ function updateTimeSheetSelection(){
 		$("#week_selection_box").empty();
 		$("#week_selection_box").append(elem);
 	}
-}
 
-updateAll();
+	//Taxes Updater
+	elem = '';
+	for (const [taxYear, taxDict] of Object.entries(masterDict['taxes'])) {
+		elem += DOM_Blocks_taxes.tax_card(taxYear);
+	}
+	$('#tax_year_list').empty();
+	$('#tax_year_list').append(elem);
+
+	if(currentPage === 'tax_page'){
+		let taxDict = masterDict['taxes'][currentTaxYear];
+		let netProfitTotal = taxDict['incomeTotal'];
+		let expenseTotal = 0;
+
+		elem = DOM_Blocks_taxes.tax_row('Date', 'Description', 'Amount');
+		for(const [expenseID, expenseDict] of Object.entries(taxDict['expense'])){
+			elem += DOM_Blocks_taxes.tax_row(expenseDict['date'], expenseDict['description'], expenseDict['amount']);
+			expenseTotal += expenseDict['amount'];
+
+		}
+		netProfitTotal -= expenseTotal;
+		$('#tax_expense').empty();
+		$('#tax_expense').append(elem);
+
+		$('#total_expense').text(`Total Expenses: $${expenseTotal}`);
+		$('#total_net_profit').text(`Net Profit: $${netProfitTotal}`);
+		$('#total_tax').text(`Total Tax & ACC: $${parseFloat(calculateTax(netProfitTotal).toFixed(2))}`);
+	}
+
+}

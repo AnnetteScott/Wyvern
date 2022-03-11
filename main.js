@@ -6,7 +6,7 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 const {download} = require("electron-dl");
 const { dialog } = require('electron');
 let mainWindow;
-let devMode = true;
+let devMode = false;
 let saveFilePath = app.getPath('userData') + "\\data\\user.json"
 if (!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
@@ -147,8 +147,8 @@ ipcMain.on('master_dict_read', function(event, arg) {
 
 
 //auto save
-/* let minutes = 5;
+let minutes = 5;
 let time = minutes * 60 * 1000;
 setInterval(function() {
     save_Data();
-}, time);  */
+}, time); 

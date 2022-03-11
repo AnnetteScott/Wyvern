@@ -16,6 +16,7 @@ var invoiceChosenProjectID = '';
 var currentProjectID = '';
 var selectedBudgetID = '';
 var selectedBudgetYear;
+var currentTaxYear;
 
 
 

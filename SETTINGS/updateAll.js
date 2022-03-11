@@ -130,6 +130,25 @@ function updateTimeSheetSelection(){
 	}
 	$('#tax_year_list').empty();
 	$('#tax_year_list').append(elem);
-}
 
-//updateAll();
+	if(currentPage === 'tax_page'){
+		let taxDict = masterDict['taxes'][currentTaxYear];
+		let netProfitTotal = taxDict['incomeTotal'];
+		let expenseTotal = 0;
+
+		elem = DOM_Blocks_taxes.tax_row('Date', 'Description', 'Amount');
+		for(const [expenseID, expenseDict] of Object.entries(taxDict['expense'])){
+			elem += DOM_Blocks_taxes.tax_row(expenseDict['date'], expenseDict['description'], expenseDict['amount']);
+			expenseTotal += expenseDict['amount'];
+
+		}
+		netProfitTotal -= expenseTotal;
+		$('#tax_expense').empty();
+		$('#tax_expense').append(elem);
+
+		$('#total_expense').text(`Total Expenses: $${expenseTotal}`);
+		$('#total_net_profit').text(`Net Profit: $${netProfitTotal}`);
+		$('#total_tax').text(`Total Tax & ACC: $${parseFloat(calculateTax(netProfitTotal).toFixed(2))}`);
+	}
+
+}

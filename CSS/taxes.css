@@ -105,6 +105,15 @@
     overflow-y: scroll;
 }
 
+#tables > div > div > p{
+    display: flex;
+    justify-content: center;
+}
+
+#tables > div div:nth-child(1){
+    border-bottom: 1px solid black;
+}
+
 .tax_row{
     display: flex;
     flex-direction: row;
@@ -114,10 +123,12 @@
 .tax_row p:nth-child(1){
     width: 110px;
     min-width: 110px;
+    border-right: 1px solid black;
 }
 
 .tax_row p:nth-child(2){
     width: 100%;
+    border-right: 1px solid black;
 }
 
 .tax_row p:nth-child(3){
@@ -125,3 +136,13 @@
     min-width: 80px;
 }
 
+#tax_overview_totals{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#tax_overview_totals > div{
+    width: 100%;
+}

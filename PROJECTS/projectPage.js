@@ -3,8 +3,9 @@
 function loadProjectData(e){
     const projectID = $(e.target).attr('projectid');
     currentProjectID = projectID;
-    let projectDict = masterDict['projects'][projectID];
-
+    const projectDict = masterDict['projects'][projectID];
+    const projectName = projectDict['projectName'];
+    
     //Create the colour ribbon.
     let elemRibbon = DOM_Blocks_projects.colour_ribbon('White', '#FFF', 'colourWhite', projectID); //Always add white.
     projectDict['colourList'].forEach(colourID => { //Add every colour from the selected project's dictionary.
@@ -31,5 +32,7 @@ function loadProjectData(e){
     $('#timesheet_container').empty();
 
     //Change to the individual project page.
+    $(elements['navTitle']).text(projectName);
     currentPage = 'project_page';
+
 }

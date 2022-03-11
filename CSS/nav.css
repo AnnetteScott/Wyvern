@@ -48,7 +48,7 @@ nav .active {
 
 #nav_menu li {
     list-style: none;
-    color: blue;
+    color: black;
     opacity: 0;
     user-select: none;
     cursor: pointer;

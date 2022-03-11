@@ -24,7 +24,7 @@ function toggleNavMenu(){
 VL.add('currentPageTitle', function(){
     if(currentPageTitle === 'home'){
         $(elements['navTitle']).text('wyvern');
-    }else{
+    }else if(currentPageTitle != 'project page'){
         $(elements['navTitle']).text(currentPageTitle);
     }
 });

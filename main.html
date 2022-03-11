@@ -3,6 +3,7 @@
 	<head>
 		<title>Home</title>
 		<link rel="stylesheet" href="CSS/root.css">
+		<link rel="stylesheet" href="CSS/background.css">
 		<link rel="stylesheet" href="CSS/nav.css">
 		<link rel="stylesheet" href="CSS/style.css">
 		<link rel="stylesheet" href="CSS/settings.css">
@@ -29,6 +30,61 @@
 		<div id="PAGE_home" class="page hidden">
 			<h1>Welcome To Wyvern!</h1>
 			<h2>An Invoicing, Timesheet and Financial Tax Overview Software</h2>
+		<div class="bubbles">
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+			<div class="bubble"></div>
+		</div>
+
+		<div id="PAGE_home" class="page">
+			<img src="./Images/WyvernIcon.ico" draggable="false" alt="" style="filter: grayscale(1) brightness(4);">
+			<h1>Welcome To Wyvern!</h1>
+			<h2>An Invoicing, Timesheet, and Financial Budgeting Software</h2>
+			<br>
+			<br>
+			<br>
+			<p>Click the menu in the top right to get started.</p>
+			<br>
+			<br>
+			<br>
+			<button onclick="checkForUpdates()">Check for updates</button>
 		</div>
 
 		<div id="PAGE_settings" class="page hidden">
@@ -264,6 +320,28 @@
 			</div>
 		</div>
 
+		<div id="update_pop_up" class="input_box">
+			<div class="creation_form">
+				<p id="update_heading"></p>
+				<p id="update_version"></p>
+				<p id="update_title"></p>
+				<br>
+				<a id="update_release_link" class="button" href="" onclick='downloadUpdate()' download>Download</a>
+				<button onclick="cancelPopUp()">Cancel</button>
+			</div>
+		</div>
+
+		<div id="no_update_pop_up" class="input_box">
+			<div class="creation_form">
+				<p>No updates available</p>
+			</div>
+		</div>
+		
+		<div id="download_pop_up" class="input_box">
+			<div class="creation_form">
+				<p id="download_progress_box"></p>
+			</div>
+		</div>
 
 
 		<div id="PAGE_tax_overview" class="page">
@@ -317,6 +395,7 @@
 	<script src="JS/app.js"></script>
 	<script src="JS/nav.js"></script>
 	<script src="JS/generalFunctions.js"></script>
+	<script src="JS/updater.js"></script>
 
 	<script src="SETTINGS/cancel.js"></script>
 	<script src="SETTINGS/clientGen.js"></script>

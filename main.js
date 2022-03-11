@@ -3,6 +3,7 @@ const path = require('path');
 const url = require('url');
 let fs = require("fs");
 const {app, BrowserWindow, Menu, ipcMain} = electron;
+const {download} = require("electron-dl");
 const { dialog } = require('electron');
 let mainWindow;
 let devMode = true;
@@ -36,6 +37,13 @@ app.on('ready', function(){
 			app.exit();
 		}, 1500)
     });
+    mainWindow.webContents.send("download_folder", app.getPath('downloads'));
+    ipcMain.on("downloadUpdate", (event, info) => {
+        info.properties.onProgress = status => mainWindow.webContents.send("download progress", status);
+        download(BrowserWindow.getFocusedWindow(), info.url, info.properties)
+            .then(dl => mainWindow.webContents.send("download complete", dl.getSavePath()));
+    });
+
     if(devMode){
         // Open the DevTools.
         mainWindow.webContents.openDevTools();
@@ -93,7 +101,7 @@ function read_file(path){
 
 
 function save_Data(){
-    mainWindow.webContents.send("read_from_var")
+    mainWindow.webContents.send("read_from_var");
     ipcMain.on('readed_var', function(event, data) {
         fs.writeFileSync(saveFilePath , JSON.stringify(data));
     })

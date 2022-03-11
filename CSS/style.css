@@ -25,6 +25,29 @@
     height: 100%;
 }
 
+#PAGE_home::before{
+    content: "";
+    position: absolute;
+    z-index: -1;
+    display: block;
+    width: min(70vw, 70vh);
+    aspect-ratio: 1;
+    border: 3px solid #ffffff40;
+    border-radius: 50%;
+    transform: translateY(var(--navbar_height));
+}
+#PAGE_home::after{
+    content: "";
+    position: absolute;
+    z-index: -1;
+    display: block;
+    width: min(80vw, 80vh);
+    aspect-ratio: 1;
+    border: 3px solid #ffffff20;
+    border-radius: 50%;
+    transform: translateY(var(--navbar_height));
+}
+
 input {
     width: 200px;
     margin-bottom: 15px;
@@ -41,16 +64,18 @@ input {
 input:focus {
     border-color: blue;
 }
-button {
+button, .button {
     margin: 5px 0px;
     padding: 5px 20px;
     color: white;
+    font-family: 'Segoe UI', sans-serif;
+    text-decoration: none;
     background: linear-gradient(45deg, #05e0f0, #050779);
     border: unset;
     border-radius: 5px;
     cursor: pointer;
 }
-button:hover {
+button:hover, .button:hover {
     background: linear-gradient(45deg, #c30cdb, #44058d);
 }
 .active_button {

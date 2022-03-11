@@ -1,6 +1,6 @@
 {
-  "name": "wyvern",
-  "version": "2.5.0",
+  "name": "Wyvern",
+  "version": "2.6.3",
   "description": "A simple Wyvern App",
   "main": "main.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "electron-builder": "^22.14.13"
   },
   "dependencies": {
+    "electron-dl": "^3.3.0",
     "electron-reload": "^2.0.0-alpha.1"
   }
 }

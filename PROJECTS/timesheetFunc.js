@@ -14,9 +14,15 @@ function clockIn(){
         hours++;
         hours = hours % 24;
     }
-    let time = hours + ":" + minutes;
+    let time;
+    if(hours < 10){
+        time = "0" + hours + ":" + minutes;
+    }else{
+        time = hours + ":" + minutes;
+    }
 
     cellNum = timeList.indexOf(time) + 1;
+    console.log(time, cellNum)
     let weeksDict = masterDict['projects'][currentProjectID]['weeks'];
 
     let colIndex = 1;
@@ -49,6 +55,7 @@ function clockIn(){
             weekID = $(`[cellid=${cellID}]`).attr('weekid');
 
             $(`[cellid=${cellID}]`)[0].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });    
+            selectedCellsList = [cellID];
             break;
         }
       

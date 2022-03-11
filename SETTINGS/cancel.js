@@ -33,7 +33,19 @@ function cancelPopUp(){
     $("#create_project_date").removeClass('form_error');
     $("#create_project_duration").removeClass('form_error');
     $("#create_project_date").css({"filter": "none", "pointer-events": "unset"});
-
+  
     //Tax Overview
     $('#expense_pop_up').removeClass('input_box_open');
+
+    //Colour
+    $("#colour_creation_name").val('');
+    $("#colour_creation_rate").val('');
+    $("#colour_creation_colour").val('');
+    $('#colour_pop_up').removeClass('input_box_open');
+
+
+    //Update
+    $('#update_pop_up').removeClass('input_box_open');
+    $('#no_update_pop_up').removeClass('input_box_open');
+    $('#download_pop_up').removeClass('input_box_open');
 }

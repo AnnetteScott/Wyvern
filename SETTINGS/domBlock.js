@@ -23,7 +23,7 @@ let DOM_Blocks_Settings = {
     colour_card: function (colourName, color, rate, colourID){
         return '<div class="colour_card">'
         +          `<div style="background-color: ${color}"></div>`
-        +          `<p colourid="${colourID}" onclick="editColour(event)" style="cursor: pointer;">${colourName}</p>`
+        +          `<p colourid="${colourID}" onclick="editColour(event)" style="cursor: pointer; width: 250px;">${colourName}</p>`
         +          `<p style="cursor: default;">$${rate}</p>`
         +          `<div class="colour_card_checkbox_list"></div>`
         +      '</div>';

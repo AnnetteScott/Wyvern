@@ -1,5 +1,5 @@
 var masterDict = {"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}}
-var wyvern_version = '3.0.0';
+var wyvern_version = '3.0.1';
 
 var downloadsFolder = '';
 

@@ -1,4 +1,9 @@
 function timesheetGen(e, chosenID = '', chosenWeek = ''){
+    $('.project_week_buttons').each((index, year_button) => {
+        $(year_button).removeClass('active_button');
+    });
+    
+
     //Variables
     let projectID;
     let weekID;
@@ -9,7 +14,8 @@ function timesheetGen(e, chosenID = '', chosenWeek = ''){
         projectID = chosenID;
         weekID = chosenWeek;
     }
-    
+    $(`[weektitle="${weekID}"]`).addClass('active_button');
+
     const projWeek = masterDict['projects'][projectID]['weeks'][weekID]
     let columnCount = columnLetter.length;
     let rowCount = 0;

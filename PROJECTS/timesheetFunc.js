@@ -22,7 +22,6 @@ function clockIn(){
     }
 
     cellNum = timeList.indexOf(time) + 1;
-    console.log(time, cellNum)
     let weeksDict = masterDict['projects'][currentProjectID]['weeks'];
 
     let colIndex = 1;
@@ -58,7 +57,6 @@ function clockIn(){
             selectedCellsList = [cellID];
             break;
         }
-      
     }
     
 }

@@ -144,6 +144,9 @@ function saveTax(e){
     masterDict['taxes'][dictKey][type][rowID]['description'] = $(`#${type}_des`).val();
     masterDict['taxes'][dictKey][type][rowID]['amount'] = parseFloat($(`#${type}_amount`).val());
     cancelPopUp();
+    $(`#create_${type}_button`).removeClass('hidden');
+    $(`#save_${type}_button`).addClass('hidden');
+    $(`#delete_${type}_button`).addClass('hidden');
 }
 
 function deleteTax(e){
@@ -159,4 +162,7 @@ function deleteTax(e){
     }
     delete masterDict['taxes'][dictKey][type][rowID];
     cancelPopUp();
+    $(`#create_${type}_button`).removeClass('hidden');
+    $(`#save_${type}_button`).addClass('hidden');
+    $(`#delete_${type}_button`).addClass('hidden');
 }

@@ -34,3 +34,14 @@ ipcRenderer.on("download_folder", (event, filePath) => {
     downloadsFolder = filePath;
     console.log(filePath)
 });
+
+
+//Save File Checker
+if(masterDict['saveVersion'] != saveVersion){
+    convertSave();
+}else if(!(masterDict.hasOwnProperty('saveVersion'))){
+    convertSave();
+}
+function convertSave(){
+    masterDict['saveVersion'] = saveVersion;
+}

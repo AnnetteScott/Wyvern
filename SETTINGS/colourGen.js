@@ -2,7 +2,7 @@ let selectedColourID = '';
 
 function addNewColour(){
     let colourName = $("#colour_creation_name").val();
-    let colourRate = $("#colour_creation_rate").val();
+    let colourRate = (parseFloat($("#colour_creation_rate").val())).toFixed(2);
     let colour = $("#colour_creation_colour").val();
 
     if(colourName == ''){

@@ -10,8 +10,7 @@ let devMode = false;
 let saveFilePath = app.getPath('userData') + "\\data\\user.json"
 if (!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}}));
-
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}, "saveVersion": 2}));
 }
 
 

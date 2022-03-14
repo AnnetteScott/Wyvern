@@ -97,7 +97,7 @@ function updateAll(){
 	$("#client_selection_box").append(elem);
 
 	//Add User
-	elem = '<label for="userSelection">Choose a user: </label>';
+	elem = '<label for="userSelection">Choose a User: </label>';
     elem += '<select  name="userSelection" id="userSelection">';
 	for(const [userID, userDict] of Object.entries(masterDict['users'])){
 		elem += `<option userid="${userID}">${userDict['user']}</option>`;
@@ -124,13 +124,12 @@ function updateAll(){
 function updateTimeSheetSelection(){
 	if(Object.keys(masterDict['projects']).length != 0){
 		invoiceChosenProjectID = $("#projectSelection option:selected").attr('projectid');
-		let elem = '<label for="timeSheetSelection">Choose A Week: </label>';
+		let elem = '<label for="timeSheetSelection">Choose a Week: </label>';
     	elem += '<select id="timeSheetSelection">';
-		for(const [weekID] of Object.entries(masterDict['projects'][invoiceChosenProjectID]['weeks'])){
-			elem += `<option projectid="${invoiceChosenProjectID}" weekid="${weekID}">${weekID}</option>`;
+		for(const [weekID, weekDict] of Object.entries(masterDict['projects'][invoiceChosenProjectID]['weeks'])){
+			elem += `<option projectid="${invoiceChosenProjectID}" weekid="${weekID}">${weekID} : ${weekDict['startDate']}</option>`;
 		}
 		elem += '</select>';
-		
 		$("#week_selection_box").empty();
 		$("#week_selection_box").append(elem);
 	}

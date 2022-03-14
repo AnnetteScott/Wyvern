@@ -123,6 +123,7 @@
     margin-top: -3px;
     font-size: 14px;
     font-family: 'Segoe UI', sans-serif;
+    width: 25ch;
 }
 .dropdown-check-list .checklist_anchor {
     position: relative;
@@ -132,6 +133,7 @@
     border: 1px solid white;
     border-radius: 5px;
     user-select: none;
+    width: 100%;
 }
 .dropdown-check-list .checklist_anchor:after {
     content: "";

@@ -3,6 +3,18 @@
 	--i_color: dodgerblue;
 }
 
+.uniform_drop_down select{
+	width: 125px;
+	text-align: center;
+}
+
+.uniform_drop_down{
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
 #PRINTtheTHING{
 	display: flex;
 	flex-direction: row;

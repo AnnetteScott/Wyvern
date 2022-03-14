@@ -39,7 +39,9 @@ function cancelPopUp(){
     $('#income_pop_up').removeClass('input_box_open');
     $('#expense_pop_up').removeClass('input_box_open');
     $("#expense_des").val('');
+    $("#income_des").val('')
     $("#expense_amount").val('')
+    $("#income_amount").val('')
 
     //Colour
     $("#colour_creation_name").val('');

@@ -42,6 +42,12 @@ function cancelPopUp(){
     $("#income_des").val('')
     $("#expense_amount").val('')
     $("#income_amount").val('')
+    $(`#create_income_button`).removeClass('hidden');
+    $(`#save_income_button`).addClass('hidden');
+    $(`#delete_income_button`).addClass('hidden');
+    $(`#create_expense_button`).removeClass('hidden');
+    $(`#save_expense_button`).addClass('hidden');
+    $(`#delete_expense_button`).addClass('hidden');
 
     //Colour
     $("#colour_creation_name").val('');

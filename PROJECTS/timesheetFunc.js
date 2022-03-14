@@ -33,9 +33,9 @@ function clockIn(){
             let nextDate = mericaDate(weekDict['startDate']);
             while(clockInDate != nextDate){
                 colIndex++;
-                colID = columnLetter[colIndex];
                 nextDate = mericaDate($(`[cellid=${colID}0]`).text());
             }
+            colID = columnLetter[colIndex];
             const cellID = colID + cellNum.toString();
     
             
@@ -50,6 +50,7 @@ function clockIn(){
                     
                 });
             }
+            console.log(columnLetter)
             $(`[cellid=${cellID}]`).css({"background-color": "#D1D3D9",  "border-color": "cyan"});
             weekID = $(`[cellid=${cellID}]`).attr('weekid');
 

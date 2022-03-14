@@ -14,10 +14,10 @@ let DOM_Blocks_taxes = {
 
     },
     tax_row: function (type, ID, date, description, amount){
-        return `<div type="${type}" rowid=${ID} class="tax_row" style="cursor: pointer;" onclick="editRow()">`
-        +          `<p>${date}</p>`
-        +          `<p>${description}</p>`
-        +          `<p>$${amount}</p>`
+        return `<div taxtype="${type}" rowid=${ID} class="tax_row" style="cursor: pointer;" onclick="editRow(event)">`
+        +          `<p style="pointer-events: none;">${date}</p>`
+        +          `<p style="pointer-events: none;">${description}</p>`
+        +          `<p style="pointer-events: none;">$${amount}</p>`
         +      '</div>';
 
     }

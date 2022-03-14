@@ -87,3 +87,33 @@ function mericaDate(date){
     let year = parseInt(date.split("/")[2]);
     return month + "/" + day + "/" + year
 }
+
+function calculateTax(amount){
+    let accPercent = 0.014;
+    let firstTax = [0.105, 14000];
+    let secondTax = [0.175, 48000];
+    let thirdTax = [0.3, 70000];
+    let fourthTax = [0.33, 180000];
+    let fifthTax = [0.39]; 
+
+    let accAmount = amount * accPercent;
+
+    let firstAmount = amount > firstTax[1] ? firstTax[1] * firstTax[0]: amount * firstTax[0];
+    
+    amount = Math.max(0, amount - firstTax[1]);
+
+    let secondAmount = amount > secondTax[1] ? secondTax[1] * secondTax[0]: amount * secondTax[0];
+    amount = Math.max(0, amount - secondTax[1]);
+
+    let thirdAmount = amount > thirdTax[1] ? thirdTax[1] * thirdTax[0]: amount * thirdTax[0];
+    amount = Math.max(0, amount - thirdTax[1]);
+
+    let fourthAmount = amount > fourthTax[1] ? fourthTax[1] * fourthTax[0]: amount * fourthTax[0];
+    amount = Math.max(0, amount - fourthTax[1]);
+    
+    let fifthAmount = amount * fifthTax[0];
+
+    let totalTax = firstAmount + secondAmount + thirdAmount + fourthAmount + fifthAmount;
+
+    return totalTax + accAmount
+}

@@ -36,6 +36,10 @@ function cancelPopUp(){
   
     //Tax Overview
     $('#expense_pop_up').removeClass('input_box_open');
+    $('#income_pop_up').removeClass('input_box_open');
+    $('#expense_pop_up').removeClass('input_box_open');
+    $("#expense_des").val('');
+    $("#expense_amount").val('')
 
     //Colour
     $("#colour_creation_name").val('');

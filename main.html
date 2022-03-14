@@ -365,7 +365,10 @@
 					<label for="income_amount">Amount $:</label>
 					<input id="income_amount" type="number" step="0.01"></input>
 
-					<button onclick="addNewIncome()">Create Expense</button>
+					<button id="create_income_button" onclick="addNewIncome()">Create Income</button>
+					<button taxtype="income" rowid="" id="save_income_button" class="hidden" onclick="saveTax(event)">Save Income</button>
+					<button taxtype="income" rowid="" id="delete_income_button" class="hidden" onclick="deleteTax(event)">Delete Income</button>
+
 					<button onclick="cancelPopUp()">Cancel</button>
 				</div>
 			</div>
@@ -377,7 +380,10 @@
 					<label for="expense_amount">Amount $:</label>
 					<input id="expense_amount" type="number" step="0.01"></input>
 
-					<button onclick="addNewExpense()">Create Expense</button>
+					<button id="create_expense_button" onclick="addNewExpense()">Create Expense</button>
+					<button taxtype="expense" rowid="" id="save_expense_button" class="hidden" onclick="saveTax(event)">Save Expense</button>
+					<button taxtype="expense" rowid="" id="delete_expense_button" class="hidden" onclick="deleteTax(event)">Delete Expense</button>
+
 					<button onclick="cancelPopUp()">Cancel</button>
 				</div>
 			</div>

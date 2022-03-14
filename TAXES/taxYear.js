@@ -61,41 +61,11 @@ function tax_table(){
     taxDict['totalTax'] = totalTax;
 }
 
-function calculateTax(amount){
-    let accPercent = 0.014;
-    let firstTax = [0.105, 14000];
-    let secondTax = [0.175, 48000];
-    let thirdTax = [0.3, 70000];
-    let fourthTax = [0.33, 180000];
-    let fifthTax = [0.39]; 
-
-    let accAmount = amount * accPercent;
-
-    let firstAmount = amount > firstTax[1] ? firstTax[1] * firstTax[0]: amount * firstTax[0];
-    
-    amount = Math.max(0, amount - firstTax[1]);
-
-    let secondAmount = amount > secondTax[1] ? secondTax[1] * secondTax[0]: amount * secondTax[0];
-    amount = Math.max(0, amount - secondTax[1]);
-
-    let thirdAmount = amount > thirdTax[1] ? thirdTax[1] * thirdTax[0]: amount * thirdTax[0];
-    amount = Math.max(0, amount - thirdTax[1]);
-
-    let fourthAmount = amount > fourthTax[1] ? fourthTax[1] * fourthTax[0]: amount * fourthTax[0];
-    amount = Math.max(0, amount - fourthTax[1]);
-    
-    let fifthAmount = amount * fifthTax[0];
-
-    let totalTax = firstAmount + secondAmount + thirdAmount + fourthAmount + fifthAmount;
-
-    return totalTax + accAmount
-}
-
 function addNewExpense(){
     let expenseDate = new Date().toDateString();
     expenseDate = expenseDate.substring(4, expenseDate.length)
     let expenseDescription = $("#expense_des").val();
-    let expenseAmount = parseInt($("#expense_amount").val());
+    let expenseAmount = parseFloat($("#expense_amount").val());
 
     let thisYear = new Date().getFullYear();
     let thisMonth = new Date().getMonth();
@@ -112,5 +82,81 @@ function addNewExpense(){
 	}
 	masterDict['taxes'][dictKey]['expense'][expenseID] = {'date': expenseDate, 'description': expenseDescription, 'amount': expenseAmount}
 
+    cancelPopUp();
+}
+
+function addnewIncome(){
+    let incomeDate = new Date().toDateString();
+    incomeDate = incomeDate.substring(4, incomeDate.length)
+    let incomeDescription = $("#income_des").val();
+    let incomeAmount = parseFloat($("#income_amount").val());
+
+    let thisYear = new Date().getFullYear();
+    let thisMonth = new Date().getMonth();
+    let dictKey;
+    if(thisMonth <= 2){
+        dictKey = `${thisYear - 1} - ${thisYear}`;
+    }else{
+        dictKey = `${thisYear} - ${thisYear + 1}`;
+    }
+
+	let incomeID = generateID();
+	while(masterDict['taxes'][dictKey]['income'].hasOwnProperty(incomeID)){
+		incomeID = generateID();
+	}
+	masterDict['taxes'][dictKey]['income'][incomeID] = {'date': incomeDate, 'description': incomeDescription, 'amount': incomeAmount}
+
+    cancelPopUp();
+}
+
+function editRow(e){
+    const type = $(e.target).attr('taxtype');
+    const rowID = $(e.target).attr('rowid');
+    $(`#${type}_pop_up`).addClass('input_box_open');
+    $(`#create_${type}_button`).addClass('hidden');
+    $(`#save_${type}_button`).removeClass('hidden');
+    $(`#delete_${type}_button`).removeClass('hidden');
+    $(`#save_${type}_button`).attr(`rowid`, `${rowID}`);
+    $(`#delete_${type}_button`).attr(`rowid`, `${rowID}`);
+    let thisYear = new Date().getFullYear();
+    let thisMonth = new Date().getMonth();
+    let dictKey;
+    if(thisMonth <= 2){
+        dictKey = `${thisYear - 1} - ${thisYear}`;
+    }else{
+        dictKey = `${thisYear} - ${thisYear + 1}`;
+    }
+    $(`#${type}_des`).val(masterDict['taxes'][dictKey][type][rowID]['description']);
+    $(`#${type}_amount`).val(masterDict['taxes'][dictKey][type][rowID]['amount']);
+}
+
+function saveTax(e){
+    const type = $(e.target).attr('taxtype');
+    const rowID = $(e.target).attr('rowid');
+    let thisYear = new Date().getFullYear();
+    let thisMonth = new Date().getMonth();
+    let dictKey;
+    if(thisMonth <= 2){
+        dictKey = `${thisYear - 1} - ${thisYear}`;
+    }else{
+        dictKey = `${thisYear} - ${thisYear + 1}`;
+    }
+    masterDict['taxes'][dictKey][type][rowID]['description'] = $(`#${type}_des`).val();
+    masterDict['taxes'][dictKey][type][rowID]['amount'] = parseFloat($(`#${type}_amount`).val());
+    cancelPopUp();
+}
+
+function deleteTax(e){
+    const type = $(e.target).attr('taxtype');
+    const rowID = $(e.target).attr('rowid');
+    let thisYear = new Date().getFullYear();
+    let thisMonth = new Date().getMonth();
+    let dictKey;
+    if(thisMonth <= 2){
+        dictKey = `${thisYear - 1} - ${thisYear}`;
+    }else{
+        dictKey = `${thisYear} - ${thisYear + 1}`;
+    }
+    delete masterDict['taxes'][dictKey][type][rowID];
     cancelPopUp();
 }

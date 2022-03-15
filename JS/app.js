@@ -3,6 +3,11 @@ var ipcRenderer = require("electron").ipcRenderer;
 ipcRenderer.send('master_dict_read');
 ipcRenderer.on('master_dict_reading', function(event, data) {
     masterDict = {...data}
+    if(masterDict['saveVersion'] != saveVersion){
+        convertSave();
+    }else if(!(masterDict.hasOwnProperty('saveVersion'))){
+        convertSave();
+    }
 })
 
 ipcRenderer.on('read_from_var', function(event, arg) {
@@ -37,11 +42,9 @@ ipcRenderer.on("download_folder", (event, filePath) => {
 
 
 //Save File Checker
-if(masterDict['saveVersion'] != saveVersion){
-    convertSave();
-}else if(!(masterDict.hasOwnProperty('saveVersion'))){
-    convertSave();
-}
 function convertSave(){
     masterDict['saveVersion'] = saveVersion;
+    for(const [colourID, colourDict] of Object.entries(masterDict['colours'])){
+        colourDict['colourRate'] = (parseFloat(colourDict['colourRate'])).toFixed(2);
+    }
 }

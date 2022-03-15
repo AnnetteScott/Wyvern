@@ -1,5 +1,5 @@
 var wyvern_version = '3.1.1';
-var saveVersion = 2;
+var saveVersion = 3;
 var masterDict = {"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}, "saveVersion": saveVersion}
 
 var downloadsFolder = '';

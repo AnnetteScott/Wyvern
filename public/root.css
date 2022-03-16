@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap');
+
+:root {
+	--navbar_height: 55px;
+	--navbar_menu_width: 150px;
+}
+
+html {
+	background: linear-gradient(180deg, #14aef1, #1495f1);
+	background-repeat: no-repeat;
+	overflow: hidden;
+	height: 100vh;
+}

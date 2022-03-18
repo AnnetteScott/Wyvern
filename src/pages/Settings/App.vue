@@ -69,6 +69,8 @@
 			<div v-for="colour in colours" :key="colour" class="list_item">{{ colour.name }}</div>
 			<ButtonItem :title="`Create Colour`" @click="current_request_form=`createUserForm`" />
 		</div>
+        
+        <div v-if="current_settings_page == ``">Please Select A Tab To Begin</div>
 	</div>
 	<AllForms :requestForm="current_request_form" @cancelled="current_request_form=``"/>
 </template>
@@ -90,7 +92,7 @@ export default {
 	},
 	data() {
 		return {
-			current_settings_page: 'users_bottom',
+			current_settings_page: '',
 			current_request_form: ``
 		}
 	},

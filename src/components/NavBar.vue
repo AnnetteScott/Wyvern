@@ -42,7 +42,7 @@ export default {
 
 #navbar {
 	position: fixed;
-	z-index: 100;
+	z-index: 999;
 	top: 0px;
 	right: 0px;
 	left: 0px;

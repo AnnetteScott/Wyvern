@@ -1,54 +1,112 @@
 <template>
-	<NavBar 
-		:title="`Wyvern`"
-		:links="[
-			{
-				title: `Wyvern`,
-				image: require(`./assets/icons/home_white_24dp.svg`),
-				url: `/`
-			},
-			{
-				title: `Settings`,
-				image: require(`./assets/icons/settings_white_24dp.svg`),
-				url: `/Settings.html`
-			},
-			{
-				title: `Time Sheets`,
-				image: require(`./assets/icons/schedule_white_24dp.svg`),
-				url: `/TimeSheets.html`
-			},
-			{
-				title: `Invoice`,
-				image: require(`./assets/icons/receipt_white_24dp.svg`),
-				url: `/Invoice.html`
-			},
-			{
-				title: `Records`,
-				image: require(`./assets/icons/receipt_long_white_24dp.svg`),
-				url: `/Records.html`
-			}
-		]"
-	/>
+    <BackgroundBubble/>
+	<div class="page_center">
+		<NavBar 
+			:title="`Wyvern`"
+			:links="[
+				{
+					title: `Wyvern`,
+					image: require(`./assets/icons/home_white_24dp.svg`),
+					url: `/`
+				},
+				{
+					title: `Settings`,
+					image: require(`./assets/icons/settings_white_24dp.svg`),
+					url: `/Settings.html`
+				},
+				{
+					title: `Time Sheets`,
+					image: require(`./assets/icons/schedule_white_24dp.svg`),
+					url: `/TimeSheets.html`
+				},
+				{
+					title: `Invoice`,
+					image: require(`./assets/icons/receipt_white_24dp.svg`),
+					url: `/Invoice.html`
+				},
+				{
+					title: `Records`,
+					image: require(`./assets/icons/receipt_long_white_24dp.svg`),
+					url: `/Records.html`
+				}
+			]"
+		/>
+		<div id="home_page">
+			<img src="./assets/WyvernIcon.png" draggable="false" alt="" style="filter: grayscale(1) brightness(4);">
+			<h1>Welcome To Wyvern!</h1>
+			<h2>An Invoicing, Timesheet, and Financial Budgeting Software</h2>
+			<br>
+			<br>
+			<br>
+			<p>Click the menu in the top right to get started.</p>
+			<br>
+			<br>
+			<br>
+			<ButtonItem :title="`Check for updates`"/>
+		</div>
+	</div>
+
 </template>
 
 <script>
 import NavBar from './components/NavBar.vue';
+import ButtonItem from './components/ButtonItem.vue';
+import BackgroundBubble from './components/BackgroundBubble.vue';
 
 export default {
 	name: 'App',
 	components: {
-		NavBar
-	}
+		NavBar,
+		ButtonItem,
+        BackgroundBubble
+	},
+    mounted() {
+        console.log(this.$masterDict)
+    }
 }
 </script>
 
 <style>
+@import url('../public/root.css');
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
+	color: black;
 }
+
+#home_page{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+#home_page::before{
+	content: "";
+	position: absolute;
+	z-index: -1;
+	display: block;
+	width: min(70vw, 70vh);
+	aspect-ratio: 1;
+	border: 3px solid #ffffff40;
+	border-radius: 50%;
+	transform: translateY(var(--navbar_height));
+}
+
+#home_page::after{
+	content: "";
+	position: absolute;
+	z-index: -1;
+	display: block;
+	width: min(80vw, 80vh);
+	aspect-ratio: 1;
+	border: 3px solid #ffffff20;
+	border-radius: 50%;
+	transform: translateY(var(--navbar_height));
+}
+
 </style>

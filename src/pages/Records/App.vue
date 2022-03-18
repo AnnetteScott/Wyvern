@@ -1,4 +1,5 @@
 <template>
+    <BackgroundBubble />
 	<NavBar 
 		:title="`Records`"
 		:links="[
@@ -33,11 +34,13 @@
 
 <script>
 import NavBar from '../../components/NavBar.vue';
+import BackgroundBubble from '../../components/BackgroundBubble.vue';
 
 export default {
 	name: 'App',
 	components: {
-		NavBar
+		NavBar,
+        BackgroundBubble
 	}
 }
 </script>

@@ -1,4 +1,5 @@
 <template>
+	<BackgroundBubble />
 	<NavBar 
 		:title="`Invoice`"
 		:links="[

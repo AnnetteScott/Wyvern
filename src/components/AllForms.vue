@@ -93,7 +93,7 @@ export default {
         }
     },
     mounted() {
-        console.log(this.$masterDict)
+        /* console.log(this.$masterDict) */
     }
 }
 </script>

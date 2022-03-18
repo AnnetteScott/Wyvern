@@ -32,19 +32,19 @@
 	/>
 
 	<div id="settings_tabs">
-		<div class="settings_tab_button" @click="current_settings_page = `users_bottom`; ">
+		<div class="settings_tab_button" @click="settings_tab_clicked($event, `users_bottom`)">
 			<h2>Users</h2>
 		</div>
 
-		<div class="settings_tab_button" @click="current_settings_page = `clients_bottom`">
+		<div class="settings_tab_button" @click="settings_tab_clicked($event, `clients_bottom`)">
 			<h2>Clients</h2>
 		</div>
 
-		<div class="settings_tab_button" @click="current_settings_page = `projects_bottom`">
+		<div class="settings_tab_button" @click="settings_tab_clicked($event, `projects_bottom`)">
 			<h2>Projects</h2>
 		</div>
 
-		<div class="settings_tab_button" @click="current_settings_page = `colours_bottom`">
+		<div class="settings_tab_button" @click="settings_tab_clicked($event, `colours_bottom`)">
 			<h2>Colours</h2>
 		</div>
 	</div>
@@ -78,6 +78,7 @@ import NavBar from '../../components/NavBar.vue';
 import AllForms from '../../components/AllForms.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
+import $ from 'jquery';
 
 export default {
 	name: 'App',
@@ -94,7 +95,14 @@ export default {
 		}
 	},
 	mounted() {
-		console.log(this.$masterDict)
+		/* console.log(this.$masterDict) */
+	},
+	methods: {
+		settings_tab_clicked(e, page){
+			this.$data.current_settings_page = page;
+			$('.settings_tab_button').removeClass('active_settings_tab')
+			$(e.target).addClass('active_settings_tab')
+		}
 	}
 }
 </script>
@@ -115,7 +123,7 @@ export default {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-evenly;
-	align-items: center;
+	align-items: flex-end;
 	width: 100%;
 	height: 90px;
 }
@@ -135,8 +143,13 @@ export default {
 .settings_tab_button:hover {
 	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
+
+.active_settings_tab{
+	background-color: #ffffffc5;
+}
 .settings_tab_button h2 {
 	margin: 0px;
+	pointer-events: none;
 }
 
 #settings_sections {
@@ -153,8 +166,10 @@ export default {
 	justify-content: flex-start;
 	align-items: center;
 	gap: 10px;
-	min-height: calc(100vh - var(--navbar_height) - 90px);
+	min-height: calc(100vh - var(--navbar_height) - 110px);
 	overflow-y: scroll;
+	margin: 1px 10px 10px 10px;
+	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 }
 
 .list_item {

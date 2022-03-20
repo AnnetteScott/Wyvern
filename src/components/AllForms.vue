@@ -97,6 +97,8 @@ export default {
 			this.masterDict['clients'][clientID] = {'client': client, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
 			
 			setCookie('masterDict', JSON.stringify(this.masterDict), 30);
+            this.$emit('cancelled', '');
+            console.log(this.masterDict)
 		}
 	},
 	mounted() {

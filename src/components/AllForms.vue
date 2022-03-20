@@ -1,5 +1,5 @@
 <template>
-    <!-- Create User -->
+	<!-- Create User -->
 	<div class="form_container" v-if="requestForm == `createUserForm`">
 		<div class="form">
 			<label for="create_user">User:</label>
@@ -27,9 +27,9 @@
 			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
 		</div>
 	</div>
-    
-    <!-- Create Client -->
-    <div class="form_container" v-if="requestForm == `createClientForm`">
+	
+	<!-- Create Client -->
+	<div class="form_container" v-if="requestForm == `createClientForm`">
 		<div class="form">
 			<label for="create_client">Client:</label>
 			<input id="create_client" type="text" />
@@ -63,82 +63,89 @@
 import ButtonItem from './ButtonItem.vue';
 import $ from 'jquery'
 import generateID from '../../public/generalFunctions.js'
+import { setCookie, getCookie } from '../cookieManager.min.js';
 
 export default {
 	name: 'AllForms',
 	props: {
-        requestForm: String
+		requestForm: String
 	},
 	components: {
-        ButtonItem
+		ButtonItem
 	},
-    methods: {
-        saveClient(){
-            let client = $('#create_client').val();
-            let name = $('#create_client_name').val();
-            let addOne = $('#create_client_addOne').val();
-            let addTwo = $('#create_client_addTwo').val();
-            let city = $('#create_client_city').val();
-            let country = $('#create_client_country').val();
-            let contact = $('#create_client_contact').val();
-            
+	data() {
+		return {
+			masterDict: {}
+		}
+	},
+	methods: {
+		saveClient(){
+			let client = $('#create_client').val();
+			let name = $('#create_client_name').val();
+			let addOne = $('#create_client_addOne').val();
+			let addTwo = $('#create_client_addTwo').val();
+			let city = $('#create_client_city').val();
+			let country = $('#create_client_country').val();
+			let contact = $('#create_client_contact').val();
+			
 
-            let clientID = generateID();
-            while(Object.keys(this.$masterDict['clients']).includes(clientID)) {
-                clientID = generateID();
-            }
+			let clientID = generateID();
+			while(Object.keys(this.masterDict['clients']).includes(clientID)) {
+				clientID = generateID();
+			}
 
-            this.$masterDict['clients'][clientID] = {'client': client, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
-            
-        }
-    },
-    mounted() {
-        /* console.log(this.$masterDict) */
-    }
+			this.masterDict['clients'][clientID] = {'client': client, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
+			
+			setCookie('masterDict', JSON.stringify(this.masterDict), 30);
+		}
+	},
+	mounted() {
+		this.masterDict = JSON.parse(getCookie('masterDict'));
+	}
 }
 </script>
 
 
 <style scoped>
 input {
-    width: 200px;
-    margin-bottom: 15px;
-    padding: 2px;
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 15px;
-    background-color: transparent;
-    border: 1px solid white;
-    border-bottom: 3px solid white;
-    border-radius: 5px;
-    outline: unset;
-    transition: 0.2s ease border;
+	width: 200px;
+	margin-bottom: 15px;
+	padding: 2px;
+	font-family: 'Segoe UI', sans-serif;
+	font-size: 15px;
+	background-color: transparent;
+	border: 1px solid white;
+	border-bottom: 3px solid white;
+	border-radius: 5px;
+	outline: unset;
+	transition: 0.2s ease border;
 }
 
 .form_container {
-    position: absolute;
-    z-index: 1000;
-    inset: 0px;
-    opacity: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', sans-serif;
-    backdrop-filter: blur(15px);
-    transition: 0.2s ease all;
+	position: absolute;
+	z-index: 1000;
+	inset: 0px;
+	opacity: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Segoe UI', sans-serif;
+	backdrop-filter: blur(15px);
+	transition: 0.2s ease all;
 }
 
 .form{
 	display: flex;
 	position: relative;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background-color: #FFFFFF23;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px -5px white inset,
-                0px 4px 16px -16px black;
-    backdrop-filter: blur(7px);
-    transition: 0.3s ease all;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	background-color: #FFFFFF23;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px -5px white inset,
+				0px 4px 16px -16px black;
+	backdrop-filter: blur(7px);
+	transition: 0.3s ease all;
 }
 </style>

@@ -35,12 +35,16 @@
 <script>
 import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
+import { getCookie } from '../../cookieManager.min.js';
 
 export default {
 	name: 'App',
 	components: {
 		NavBar,
 		BackgroundBubble
+	},
+	mounted() {
+		console.log(JSON.parse(getCookie('masterDict')));
 	}
 }
 </script>

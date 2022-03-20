@@ -81,6 +81,7 @@ import AllForms from '../../components/AllForms.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import $ from 'jquery';
+import { getCookie } from '../../cookieManager.min.js';
 
 export default {
 	name: 'App',
@@ -97,7 +98,7 @@ export default {
 		}
 	},
 	mounted() {
-		/* console.log(this.$masterDict) */
+		console.log(JSON.parse(getCookie('masterDict')));
 	},
 	methods: {
 		settings_tab_clicked(e, page){

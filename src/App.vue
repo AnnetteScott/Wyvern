@@ -1,5 +1,5 @@
 <template>
-    <BackgroundBubble/>
+	<BackgroundBubble/>
 	<div class="page_center">
 		<NavBar 
 			:title="`Wyvern`"
@@ -52,17 +52,22 @@
 import NavBar from './components/NavBar.vue';
 import ButtonItem from './components/ButtonItem.vue';
 import BackgroundBubble from './components/BackgroundBubble.vue';
+import { setCookie, getCookie, checkCookie } from './cookieManager.min.js';
 
 export default {
 	name: 'App',
 	components: {
 		NavBar,
 		ButtonItem,
-        BackgroundBubble
+		BackgroundBubble
 	},
-    mounted() {
-        console.log(this.$masterDict)
-    }
+	mounted() {
+		if(!checkCookie('masterDict')){
+			setCookie('masterDict', JSON.stringify(this.$masterDict), 30);
+		}
+		console.log(this.$masterDict);
+		console.log(JSON.parse(getCookie('masterDict')));
+	}
 }
 </script>
 

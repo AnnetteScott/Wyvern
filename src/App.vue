@@ -1,50 +1,48 @@
 <template>
 	<BackgroundBubble/>
-	<div class="page_center">
-		<NavBar 
-			:title="`Wyvern`"
-			:links="[
-				{
-					title: `Wyvern`,
-					image: require(`./assets/icons/home_white_24dp.svg`),
-					url: `/`
-				},
-				{
-					title: `Settings`,
-					image: require(`./assets/icons/settings_white_24dp.svg`),
-					url: `/Settings.html`
-				},
-				{
-					title: `Time Sheets`,
-					image: require(`./assets/icons/schedule_white_24dp.svg`),
-					url: `/TimeSheets.html`
-				},
-				{
-					title: `Invoice`,
-					image: require(`./assets/icons/receipt_white_24dp.svg`),
-					url: `/Invoice.html`
-				},
-				{
-					title: `Records`,
-					image: require(`./assets/icons/receipt_long_white_24dp.svg`),
-					url: `/Records.html`
-				}
-			]"
-		/>
-		<div id="home_page">
-			<img src="./assets/WyvernIcon.png" draggable="false" alt="" style="filter: grayscale(1) brightness(4);">
-			<h1>Welcome To Wyvern!</h1>
-			<h2>An Invoicing, Timesheet, and Financial Budgeting Software</h2>
-			<br>
-			<br>
-			<br>
-			<p>Click the menu in the top right to get started.</p>
-			<br>
-			<br>
-			<br>
-			<ButtonItem :title="`Check for updates`"/>
-		</div>
-	</div>
+    <NavBar 
+        :title="`Wyvern`"
+        :links="[
+            {
+                title: `Wyvern`,
+                image: require(`./assets/icons/home_white_24dp.svg`),
+                url: `/`
+            },
+            {
+                title: `Settings`,
+                image: require(`./assets/icons/settings_white_24dp.svg`),
+                url: `/Settings.html`
+            },
+            {
+                title: `Time Sheets`,
+                image: require(`./assets/icons/schedule_white_24dp.svg`),
+                url: `/TimeSheets.html`
+            },
+            {
+                title: `Invoice`,
+                image: require(`./assets/icons/receipt_white_24dp.svg`),
+                url: `/Invoice.html`
+            },
+            {
+                title: `Records`,
+                image: require(`./assets/icons/receipt_long_white_24dp.svg`),
+                url: `/Records.html`
+            }
+        ]"
+    />
+    <div id="home_page">
+        <img src="./assets/WyvernIcon.png" draggable="false" alt="" style="filter: grayscale(1) brightness(4);">
+        <h1>Welcome To Wyvern!</h1>
+        <h2>An Invoicing and Timesheet Software</h2>
+        <br>
+        <br>
+        <br>
+        <p>Click the menu in the top right to get started.</p>
+        <br>
+        <br>
+        <br>
+        <ButtonItem :title="`Check for updates`"/>
+    </div>
 
 </template>
 
@@ -86,8 +84,8 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	width: 100%;
-	height: 100%;
+    height: calc(100vh - var(--navbar_height));
+    user-select: none;
 }
 
 #home_page::before{

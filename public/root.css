@@ -16,24 +16,6 @@ body {
     margin: 0px;
 }
 
-.page_center{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: calc(100vh - var(--navbar_height) - 5px);
-}
-
-.page_row{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: top;
-    width: 100%;
-    height: calc(100vh - var(--navbar_height) - 5px);
-}
-
 /* Dim */
 ::-webkit-scrollbar {
 	width: 15px;

@@ -63,7 +63,6 @@ export default {
 		if(!checkCookie('masterDict')){
 			setCookie('masterDict', JSON.stringify(this.$masterDict), 30);
 		}
-		console.log(this.$masterDict);
 		console.log(JSON.parse(getCookie('masterDict')));
 	}
 }

@@ -1,4 +1,4 @@
-function generateID(){
+export function generateID(){
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     let length = 5;
     let result = '';
@@ -10,4 +10,48 @@ function generateID(){
     return result;
 }
 
-export default generateID
+function getMonthDays(month, year){
+    let days_per_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return leapYear(year) && month == 2 ? 29 : days_per_month[month - 1];
+}
+
+//Check if the current year is a leap year. Returns boolean.
+function leapYear(year){
+    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+}
+
+export function addToDate(date, daysToAdd){
+    let day = parseInt(date.split("/")[0]);
+    let month = parseInt(date.split("/")[1]);
+    let year = parseInt(date.split("/")[2]);
+
+	day += daysToAdd;
+
+	while(day > getMonthDays(month, year)){
+		day -= getMonthDays(month, year);
+		month++;
+        if(month > 12){
+            month -= 12;
+            year++;
+        }
+	}
+    if(day < 10 && month < 10){
+        return "0" + day.toString() + "/" + "0" + month.toString() + "/" + year.toString()
+    }else if(day < 10 && month >= 10){
+        return "0" + day.toString() + "/" + month.toString() + "/" + year.toString()
+    }else if(day >= 10 && month < 10){
+        return day.toString() + "/" + "0" +  month.toString() + "/" + year.toString()
+    }else{
+        return day.toString() + "/" + month.toString() + "/" + year.toString()
+    } 
+}
+
+export function reDoDate(startingDate){
+	let startDateList = startingDate.split("-")
+	let startDate = startDateList[2] + "/" + startDateList[1] + "/" + startDateList[0].substr(2, 3)
+	let day = parseInt(startDate.split("/")[0]);
+	let month = parseInt(startDate.split("/")[1]);
+	let year = parseInt(startDate.split("/")[2]);
+	let newDate = day.toString() + "/" + month.toString() + "/" + year.toString()
+	return newDate;
+}

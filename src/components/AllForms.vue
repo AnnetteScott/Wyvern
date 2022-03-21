@@ -241,8 +241,7 @@ export default {
 
 			this.masterDict['users'][userID] = {'user': user, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
 			
-			let thingy = this.masterDict;
-			localStorage.setItem('masterDict', JSON.stringify(thingy));
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
 		},
@@ -341,19 +340,44 @@ export default {
 		},
 
 		editUser(){
+			const userID = $(`#edit_userID`).attr('userid');
+			let user = $('#create_user').val();
+			let name = $('#create_user_name').val();
+			let addOne = $('#create_user_addOne').val();
+			let addTwo = $('#create_user_addTwo').val();
+			let city = $('#create_user_city').val();
+			let country = $('#create_user_country').val();
+			let contact = $('#create_user_contact').val();
 
+			this.masterDict['users'][userID] = {'user': user, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
 		},
 
 		editClient(){
+			const clientID = $(`#edit_clientID`).attr('clientid');
+			let client = $('#create_client').val();
+			let name = $('#create_client_name').val();
+			let addOne = $('#create_client_addOne').val();
+			let addTwo = $('#create_client_addTwo').val();
+			let city = $('#create_client_city').val();
+			let country = $('#create_client_country').val();
+			let contact = $('#create_client_contact').val();
 
+			this.masterDict['clients'][clientID] = {'client': client, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
 		},
 
 		editProject(){
-
+			const projectID = $(`#edit_projectID`).attr('projectid');
+			let name = $('#create_project_name').val();
+			let duration = parseInt($('#create_project_duration').val());
+			this.masterDict['projects'][projectID] = {'name': name, 'duration': duration};
 		},
 
 		editColour(){
-
+			const colourID = $(`#edit_colourID`).attr('colourid');
+			let colourName = $("#colour_creation_name").val();
+			let colourRate = (parseFloat($("#colour_creation_rate").val())).toFixed(2);
+			let colour = $("#colour_creation_colour").val();
+			this.masterDict['colours'][colourID] = {'name': colourName, 'rate': colourRate, 'colour': colour};
 		},
 
 		deleteUser(){

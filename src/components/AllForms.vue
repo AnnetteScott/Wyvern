@@ -137,6 +137,7 @@
 				<option value="10">10 Minutes</option>
 				<option value="15">15 Minutes</option>
 				<option value="30">30 Minutes</option>
+				<option value="60">1 Hour</option>
 			</select>
 			
 			<label for="week_interval">Choose a Timesheet length:</label>
@@ -233,6 +234,11 @@ export default {
 			let country = $('#create_user_country').val();
 			let contact = $('#create_user_contact').val();
 			
+			if(user == '' || user == null){ //If no user name was entered.
+				$("#create_user").addClass('form_error');
+				return false;
+			}
+			$("#create_user").removeClass('form_error');
 
 			let userID = generateID();
 			while(Object.keys(this.masterDict['users']).includes(userID)) {
@@ -254,7 +260,12 @@ export default {
 			let city = $('#create_client_city').val();
 			let country = $('#create_client_country').val();
 			let contact = $('#create_client_contact').val();
-			
+
+			if(client == '' || client == null){ //If no client name was entered.
+				$("#create_client").addClass('form_error');
+				return false;
+			}
+			$("#create_client").removeClass('form_error');
 
 			let clientID = generateID();
 			while(Object.keys(this.masterDict['clients']).includes(clientID)) {
@@ -300,7 +311,7 @@ export default {
 				projectID = generateID();
 			}
 			
-			let timeList = [`Date | Time`];
+			let timeList = [];
 			for(let h = 0; h < 24; h++){
 				let hour = h;
 				if(h < 10){
@@ -314,20 +325,21 @@ export default {
 					timeList.push(`${hour}:${minute}`)
 				}
 			}
-			this.masterDict['projects'][projectID] = {'name': name, 'colourList': [], 'weeks': {}, 'timeList': timeList, 'duration': duration};
+			this.masterDict['projects'][projectID] = {'name': name, 'colours': [], 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval};
 			
 			
 			if(weekInterval == 1){
-				for(let w = 1; w < duration; w++){
-					this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colourCells': {}, 'totalColumnColour': {}, 'totalColumn': {}, 'totalColour$': {}};
+				for(let w = 1; w <= duration; w++){
+					this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
 					date = addToDate(date, 14);
 				}
 			}else if(weekInterval == 2){
 				if(duration % 2 == 1){
 					duration++;
+					this.masterDict['projects'][projectID]['duration'] = duration;
 				}   
 				for(let w = 1; w <= duration; w+= 2){
-					this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colourCells': {}, 'totalColumnColour': {}, 'totalColumn': {}, 'totalColour$': {}};
+					this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
 					date = addToDate(date, 14);
 				}
 			}
@@ -336,6 +348,7 @@ export default {
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
+			console.log(this.masterDict)
 		},
 
 		createColour(){
@@ -366,6 +379,9 @@ export default {
 			let contact = $('#create_user_contact').val();
 
 			this.masterDict['users'][userID] = {'user': user, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
 		},
 
 		editClient(){
@@ -379,13 +395,58 @@ export default {
 			let contact = $('#create_client_contact').val();
 
 			this.masterDict['clients'][clientID] = {'client': client, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
 		},
 
 		editProject(){
 			const projectID = $(`#edit_projectID`).attr('projectid');
-			let name = $('#create_project_name').val();
-			let duration = parseInt($('#create_project_duration').val());
-			this.masterDict['projects'][projectID] = {'name': name, 'duration': duration};
+			const name = $('#edit_project_name').val();
+			const duration = parseInt($('#edit_project_duration').val());
+
+			if(name == '' || name == null){ //If no project name was entered.
+				$("#edit_project_name").addClass('form_error');
+				return false;
+			}
+			if(isNaN(duration)){ //If no duration was provided
+				$("#edit_project_duration").addClass('form_error');
+				$("#edit_project_name").removeClass('form_error');
+				return false;
+			}
+
+			$("#edit_project_name").removeClass('form_error');
+			$("#edit_project_duration").removeClass('form_error');
+			$('#edit_project_name').val('');
+			$('#edit_project_duration').val('');
+
+			let previousDur = this.masterDict['projects'][projectID]['duration'];
+			if(this.masterDict['projects'][projectID]['duration'] < duration){
+				if(this.masterDict['projects'][projectID]['weekInterval'] == 1){
+					let date = this.masterDict['projects'][projectID]['weeks'][`${previousDur}`]['startDate'];
+
+					for(let w = previousDur + 1; w <= duration; w++){
+						date = addToDate(date, 14);
+						this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
+					}
+				}else if(this.masterDict['projects'][projectID]['weekInterval'] == 2){ 
+					let date = this.masterDict['projects'][projectID]['weeks'][`${previousDur} - ${previousDur + 1}`]['startDate'];
+					for(let w = previousDur + 1; w <= duration; w+= 2){
+						date = addToDate(date, 14);
+						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
+					}
+				}
+			}
+
+			this.masterDict['projects'][projectID]['name'] = name;
+			if(duration % 2 == 1){
+				this.masterDict['projects'][projectID]['duration'] = duration + 1;
+			}else{
+				this.masterDict['projects'][projectID]['duration'] = duration;
+			}
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
 		},
 
 		editColour(){
@@ -393,7 +454,12 @@ export default {
 			let colourName = $("#colour_creation_name").val();
 			let colourRate = (parseFloat($("#colour_creation_rate").val())).toFixed(2);
 			let colour = $("#colour_creation_colour").val();
+			
 			this.masterDict['colours'][colourID] = {'name': colourName, 'rate': colourRate, 'colour': colour};
+
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
 		},
 
 		deleteUser(){

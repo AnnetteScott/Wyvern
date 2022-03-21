@@ -50,29 +50,44 @@
 	</div>
 
 	<div id="settings_sections">
+		<!-- User -->
 		<div id="users_bottom" v-if="current_settings_page == `users_bottom`">
-			<div v-for="user in users" :key="user" class="list_item">{{ user.name }}</div>
-			<ButtonItem :title="`Create User`" @click="current_request_form=`createUserForm`" />
+			<div class="settings_bottom_control">
+				<p>You Have {{ Object.keys(masterDict['users']).length == 1 ? Object.keys(masterDict['users']).length + ' User' : Object.keys(masterDict['users']).length + ' Users' }}</p>
+				<ButtonItem :title="`Create User`" @click="current_request_form=`createUserForm`" />
+			</div>
+			<div v-for="(userDict, userID) in masterDict['users']" :key="userDict" class="list_item" :data="userID" @click="open_edit_form($event, `editUserForm`, `users`)">{{ userDict.user }}</div>
 		</div>
 
+		<!-- client -->
 		<div id="clients_bottom" v-if="current_settings_page == `clients_bottom`">
-			<div v-for="client in clients" :key="client" class="list_item">{{ client.name }}</div>
-			<ButtonItem :title="`Create Client`" @click="current_request_form=`createClientForm`" />
+			<div class="settings_bottom_control">
+				<p>You Have {{ Object.keys(masterDict['clients']).length == 1 ? Object.keys(masterDict['clients']).length + ' Client' : Object.keys(masterDict['clients']).length + ' Clients' }}</p>
+				<ButtonItem :title="`Create Client`" @click="current_request_form=`createClientForm`" />
+			</div>
+			<div v-for="(clientDict, clientID) in masterDict['clients']" :key="clientDict" class="list_item" :data="clientID" @click="open_edit_form($event, `editClientForm`, `clients`)">{{ clientDict.client }}</div>
 		</div>
 
 		<div id="projects_bottom" v-if="current_settings_page == `projects_bottom`">
-			<div v-for="project in projects" :key="project" class="list_item">{{ project.name }}</div>
-			<ButtonItem :title="`Create Project`" @click="current_request_form=`createUserForm`" />
+			<div class="settings_bottom_control">
+				<p>You Have {{ Object.keys(masterDict['projects']).length == 1 ? Object.keys(masterDict['projects']).length + ' Project' : Object.keys(masterDict['projects']).length + ' Projects' }}</p>
+				<ButtonItem :title="`Create Project`" @click="current_request_form=`createProjectForm`" />
+			</div>
+			<div v-for="(projectDict, projectID) in masterDict['projects']" :key="projectDict" class="list_item" :data="projectID" @click="open_edit_form($event, `editProjectForm`, `projects`)">{{ projectDict.name }}</div>
 		</div>
 
 		<div id="colours_bottom" v-if="current_settings_page == `colours_bottom`">
-			<div v-for="colour in colours" :key="colour" class="list_item">{{ colour.name }}</div>
-			<ButtonItem :title="`Create Colour`" @click="current_request_form=`createUserForm`" />
+			<div class="settings_bottom_control">
+				<p>You Have {{ Object.keys(masterDict['colours']).length == 1 ? Object.keys(masterDict['colours']).length + ' Colour' : Object.keys(masterDict['colours']).length + ' Colours' }}</p>
+				<ButtonItem :title="`Create Colour`" @click="current_request_form=`createColourForm`" />
+			</div>
+			<div v-for="(colourDict, colourID) in masterDict['colours']" :key="colourDict" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">{{ colourDict.name }}</div>
 		</div>
-        
-        <div v-if="current_settings_page == ``">Please Select A Tab To Begin</div>
+		
+		<div v-if="current_settings_page == ``"></div>
 	</div>
-	<AllForms :requestForm="current_request_form" @cancelled="current_request_form=``"/>
+	<AllForms :requestForm="current_request_form" @cancelled="current_request_form=``"
+	@saveCookieForBeebViewing="saveCookie"/>
 </template>
 
 <script>
@@ -81,7 +96,6 @@ import AllForms from '../../components/AllForms.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import $ from 'jquery';
-import { getCookie } from '../../cookieManager.min.js';
 
 export default {
 	name: 'App',
@@ -94,17 +108,52 @@ export default {
 	data() {
 		return {
 			current_settings_page: '',
-			current_request_form: ``
+			current_request_form: ``,
+			masterDict: {}
 		}
 	},
 	mounted() {
-		console.log(JSON.parse(getCookie('masterDict')));
+		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
 	},
 	methods: {
 		settings_tab_clicked(e, page){
 			this.$data.current_settings_page = page;
 			$('.settings_tab_button').removeClass('active_settings_tab')
 			$(e.target).addClass('active_settings_tab')
+		},
+		saveCookie(){
+			this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
+		},
+		open_edit_form(event, form_name, type) {
+            console.log(form_name)
+			this.current_request_form = form_name;
+			let id = $(event.target).attr('data');
+			let obj = this.masterDict[type][id];
+			const editedType = type.slice(0, -1)
+			setTimeout(() => {
+				if(editedType == 'user' || editedType == 'client'){
+					$(`#edit_${editedType}`).val(obj[editedType]);
+					$(`#edit_${editedType}_name`).val(obj['name']);
+					$(`#edit_${editedType}_addOne`).val(obj['addOne']);
+					$(`#edit_${editedType}_addTwo`).val(obj['addTwo']);
+					$(`#edit_${editedType}_city`).val(obj['city']);
+					$(`#edit_${editedType}_country`).val(obj['country']);
+					$(`#edit_${editedType}_contact`).val(obj['contact']);
+					$(`#edit_${editedType}ID`).attr(`${editedType}id`, id);
+				}
+				else if(editedType == 'project'){
+					$(`#edit_${editedType}ID`).attr(`${editedType}id`, id);
+					$(`#edit_${editedType}_name`).val(obj['name']);
+					$(`#edit_${editedType}_duration`).val(obj['duration']);
+				}
+                else if(editedType == 'colour'){
+					$(`#edit_${editedType}ID`).attr(`${editedType}id`, id);
+					$(`#edit_${editedType}_name`).val(obj['name']);
+					$(`#edit_${editedType}_rate`).val(obj['rate']);
+					$(`#edit_${editedType}_rate`).val(obj['colour']);
+				}
+
+			}, 1) 
 		}
 	}
 }
@@ -137,19 +186,39 @@ export default {
 	cursor: pointer;
 	display: flex;
 	align-items: center;
+	user-select: none;
 	padding: 10px;
 	background-color: #FFFFFF23;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px -5px white inset,
-                0px 4px 16px -16px black;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px -5px white inset,
+				0px 4px 16px -16px black;
 }
 .settings_tab_button:hover {
-	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.082), 0 10px 10px rgba(0, 0, 0, 0.11);
 }
 
 .active_settings_tab{
 	background-color: #ffffffc5;
 }
+
+.settings_bottom_control{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 97%;
+	height: 80px;
+}
+
+.settings_bottom_control div{
+	height: 40px;
+	width: 90% !important;
+	margin-top: 5px;
+}
+
+.settings_bottom_control p{
+	margin: 7px 0px 0px;
+}
+
 .settings_tab_button h2 {
 	margin: 0px;
 	pointer-events: none;
@@ -179,12 +248,20 @@ export default {
 	position: relative;
 	display: flex;
 	flex-flow: row nowrap;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	width: 95%;
-	height: clamp(40px, 40px, 40px);
+	height: clamp(60px, 60px, 60px);
 	padding: 0px 20px;
 	background-color: #ffffff40;
-	border-radius: 4px;
+	border-radius: 10px;
+	cursor: pointer;
+	font-family: 'Lora';
+	font-weight: 900;
+	font-size: 2.25em;
+}
+
+.list_item:hover {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.082), 0 10px 10px rgba(0, 0, 0, 0.11);
 }
 </style>

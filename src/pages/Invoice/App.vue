@@ -34,7 +34,6 @@
 
 <script>
 import NavBar from '../../components/NavBar.vue';
-import { getCookie } from '../../cookieManager.min.js';
 
 export default {
 	name: 'App',
@@ -42,7 +41,7 @@ export default {
 		NavBar
 	},
 	mounted() {
-		console.log(JSON.parse(getCookie('masterDict')));
+		
 	}
 }
 </script>

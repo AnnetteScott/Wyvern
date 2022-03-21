@@ -41,7 +41,7 @@
         <br>
         <br>
         <br>
-        <ButtonItem :title="`Check for updates`"/>
+        <ButtonItem :title="`Check for updates`" :glow="true"/>
     </div>
 
 </template>
@@ -50,7 +50,6 @@
 import NavBar from './components/NavBar.vue';
 import ButtonItem from './components/ButtonItem.vue';
 import BackgroundBubble from './components/BackgroundBubble.vue';
-import { setCookie, getCookie, checkCookie } from './cookieManager.min.js';
 
 export default {
 	name: 'App',
@@ -60,10 +59,10 @@ export default {
 		BackgroundBubble
 	},
 	mounted() {
-		if(!checkCookie('masterDict')){
-			setCookie('masterDict', JSON.stringify(this.$masterDict), 30);
+		if(!localStorage.getItem('masterDict')){
+			localStorage.setItem('masterDict', JSON.stringify(this.$masterDict));
 		}
-		console.log(JSON.parse(getCookie('masterDict')));
+		console.log(JSON.parse(localStorage.getItem('masterDict')));
 	}
 }
 </script>

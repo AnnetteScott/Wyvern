@@ -276,9 +276,25 @@ export default {
 			let timeInterval = parseInt($(`#time_interval option:selected`).val())
 			let weekInterval = parseInt($(`#week_interval option:selected`).val())
 
-			let thisVar = [name, duration, date, timeInterval, weekInterval]
-			thisVar;
-			
+			if(name == '' || name == null){ //If no project name was entered.
+				$("#create_project_name").addClass('form_error');
+				return false;
+			}
+			if(isNaN(duration)){ //If no duration was provided
+				$("#create_project_duration").addClass('form_error');
+				$("#create_project_name").removeClass('form_error');
+				return false;
+			}
+			if(date == 'NaN/NaN/NaN'){ //If no date was provided
+				$("#create_project_date").addClass('form_error');
+				$("#create_project_duration").removeClass('form_error');
+				return false;
+			}
+			$("#create_project_date").removeClass('form_error');
+			$('#create_project_name').val('');
+			$('#create_project_duration').val('');
+			$('#create_project_date').val('');
+
 			let projectID = generateID();
 			while(Object.keys(this.masterDict['projects']).includes(projectID)) {
 				projectID = generateID();
@@ -437,6 +453,10 @@ input {
 	border-radius: 5px;
 	outline: unset;
 	transition: 0.2s ease border;
+}
+
+.form_error {
+	border-color: red !important;
 }
 
 .form_container {

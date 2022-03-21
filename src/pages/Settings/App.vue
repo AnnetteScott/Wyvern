@@ -125,7 +125,6 @@ export default {
 			this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
 		},
 		open_edit_form(event, form_name, type) {
-            console.log(form_name)
 			this.current_request_form = form_name;
 			let id = $(event.target).attr('data');
 			let obj = this.masterDict[type][id];

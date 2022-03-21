@@ -21,6 +21,12 @@ module.exports = defineConfig({
             filename: 'TimeSheets.html',
             title: 'Time Sheets | Wyvern'
         },
+        project: {
+            entry: 'src/pages/Project/main.js',
+            template: 'public/index.html',
+            filename: 'Project.html',
+            title: 'Project Page | Wyvern'
+        },
         Invoice: {
             entry: 'src/pages/Invoice/main.js',
             template: 'public/index.html',

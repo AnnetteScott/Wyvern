@@ -277,7 +277,4 @@ export default {
 	margin: 0px;
 }
 
-select{
-    z-index: 10;
-}
 </style>

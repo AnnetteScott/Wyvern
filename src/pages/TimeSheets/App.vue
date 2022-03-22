@@ -32,7 +32,7 @@
 	/>
     <div id="inner">
         <div id="project_container">
-            <a v-for="(projectDict, projectID) in masterDict['projects']" :key="projectDict" class="list_item" :data="projectID" :href="`/Project.html`">{{ projectDict.name }}</a> 
+            <a v-for="(projectDict, projectID) in masterDict['projects']" :key="projectDict" class="list_item" :data="projectID" @click="saveProjectID" :href="`/Project.html`">{{ projectDict.name }}</a> 
         </div>
     </div>
     
@@ -43,6 +43,7 @@
 <script>
 import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
+import $ from 'jquery';
 
 export default {
 	name: 'App',
@@ -58,6 +59,12 @@ export default {
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
 	},
+    methods:{
+        saveProjectID(event){
+            const id = $(event.target).attr('data');
+            localStorage.setItem('projectID', id);
+        }
+    }
 }
 </script>
 
@@ -93,6 +100,7 @@ export default {
 	overflow-y: scroll;
 	margin: 1px 10px 10px 10px;
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
+    border-radius: 10px;
 }
 
 .list_item {

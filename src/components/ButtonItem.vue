@@ -43,6 +43,7 @@ export default {
 	font-weight: 100;
 	text-decoration: none;
 	user-select: none;
+    pointer-events: none;
 }
 
 .button_link:hover{

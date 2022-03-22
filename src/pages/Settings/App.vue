@@ -68,6 +68,7 @@
 			<div v-for="(clientDict, clientID) in masterDict['clients']" :key="clientDict" class="list_item" :data="clientID" @click="open_edit_form($event, `editClientForm`, `clients`)">{{ clientDict.client }}</div>
 		</div>
 
+        <!-- project -->
 		<div id="projects_bottom" v-if="current_settings_page == `projects_bottom`">
 			<div class="settings_bottom_control">
 				<p>You Have {{ Object.keys(masterDict['projects']).length == 1 ? Object.keys(masterDict['projects']).length + ' Project' : Object.keys(masterDict['projects']).length + ' Projects' }}</p>
@@ -76,12 +77,18 @@
 			<div v-for="(projectDict, projectID) in masterDict['projects']" :key="projectDict" class="list_item" :data="projectID" @click="open_edit_form($event, `editProjectForm`, `projects`)">{{ projectDict.name }}</div>
 		</div>
 
+        <!-- colours -->
 		<div id="colours_bottom" v-if="current_settings_page == `colours_bottom`">
 			<div class="settings_bottom_control">
 				<p>You Have {{ Object.keys(masterDict['colours']).length == 1 ? Object.keys(masterDict['colours']).length + ' Colour' : Object.keys(masterDict['colours']).length + ' Colours' }}</p>
 				<ButtonItem :title="`Create Colour`" @click="current_request_form=`createColourForm`" />
 			</div>
-			<div v-for="(colourDict, colourID) in masterDict['colours']" :key="colourDict" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">{{ colourDict.name }}</div>
+			<div v-for="(colourDict, colourID) in masterDict['colours']" :key="colourDict" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">
+                <p>{{ colourDict.name }}</p>
+                <select id="colour_select_project" multiple>
+                    <option v-for="(projectDict, projectID) in masterDict['projects']" :key="projectDict" :data="projectID">{{ projectDict.name }}</option>
+                </select>
+            </div>
 		</div>
 		
 		<div v-if="current_settings_page == ``"></div>
@@ -241,10 +248,12 @@ export default {
 	overflow-y: scroll;
 	margin: 1px 10px 10px 10px;
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
+    border-radius: 10px;
 }
 
 .list_item {
 	position: relative;
+    z-index: 2;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
@@ -262,5 +271,13 @@ export default {
 
 .list_item:hover {
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.082), 0 10px 10px rgba(0, 0, 0, 0.11);
+}
+
+.list_item p {
+	margin: 0px;
+}
+
+select{
+    z-index: 10;
 }
 </style>

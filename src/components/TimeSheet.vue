@@ -3,17 +3,19 @@
 		<div v-for="(col, index) in columnLetter" :key="col" :colID="col" class="column">
 			<div :cellID="`${col}0`" class="dateCell">{{ dateList[index] }}</div>
 			<template v-if="col == `Z`">
-				<div  v-for="(time, indexd) in projDict['timeList']" :key="time" :cellID="`Z${indexd}`" class="dateCell">{{ time }}</div>
+				<div  v-for="(time, indexd) in timeList" :key="time" :cellID="`Z${indexd + 1}`" class="dateCell">{{ time }}</div>
 			</template>
 			<template v-else>
-				<div  v-for="(time, indext) in projDict['timeList']" :key="time" :cellID="`${col}${indext}`" class="cell" />
+				<div  v-for="(time, indext) in timeList" :key="time" :cellID="`${col}${indext + 1}`" class="cell" :weekid="`${weekID}`" @mousedown="cellDown" @mouseover="cellHovered" @mouseup="cellRelease"/>
 			</template>
 		</div>
 	</template>
+    <div id="user_selection_tip" class ="tool_tip hidden">Time: </div>
 </template>
 
 <script>
 import { addToDate } from '../../public/generalFunctions.js';
+import $ from 'jquery'
 
 export default {
 	name: 'TimeSheet',
@@ -23,15 +25,31 @@ export default {
 	data() {
 		return {
 			weekDict: {},
+			masterDict: {},
 			projDict: {},
 			projectID: '',
 			columnLetter: [],
-			dateList: []
+			dateList: [],
+			timeList: [],
+			selectedCellsList: [],
+			cellClicked: false,
+			previousDate: 'Z',
+			previousTime: '0',
 		}
 	},
+    mounted(){
+        const onMouseMove = (e) =>{
+            $('#user_selection_tip').css({
+                left: e.pageX + 55 + 'px',
+                top: e.pageY - 20 + 'px'
+            })
+        }
+        document.addEventListener('mousemove', onMouseMove);
+    },
 	methods: {
 		updateLib(){
-			this.projDict = JSON.parse(localStorage.getItem('masterDict'))['projects'][localStorage.getItem('projectID')]
+			this.masterDict = JSON.parse(localStorage.getItem('masterDict'))
+			this.projDict = this.masterDict['projects'][localStorage.getItem('projectID')]
 			this.weekDict = this.projDict['weeks'][this.$props.weekID];
 			
 			this.dateList = [`Date | Time`];
@@ -39,12 +57,140 @@ export default {
 			for(let i = 1; i < (this.projDict['weekInterval'] * 7); i++){
 				this.dateList.push(addToDate(this.weekDict['startDate'], i))
 			}
+
+			this.timeList = [...this.projDict['timeList']];
+
+			if(this.projDict['colours'] != []){
+				for (let colourID of this.projDict['colours']) {
+					this.timeList.push(this.masterDict['colours'][colourID]['name']);
+				}
+			}
+			this.timeList.push("Total Hours:");
+			this.timeList.push("Total $:");
+			this.timeList.push("Weekly Hours:");
+			this.timeList.push("Weekly $:");
+			this.timeList.push("Timesheet Hours:");
+			this.timeList.push("Timesheet Total $:");
+
+            setTimeout(() => {
+				for(let i = this.projDict['timeList'].length + 2; i <= this.timeList.length + 1; i++) {
+                    $(`.column > div:nth-child(${i})`).css("pointer-events", "none");
+                }
+                $(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-top", "2px solid black");
+                $(`.column > div:nth-child(${this.projDict['timeList'].length + 1})`).css("border-bottom", "2px solid black");
+			}, 1)
+            
 			if(this.projDict['weekInterval'] == 1){
 				this.columnLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
 			}else{
 				this.columnLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
 			}
-		}
+		},
+		cellDown(event){
+			this.cellClicked = true;
+			const cellID = $(event.target).attr('cellid');
+			this.selectCell(event.target);
+			if(this.selectedCellsList != []){
+				this.selectedCellsList.forEach(cellIDR => {
+					let colouredCells = this.listOfValuesArr(this.weekDict['colouredCells']);
+					if(colouredCells.includes(cellIDR)){
+						this.cellDeSelect(cellIDR, this.masterDict['colours'][colouredCells[cellIDR]]['colour']);
+					} else {
+						this.cellDeSelect(cellIDR, "white"); 
+					}
+					
+				});
+			}
+			if(!(this.selectedCellsList.includes(cellID) && this.selectedCellsList.length == 1)){
+				this.selectedCellsList = [cellID];
+			}else{
+				this.selectedCellsList = []
+			}
+
+            let firstTimeID = "Z" + cellID.substring(1);
+            let firstTime = ($(`[cellid=${firstTimeID}]`).text()).split(":");
+            let timePeriod = `${firstTime[0]}:${firstTime[1]} - ${firstTime[0]}:${parseInt(firstTime[1]) + 14}`
+            $('#user_selection_tip').text(`Time Selected: 00.25H\n${timePeriod} `);
+            $('#user_selection_tip').removeClass('hidden');
+
+		},
+		cellHovered(event){
+			const cellID = $(event.target).attr('cellid');
+			if(this.cellClicked && (!this.selectedCellsList.includes(cellID))){
+				this.selectCell(event.target);
+				this.selectedCellsList.push(cellID);
+
+                let timeSelected = this.selectedCellsList.length * 0.25;
+                let minTimeCell = "Z" + this.minCell(this.selectedCellsList);
+                let maxTimeCell = "Z" + this.maxCell(this.selectedCellsList);
+                let maxTime = ($(`[cellid=${maxTimeCell}]`).text()).split(":");
+
+                let timePeriod = `${$(`[cellid=${minTimeCell}]`).text()} - ${maxTime[0]}:${parseInt(maxTime[1]) + 14}`;
+                $('#user_selection_tip').text(`Time Selected: ${timeSelected}H\n${timePeriod} `);
+			}
+
+			const cellCol = cellID[0];
+			const cellNum = cellID.substring(1);
+			$(`[cellid=${cellCol}0]`).css({"background-color": "#D1D3D9"});
+			$(`[cellid=Z${cellNum}]`).css({"background-color": "#D1D3D9"});
+			if(this.previousDate != cellCol){
+				$(`[cellid=${this.previousDate}0]`).css({"background-color": "#ffffff"});
+				this.previousDate = cellCol;
+			}
+			if(this.previousTime != cellNum){
+				$(`[cellid=Z${this.previousTime}]`).css({"background-color": "#ffffff"});
+				this.previousTime = cellNum;
+			}
+
+		},
+		cellRelease(){
+			this.cellClicked = false;
+            $('#user_selection_tip').addClass('hidden');
+		},
+		selectCell(element){
+			element.style.borderColor = "cyan";
+			element.style.background = "#D1D3D9";
+		},
+		cellDeSelect(ID, colour){
+			$(`[cellid=${ID}]`).css({"background-color": colour,  "border-color": "black"});
+		},
+		listOfValues(obj){
+			let valueList = [];
+			for(const [key, value] of Object.keys(obj)){
+				valueList.push(value)
+				key;
+			}
+			return valueList;
+		},
+		listOfValuesArr(obj){
+			let valueList = [];
+			for(const [key, value] of Object.keys(obj)){
+				for (const element of value) {
+					valueList.push(element)
+				}
+				key;
+			}
+			return valueList;
+		},
+        minCell(arr){
+            let smallestNum = arr[0].substring(1);
+            for(let i = 0; i < arr.length; i++){
+                if(parseInt(arr[i].substring(1)) < smallestNum){
+                    smallestNum = parseInt(arr[i].substring(1))
+                }
+            }
+            return smallestNum;
+        },
+
+        maxCell(arr){
+            let smallestNum = arr[0].substring(1);
+            for(let i = 0; i < arr.length; i++){
+                if(parseInt(arr[i].substring(1)) > smallestNum){
+                    smallestNum = parseInt(arr[i].substring(1))
+                }
+            }
+            return smallestNum;
+        }
 	}
 }
 </script>
@@ -52,9 +198,9 @@ export default {
 <style scoped>
 .column{
 	width: 100%;
+	z-index: 2;
 	min-width: 90px;
 	height: 97%;
-	max-height: 97%;
 	border-left: 1px solid black;
 	border-top: 1px solid black;
 	border-bottom: 1px solid black;
@@ -66,18 +212,60 @@ export default {
 }
 
 .column:nth-child(1){
+	left: 0px;
+	z-index: 10;
+	position: sticky;
+	min-width: 140px;
 	margin-left: 10px;
+	border: 1px solid black;
+    pointer-events: none;
 }
+
+.column:nth-child(2){
+	border-left: 0px solid black;
+}
+
+.column > div:nth-child(1){
+	top: 0px;
+	position: sticky;
+    pointer-events: none;
+    user-select: none;
+}
+
 .dateCell{
+	
 	background-color: white;
-    width: 100%;
-    height: 25px;
+	width: 100%;
+	height: 25px;
 	border-bottom: 1px solid black;
 }
 .cell{
 	background-color: white;
-    width: 100%;
-    height: 25px;
+	width: 100%;
+	height: 25px;
 	border-bottom: 1px dashed black;
+}
+
+#user_selection_tip{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    height: 35px;
+    width: 120px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px -5px white inset,
+                0px 4px 16px -16px black;
+    font-size: 12px;
+    user-select: none;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.tool_tip{
+    border: 2px solid black;
+}
+
+.hidden {
+	display: none !important;
 }
 </style>

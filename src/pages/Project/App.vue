@@ -38,8 +38,13 @@
 		<div id="weeks_container">
 			<ButtonItem v-for="(weekDict, weekID) in projectDict['weeks']" :key="weekDict" class="list_item" :data="weekID" @click="weekButton" :title="weekID" />
 		</div>
-		<div id="time_sheet_container"></div>
-		<div id="colour_container"></div>
+		<div id="time_sheet_container">
+			<TimeSheet :weekID="currentWeek" ref="TimeSheet"/> 
+		</div>
+			
+		<div id="colour_container">
+			<div v-for="colourID in projectDict['colours']" :key="colourID" class="colour_item" :style="`background-color:${masterDict['colours'][colourID]['colour']};`" @click="``">{{ masterDict['colours'][colourID]['name'] }}</div>
+		</div>
 	</div>
 
 </template>
@@ -48,6 +53,7 @@
 import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
+import TimeSheet from '../../components/TimeSheet.vue';
 import $ from 'jquery'
 
 export default {
@@ -55,14 +61,16 @@ export default {
 	components: {
 		NavBar,
 		BackgroundBubble,
-		ButtonItem
+		ButtonItem,
+		TimeSheet
 	},
 	data() {
 		return {
 			projectDict: {},
 			weekDict: {},
 			projectID: '',
-			masterDict: {}
+			masterDict: {},
+			currentWeek: ``
 		}
 	},
 	mounted() {
@@ -75,8 +83,11 @@ export default {
 		weekButton(event){
 			const weekID = $(event.target).attr('data');
 			this.weekDict = this.projectDict['weeks'][weekID];
-			console.log($(event.target))
 			$(`#weekTitle`).text(`WEEK: ${weekID}`)
+			this.currentWeek = weekID;
+			setTimeout(() => {
+				this.$refs.TimeSheet.updateLib();
+			}, 1)
 		}
 	}
 }
@@ -102,10 +113,10 @@ export default {
 
 #top_title{
 	height: 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
 }
 
 #top_title > div{
@@ -116,12 +127,14 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: clamp(150px, 150px, 150px);
+	width: 150px;
+	min-width: 150px;
 	height: calc(100vh - var(--navbar_height) - 10vh);
 	overflow-y: scroll;
 	margin: 10px 10px 10px 10px;
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 	border-radius: 10px;
+	background-color: #ffffff3b;
 }
 
 #weeks_container > div{
@@ -131,6 +144,7 @@ export default {
 
 #time_sheet_container{
 	display: flex;
+	align-items: center;
 	width: 100%;
 	height: calc(100vh - var(--navbar_height) - 10vh);
 	overflow-y: scroll;
@@ -138,19 +152,36 @@ export default {
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 	overflow-x: scroll;
 	border-radius: 10px;
+	background-color: #ffffff3b;
 }
 
 #colour_container{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: clamp(250px, 250px, 250px);
+	width: 200px;
+	min-width: 200px;
 	height: calc(100vh - var(--navbar_height) - 10vh);
 	overflow-y: scroll;
 	margin: 10px 10px 10px 10px;
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 	border-radius: 10px;
+	background-color: #ffffff3b;
 }
 
+.colour_item{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 90%;
+	height: 25px;
+	margin-top: 10px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.colour_item:hover{
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.082), 0 10px 10px rgba(0, 0, 0, 0.11);
+}
 
 </style>

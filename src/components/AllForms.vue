@@ -208,7 +208,7 @@
 <script>
 import ButtonItem from './ButtonItem.vue';
 import $ from 'jquery';
-import { generateID, reDoDate, addToDate  } from '../../public/generalFunctions.js';
+import { generateID, reDoDate, addToDate } from '../../public/generalFunctions.js';
 
 export default {
 	name: 'AllForms',
@@ -325,13 +325,15 @@ export default {
 					timeList.push(`${hour}:${minute}`)
 				}
 			}
-			this.masterDict['projects'][projectID] = {'name': name, 'colours': [], 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval};
+            let colourIds = Object.keys(this.masterDict['colours'])
+
+			this.masterDict['projects'][projectID] = {'name': name, 'colours': colourIds, 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval};
 			
 			
 			if(weekInterval == 1){
 				for(let w = 1; w <= duration; w++){
 					this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
-					date = addToDate(date, 14);
+					date = addToDate(date, 7);
 				}
 			}else if(weekInterval == 2){
 				if(duration % 2 == 1){
@@ -348,7 +350,6 @@ export default {
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-			console.log(this.masterDict)
 		},
 
 		createColour(){
@@ -362,6 +363,10 @@ export default {
 			}
 
 			this.masterDict['colours'][colourID] = {'name': colourName, 'rate': colourRate, 'colour': colour};
+            for (let [projectID, projectDict] of Object.entries(this.masterDict['projects'])) {
+                projectDict['colours'].push(colourID);
+                projectID;
+            }
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');

@@ -85,9 +85,6 @@
 			</div>
 			<div v-for="(colourDict, colourID) in masterDict['colours']" :key="colourDict" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">
                 <p>{{ colourDict.name }}</p>
-                <select id="colour_select_project" multiple>
-                    <option v-for="(projectDict, projectID) in masterDict['projects']" :key="projectDict" :data="projectID">{{ projectDict.name }}</option>
-                </select>
             </div>
 		</div>
 		

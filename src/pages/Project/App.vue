@@ -43,7 +43,7 @@
 		</div>
 			
 		<div id="colour_container">
-			<div v-for="colourID in projectDict['colours']" :key="colourID" class="colour_item" :style="`background-color:${masterDict['colours'][colourID]['colour']};`" @click="``">{{ masterDict['colours'][colourID]['name'] }}</div>
+			<div v-for="colourID in projectDict['colours']" :key="colourID" :colourid="colourID" class="colour_item" :style="`background-color:${masterDict['colours'][colourID]['colour']};`" @click="colourCell">{{ masterDict['colours'][colourID]['name'] }}</div>
 		</div>
 	</div>
 
@@ -70,24 +70,43 @@ export default {
 			weekDict: {},
 			projectID: '',
 			masterDict: {},
-			currentWeek: ``
+			currentWeek: ``,
+			selectedCellsList: [],
+            weekID: ''
 		}
 	},
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
-		this.projectID = localStorage.getItem('projectID')
+		this.projectID = localStorage.getItem('projectID');
 		this.projectDict = this.masterDict['projects'][this.projectID]
 		$(`#projectTitle`).text(`PROJECT: ${this.projectDict['name']}`)
 	},
 	methods: {
 		weekButton(event){
-			const weekID = $(event.target).attr('data');
-			this.weekDict = this.projectDict['weeks'][weekID];
-			$(`#weekTitle`).text(`WEEK: ${weekID}`)
-			this.currentWeek = weekID;
+			this.weekID = $(event.target).attr('data');
+			this.weekDict = this.projectDict['weeks'][this.weekID];
+			$(`#weekTitle`).text(`WEEK: ${this.weekID}`)
+			this.currentWeek = this.weekID;
 			setTimeout(() => {
 				this.$refs.TimeSheet.updateLib();
 			}, 1)
+		},
+		colourCell(event){
+			this.selectedCellsList = localStorage.getItem('selectedCellsList').split(',');
+			const colourID = $(event.target).attr('colourid');
+			this.selectedCellsList.forEach(cellID => {
+                for(const colourID of Object.keys(this.masterDict['colours'])){
+                    if(this.weekDict['colouredCells'][colourID].includes(cellID)){
+                        this.weekDict['colouredCells'][colourID].splice(this.weekDict['colouredCells'][colourID].indexOf(cellID), 1)
+                    }
+                }
+                this.weekDict['colouredCells'][colourID].push(cellID);
+                $(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
+			});
+
+			this.selectedCellsList = [];
+			localStorage.removeItem('selectedCellsList')  
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		}
 	}
 }

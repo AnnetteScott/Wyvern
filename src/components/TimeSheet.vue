@@ -52,6 +52,14 @@ export default {
 			this.projDict = this.masterDict['projects'][localStorage.getItem('projectID')]
 			this.weekDict = this.projDict['weeks'][this.$props.weekID];
 			
+            setTimeout(() => {
+                for(const colourID of Object.keys(this.weekDict['colouredCells'])){
+                    this.weekDict['colouredCells'][colourID].forEach(cellID => {
+                        $(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
+                    });
+                }
+            }, 1)
+
 			this.dateList = [`Date | Time`];
 			this.dateList.push(this.weekDict['startDate']);
 			for(let i = 1; i < (this.projDict['weekInterval'] * 7); i++){
@@ -146,6 +154,8 @@ export default {
 		cellRelease(){
 			this.cellClicked = false;
             $('#user_selection_tip').addClass('hidden');
+            localStorage.setItem('selectedCellsList', this.selectedCellsList);
+            this.selectedCellsList = [];
 		},
 		selectCell(element){
 			element.style.borderColor = "cyan";

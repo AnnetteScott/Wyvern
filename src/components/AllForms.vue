@@ -325,7 +325,7 @@ export default {
 					timeList.push(`${hour}:${minute}`)
 				}
 			}
-            let colourIds = Object.keys(this.masterDict['colours'])
+			let colourIds = Object.keys(this.masterDict['colours'])
 
 			this.masterDict['projects'][projectID] = {'name': name, 'colours': colourIds, 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval};
 			
@@ -333,6 +333,10 @@ export default {
 			if(weekInterval == 1){
 				for(let w = 1; w <= duration; w++){
 					this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
+					colourIds.forEach(colourID => {
+						this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
+						colourID;
+					});
 					date = addToDate(date, 7);
 				}
 			}else if(weekInterval == 2){
@@ -342,6 +346,10 @@ export default {
 				}   
 				for(let w = 1; w <= duration; w+= 2){
 					this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
+					colourIds.forEach(colourID => {
+						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
+						colourID;
+					});
 					date = addToDate(date, 14);
 				}
 			}
@@ -363,10 +371,21 @@ export default {
 			}
 
 			this.masterDict['colours'][colourID] = {'name': colourName, 'rate': colourRate, 'colour': colour};
-            for (let [projectID, projectDict] of Object.entries(this.masterDict['projects'])) {
-                projectDict['colours'].push(colourID);
-                projectID;
-            }
+			for (let [projectID, projectDict] of Object.entries(this.masterDict['projects'])) {
+				projectDict['colours'].push(colourID);
+				projectID;
+				let duration = projectDict.duration;
+				if(projectDict.weekInterval == 1){
+					for(let w = 1; w <= duration; w++){
+						this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
+					}
+				}
+				else if(projectDict.weekInterval == 2){
+					for(let w = 1; w <= duration; w+= 2){
+						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
+					}
+				}
+			}
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
@@ -433,19 +452,19 @@ export default {
 						date = addToDate(date, 14);
 						this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
 					}
-                    this.masterDict['projects'][projectID]['duration'] = duration;
+					this.masterDict['projects'][projectID]['duration'] = duration;
 				}else if(this.masterDict['projects'][projectID]['weekInterval'] == 2){
-                    let lastKey = `${previousDur - 1} - ${previousDur}`;
+					let lastKey = `${previousDur - 1} - ${previousDur}`;
 					let date = this.masterDict['projects'][projectID]['weeks'][lastKey]['startDate'];
 					for(let w = previousDur + 1; w <= duration; w+= 2){
 						date = addToDate(date, 14);
 						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
 					}
-                    if(duration % 2 == 1){
-                        this.masterDict['projects'][projectID]['duration'] = duration + 1;
-                    }else{
-                        this.masterDict['projects'][projectID]['duration'] = duration;
-                    }
+					if(duration % 2 == 1){
+						this.masterDict['projects'][projectID]['duration'] = duration + 1;
+					}else{
+						this.masterDict['projects'][projectID]['duration'] = duration;
+					}
 				}
 			}
 

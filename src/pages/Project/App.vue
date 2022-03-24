@@ -112,7 +112,6 @@ export default {
 				$(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
 			});
 
-			console.log(this.weekDict['colouredCells'])
 			this.selectedCellsList = [];
 			localStorage.setItem('selectedCellsList', 'coloured') 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
@@ -140,6 +139,46 @@ export default {
 				}
 				
 			}
+            let columns = {};
+            if(this.projectDict['weekInterval'] == 1){
+                columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+            }else{
+                columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
+            }
+            let weekTotal = 0;
+            let weekMoney = 0;
+            let timeTotal = 0;
+            let timeMoney = 0;
+            for(let i = 0; i < this.projectDict['weekInterval'] * 7; i++){
+                let cellTotal = this.projectDict['timeList'].length + this.projectDict['colours'].length - 2;
+                let colTotal = 0;
+                let colMoney = 0;
+                for(let index in this.projectDict['colours']){
+                    if(this.projectDict['colours'][index] != 'colourWhite'){
+                        let cellID = `${columns[i]}${cellTotal}`
+                        colTotal += parseFloat($(`[cellid=${cellID}]`).text())
+                        colMoney += parseFloat($(`[cellid=${cellID}]`).text()) * this.masterDict['colours'][this.projectDict['colours'][index]]['rate']
+                        cellTotal++;
+                    }
+                }
+                weekTotal += colTotal;
+                weekMoney += colMoney;
+                $(`[cellid=${columns[i]}${cellTotal}]`).text(`${colTotal}`)
+                $(`[cellid=${columns[i]}${cellTotal + 1}]`).text(`$${colMoney.toFixed(2)}`)
+                if(i % 7 == 6){
+                    $(`[cellid=${columns[i - 6]}${cellTotal + 2}]`).text(weekTotal);
+                    $(`[cellid=${columns[i - 6]}${cellTotal + 3}]`).text(`$${weekMoney.toFixed(2)}`);
+                    timeTotal += weekTotal;
+                    timeMoney += weekMoney;
+                    weekTotal = 0;
+                    weekMoney = 0;
+                }
+                if(i == this.projectDict['weekInterval'] * 7 - 1){
+                    $(`[cellid=A${cellTotal + 4}]`).text(timeTotal);
+                    $(`[cellid=A${cellTotal + 5}]`).text(`$${timeMoney.toFixed(2)}`);
+                }
+                
+            }
 		}
 	}
 }

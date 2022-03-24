@@ -3,10 +3,28 @@
 		<div v-for="(col, index) in columnLetter" :key="col" :colID="col" class="column">
 			<div :cellID="`${col}0`" class="dateCell">{{ dateList[index] }}</div>
 			<template v-if="col == `Z`">
-				<div  v-for="(time, indexd) in timeList" :key="time" :cellID="`Z${indexd + 1}`" class="dateCell">{{ time }}</div>
+				<div  v-for="(time, index) in timeList" :key="time" :cellID="`Z${index + 1}`" class="dateCell">{{ time }}</div>
 			</template>
 			<template v-else>
-				<div  v-for="(time, indext) in timeList" :key="time" :cellID="`${col}${indext + 1}`" class="cell" :weekid="`${weekID}`" @mousedown="cellDown" @mouseover="cellHovered" @mouseup="cellRelease"/>
+				<div  v-for="(time, index) in timeList" :key="time" :cellID="`${col}${index + 1}`" class="cell" :weekid="`${weekID}`" @mousedown="cellDown" @mouseover="cellHovered" @mouseup="cellRelease"/>
+			</template>
+
+            <!-- Weekly Cells -->
+            <template v-if="col == `Z`">
+				<div  v-for="(time, index) in infoList" :key="time" :cellID="`Z${index + cellIndexOffSet + 1}`" class="dateCell">{{ time }}</div>
+			</template>
+			<template v-if="col == `A` || col == `H`">
+				<div  v-for="(time, index) in infoList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 1}`" class="infoCell" :weekid="`${weekID}`"/>
+			</template>
+            
+            <template v-if="col == `Z`">
+				<div  v-for="(time, index) in totalList" :key="time" :cellID="`Z${index + cellIndexOffSet + 3}`" class="dateCell">{{ time }}</div>
+			</template>
+			<template v-if="col == `A` && weekInterval == 1">
+				<div  v-for="(time, index) in totalList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 3}`" class="totalCellOne" :weekid="`${weekID}`"/>
+			</template>
+			<template v-if="col == `A` && weekInterval == 2">
+				<div  v-for="(time, index) in totalList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 3}`" class="totalCellTwo" :weekid="`${weekID}`"/>
 			</template>
 		</div>
 	</template>
@@ -30,10 +48,14 @@ export default {
 			columnLetter: [],
 			dateList: [],
 			timeList: [],
+			infoList: [],
+			totalList: [],
 			selectedCellsList: [],
 			cellClicked: false,
 			previousDate: 'Z',
 			previousTime: '0',
+            cellIndexOffSet: 0,
+            weekInterval: ''
 		}
 	},
 	mounted(){
@@ -53,6 +75,7 @@ export default {
 			this.columnLetter = [];
 			this.dateList = [];
 			this.timeList = [];
+			this.weekInterval = this.projDict['weekInterval'];
 			if(this.selectedCellsList != []){
 				this.selectedCellsList.forEach(cellIDR => {
 					let colouredCells = this.listOfValuesArr(this.weekDict['colouredCells']);
@@ -99,15 +122,19 @@ export default {
 				}
 			}
 			this.timeList.push("Total Hours:");
-			this.timeList.push("Total $:");
-			this.timeList.push("Weekly Hours:");
-			this.timeList.push("Weekly $:");
-			this.timeList.push("Timesheet Hours:");
-			this.timeList.push("Timesheet Total $:");
+			this.timeList.push("Total Daily $:");
+            this.cellIndexOffSet = this.timeList.length;
+
+			this.infoList = ["Weekly Hours:"];
+			this.infoList.push("Weekly $:");
+
+            this.totalList = ["Timesheet Hours:"];
+			this.totalList.push("Timesheet Total $:");
 
 			setTimeout(() => {
-				for(let i = this.projDict['timeList'].length + 2; i <= this.timeList.length + 1; i++) {
+				for(let i = this.projDict['timeList'].length + 2; i <= this.timeList.length + this.infoList.length + this.totalList.length + 1; i++) {
 					$(`.column > div:nth-child(${i})`).css("pointer-events", "none");
+					$(`.column > div:nth-child(${i})`).css("user-select", "none");
 				}
 				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-top", "2px solid black");
 				$(`.column > div:nth-child(${this.projDict['timeList'].length + 1})`).css("border-bottom", "2px solid black");
@@ -251,7 +278,6 @@ export default {
 	min-width: 90px;
 	border-left: 1px solid black;
 	border-top: 1px solid black;
-	border-bottom: 1px solid black;
 }
 
 .column:last-child{
@@ -281,17 +307,48 @@ export default {
 }
 
 .dateCell{
-	
 	background-color: white;
 	width: 100%;
 	height: 25px;
+    max-height: 25px;
 	border-bottom: 1px solid black;
 }
 .cell{
 	background-color: white;
 	width: 100%;
 	height: 25px;
+    max-height: 25px;
 	border-bottom: 1px dashed black;
+}
+
+.infoCell{
+	background-color: white;
+	width: calc(700% + 5px);
+	height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
+
+.totalCellOne{
+	background-color: white;
+	width: calc(700% + 5px);
+	height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
+
+.totalCellTwo{
+	background-color: white;
+	width: calc(1400% + 12px);
+	height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
 }
 
 #user_selection_tip{

@@ -10,7 +10,7 @@
 			</template>
 		</div>
 	</template>
-    <div id="user_selection_tip" class ="tool_tip hidden">Time: </div>
+	<div id="user_selection_tip" class ="tool_tip hidden">Time: </div>
 </template>
 
 <script>
@@ -24,10 +24,9 @@ export default {
 	},
 	data() {
 		return {
-			weekDict: {},
 			masterDict: {},
 			projDict: {},
-			projectID: '',
+			weekDict: {},
 			columnLetter: [],
 			dateList: [],
 			timeList: [],
@@ -37,28 +36,52 @@ export default {
 			previousTime: '0',
 		}
 	},
-    mounted(){
-        const onMouseMove = (e) =>{
-            $('#user_selection_tip').css({
-                left: e.pageX + 55 + 'px',
-                top: e.pageY - 20 + 'px'
-            })
-        }
-        document.addEventListener('mousemove', onMouseMove);
-    },
+	mounted(){
+		const onMouseMove = (e) =>{
+			$('#user_selection_tip').css({
+				left: e.pageX + 55 + 'px',
+				top: e.pageY - 20 + 'px'
+			})
+		}
+		document.addEventListener('mousemove', onMouseMove);
+	},
 	methods: {
 		updateLib(){
 			this.masterDict = JSON.parse(localStorage.getItem('masterDict'))
 			this.projDict = this.masterDict['projects'][localStorage.getItem('projectID')]
 			this.weekDict = this.projDict['weeks'][this.$props.weekID];
+			this.columnLetter = [];
+			this.dateList = [];
+			this.timeList = [];
+			if(this.selectedCellsList != []){
+				this.selectedCellsList.forEach(cellIDR => {
+					let colouredCells = this.listOfValuesArr(this.weekDict['colouredCells']);
+					if(colouredCells.includes(cellIDR)){
+						let cellColour = '';
+						for(const [colourID, colourDict] of Object.entries(this.weekDict['colouredCells'])){
+							if(colourDict.includes(cellIDR)){
+								cellColour = this.masterDict['colours'][colourID]['colour'];
+							}
+						}
+						
+						this.cellDeSelect(cellIDR, cellColour);
+					} else {
+						this.cellDeSelect(cellIDR, "white"); 
+					}
+					
+				});
+			}
+			this.selectedCellsList = [];
+			this.cellClicked = false;
 			
-            setTimeout(() => {
-                for(const colourID of Object.keys(this.weekDict['colouredCells'])){
-                    this.weekDict['colouredCells'][colourID].forEach(cellID => {
-                        $(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
-                    });
-                }
-            }, 1)
+			setTimeout(() => {
+				$(`.cell`).css({"background-color": 'white', "border-color": "black"});
+				for(const colourID of Object.keys(this.weekDict['colouredCells'])){
+					this.weekDict['colouredCells'][colourID].forEach(cellID => {
+						$(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
+					});
+				}
+			}, 1)
 
 			this.dateList = [`Date | Time`];
 			this.dateList.push(this.weekDict['startDate']);
@@ -70,7 +93,9 @@ export default {
 
 			if(this.projDict['colours'] != []){
 				for (let colourID of this.projDict['colours']) {
-					this.timeList.push(this.masterDict['colours'][colourID]['name']);
+					if(colourID != 'colourWhite'){
+						this.timeList.push(this.masterDict['colours'][colourID]['name']);  
+					}
 				}
 			}
 			this.timeList.push("Total Hours:");
@@ -80,14 +105,14 @@ export default {
 			this.timeList.push("Timesheet Hours:");
 			this.timeList.push("Timesheet Total $:");
 
-            setTimeout(() => {
+			setTimeout(() => {
 				for(let i = this.projDict['timeList'].length + 2; i <= this.timeList.length + 1; i++) {
-                    $(`.column > div:nth-child(${i})`).css("pointer-events", "none");
-                }
-                $(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-top", "2px solid black");
-                $(`.column > div:nth-child(${this.projDict['timeList'].length + 1})`).css("border-bottom", "2px solid black");
+					$(`.column > div:nth-child(${i})`).css("pointer-events", "none");
+				}
+				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-top", "2px solid black");
+				$(`.column > div:nth-child(${this.projDict['timeList'].length + 1})`).css("border-bottom", "2px solid black");
 			}, 1)
-            
+			
 			if(this.projDict['weekInterval'] == 1){
 				this.columnLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G'];
 			}else{
@@ -98,28 +123,42 @@ export default {
 			this.cellClicked = true;
 			const cellID = $(event.target).attr('cellid');
 			this.selectCell(event.target);
-			if(this.selectedCellsList != []){
-				this.selectedCellsList.forEach(cellIDR => {
-					let colouredCells = this.listOfValuesArr(this.weekDict['colouredCells']);
-					if(colouredCells.includes(cellIDR)){
-						this.cellDeSelect(cellIDR, this.masterDict['colours'][colouredCells[cellIDR]]['colour']);
-					} else {
-						this.cellDeSelect(cellIDR, "white"); 
-					}
-					
-				});
+			if(localStorage.getItem('selectedCellsList') === 'coloured'){
+				localStorage.setItem('selectedCellsList', [])
+			}else{
+				if(this.selectedCellsList != []){
+					this.selectedCellsList.forEach(cellIDR => {
+						let colouredCells = this.listOfValuesArr(this.weekDict['colouredCells']);
+						if(colouredCells.includes(cellIDR)){
+							let cellColour = '';
+							for(const [colourID, colourDict] of Object.entries(this.weekDict['colouredCells'])){
+								if(colourDict.includes(cellIDR)){
+									cellColour = this.masterDict['colours'][colourID]['colour'];
+								}
+							}
+							
+							this.cellDeSelect(cellIDR, cellColour);
+						} else {
+							this.cellDeSelect(cellIDR, "white"); 
+						}
+						
+					});
+				}
 			}
+			
 			if(!(this.selectedCellsList.includes(cellID) && this.selectedCellsList.length == 1)){
 				this.selectedCellsList = [cellID];
 			}else{
 				this.selectedCellsList = []
 			}
 
-            let firstTimeID = "Z" + cellID.substring(1);
-            let firstTime = ($(`[cellid=${firstTimeID}]`).text()).split(":");
-            let timePeriod = `${firstTime[0]}:${firstTime[1]} - ${firstTime[0]}:${parseInt(firstTime[1]) + 14}`
-            $('#user_selection_tip').text(`Time Selected: 00.25H\n${timePeriod} `);
-            $('#user_selection_tip').removeClass('hidden');
+			let firstTimeID = "Z" + cellID.substring(1);
+			let timeInterval = this.projDict['timeInterval'];
+			let firstTime = ($(`[cellid=${firstTimeID}]`).text()).split(":");
+			let timeSelected = this.selectedCellsList.length * Math.round((1/(60/this.projDict['timeInterval'])) * 1000) / 1000;
+			let timePeriod = `${firstTime[0]}:${firstTime[1]} - ${firstTime[0]}:${parseInt(firstTime[1]) + timeInterval - 1}`
+			$('#user_selection_tip').text(`Time Selected: ${timeSelected.toFixed(2)}H\n${timePeriod} `);
+			$('#user_selection_tip').removeClass('hidden'); 
 
 		},
 		cellHovered(event){
@@ -128,13 +167,14 @@ export default {
 				this.selectCell(event.target);
 				this.selectedCellsList.push(cellID);
 
-                let timeSelected = this.selectedCellsList.length * 0.25;
-                let minTimeCell = "Z" + this.minCell(this.selectedCellsList);
-                let maxTimeCell = "Z" + this.maxCell(this.selectedCellsList);
-                let maxTime = ($(`[cellid=${maxTimeCell}]`).text()).split(":");
-
-                let timePeriod = `${$(`[cellid=${minTimeCell}]`).text()} - ${maxTime[0]}:${parseInt(maxTime[1]) + 14}`;
-                $('#user_selection_tip').text(`Time Selected: ${timeSelected}H\n${timePeriod} `);
+				let timeInterval = this.projDict['timeInterval'];
+				let timeSelected = this.selectedCellsList.length * Math.round((1/(60/this.projDict['timeInterval'])) * 1000) / 1000;
+				let minTimeCell = "Z" + this.minCell(this.selectedCellsList);
+				let maxTimeCell = "Z" + this.maxCell(this.selectedCellsList);
+				let maxTime = ($(`[cellid=${maxTimeCell}]`).text()).split(":");
+				let timePeriod = `${$(`[cellid=${minTimeCell}]`).text()} - ${maxTime[0]}:${parseInt(maxTime[1]) + timeInterval - 1}`;
+				
+				$('#user_selection_tip').text(`Time Selected: ${timeSelected.toFixed(2)}H\n${timePeriod} `);
 			}
 
 			const cellCol = cellID[0];
@@ -153,9 +193,8 @@ export default {
 		},
 		cellRelease(){
 			this.cellClicked = false;
-            $('#user_selection_tip').addClass('hidden');
-            localStorage.setItem('selectedCellsList', this.selectedCellsList);
-            this.selectedCellsList = [];
+			$('#user_selection_tip').addClass('hidden');
+			localStorage.setItem('selectedCellsList', this.selectedCellsList);
 		},
 		selectCell(element){
 			element.style.borderColor = "cyan";
@@ -166,7 +205,7 @@ export default {
 		},
 		listOfValues(obj){
 			let valueList = [];
-			for(const [key, value] of Object.keys(obj)){
+			for(const [key, value] of Object.entries(obj)){
 				valueList.push(value)
 				key;
 			}
@@ -174,7 +213,7 @@ export default {
 		},
 		listOfValuesArr(obj){
 			let valueList = [];
-			for(const [key, value] of Object.keys(obj)){
+			for(const [key, value] of Object.entries(obj)){
 				for (const element of value) {
 					valueList.push(element)
 				}
@@ -182,25 +221,25 @@ export default {
 			}
 			return valueList;
 		},
-        minCell(arr){
-            let smallestNum = arr[0].substring(1);
-            for(let i = 0; i < arr.length; i++){
-                if(parseInt(arr[i].substring(1)) < smallestNum){
-                    smallestNum = parseInt(arr[i].substring(1))
-                }
-            }
-            return smallestNum;
-        },
+		minCell(arr){
+			let smallestNum = arr[0].substring(1);
+			for(let i = 0; i < arr.length; i++){
+				if(parseInt(arr[i].substring(1)) < smallestNum){
+					smallestNum = parseInt(arr[i].substring(1))
+				}
+			}
+			return smallestNum;
+		},
 
-        maxCell(arr){
-            let smallestNum = arr[0].substring(1);
-            for(let i = 0; i < arr.length; i++){
-                if(parseInt(arr[i].substring(1)) > smallestNum){
-                    smallestNum = parseInt(arr[i].substring(1))
-                }
-            }
-            return smallestNum;
-        }
+		maxCell(arr){
+			let smallestNum = arr[0].substring(1);
+			for(let i = 0; i < arr.length; i++){
+				if(parseInt(arr[i].substring(1)) > smallestNum){
+					smallestNum = parseInt(arr[i].substring(1))
+				}
+			}
+			return smallestNum;
+		}
 	}
 }
 </script>
@@ -210,7 +249,6 @@ export default {
 	width: 100%;
 	z-index: 2;
 	min-width: 90px;
-	height: 97%;
 	border-left: 1px solid black;
 	border-top: 1px solid black;
 	border-bottom: 1px solid black;
@@ -228,7 +266,7 @@ export default {
 	min-width: 140px;
 	margin-left: 10px;
 	border: 1px solid black;
-    pointer-events: none;
+	pointer-events: none;
 }
 
 .column:nth-child(2){
@@ -238,8 +276,8 @@ export default {
 .column > div:nth-child(1){
 	top: 0px;
 	position: sticky;
-    pointer-events: none;
-    user-select: none;
+	pointer-events: none;
+	user-select: none;
 }
 
 .dateCell{
@@ -257,22 +295,22 @@ export default {
 }
 
 #user_selection_tip{
-    position: absolute;
-    transform: translate(-50%,-50%);
-    height: 35px;
-    width: 120px;
-    background-color: #FFFFFF;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px -5px white inset,
-                0px 4px 16px -16px black;
-    font-size: 12px;
-    user-select: none;
-    pointer-events: none;
-    z-index: 100;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	height: 35px;
+	width: 120px;
+	background-color: #FFFFFF;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px -5px white inset,
+				0px 4px 16px -16px black;
+	font-size: 12px;
+	user-select: none;
+	pointer-events: none;
+	z-index: 100;
 }
 
 .tool_tip{
-    border: 2px solid black;
+	border: 2px solid black;
 }
 
 .hidden {

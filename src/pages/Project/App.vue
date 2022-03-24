@@ -72,7 +72,7 @@ export default {
 			masterDict: {},
 			currentWeek: ``,
 			selectedCellsList: [],
-            weekID: ''
+			weekID: ''
 		}
 	},
 	mounted() {
@@ -89,24 +89,57 @@ export default {
 			this.currentWeek = this.weekID;
 			setTimeout(() => {
 				this.$refs.TimeSheet.updateLib();
+				setTimeout(() => {
+					this.updateColourTotals();
+				}, 1)
 			}, 1)
+			
 		},
 		colourCell(event){
 			this.selectedCellsList = localStorage.getItem('selectedCellsList').split(',');
 			const colourID = $(event.target).attr('colourid');
 			this.selectedCellsList.forEach(cellID => {
-                for(const colourID of Object.keys(this.masterDict['colours'])){
-                    if(this.weekDict['colouredCells'][colourID].includes(cellID)){
-                        this.weekDict['colouredCells'][colourID].splice(this.weekDict['colouredCells'][colourID].indexOf(cellID), 1)
-                    }
-                }
-                this.weekDict['colouredCells'][colourID].push(cellID);
-                $(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
+				for(const colourIDm of Object.keys(this.masterDict['colours'])){
+					if(colourIDm != 'colourWhite'){
+						if(this.weekDict['colouredCells'][colourIDm].includes(cellID)){
+							this.weekDict['colouredCells'][colourIDm].splice(this.weekDict['colouredCells'][colourIDm].indexOf(cellID), 1)
+						}
+					}
+				}
+				if(colourID != 'colourWhite'){
+					this.weekDict['colouredCells'][colourID].push(cellID);
+				}
+				$(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
 			});
 
+			console.log(this.weekDict['colouredCells'])
 			this.selectedCellsList = [];
-			localStorage.removeItem('selectedCellsList')  
+			localStorage.setItem('selectedCellsList', 'coloured') 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.updateColourTotals();
+			this.$refs.TimeSheet.updateLib();
+		},
+		updateColourTotals(){
+			let cellTotal = this.projectDict['timeList'].length + 1;
+			for(const [colourID, cellArr] of Object.entries(this.weekDict['colouredCells'])){
+				if(colourID != 'colourWhite'){
+					let colourTotals = {};
+					if(this.projectDict['weekInterval'] == 1){
+						colourTotals = {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'G': 0};
+					}else{
+						colourTotals = {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'G': 0, 'H': 0, 'I': 0, 'J': 0, 'K': 0, 'L': 0, 'M': 0, 'N': 0};
+					}
+					cellArr.forEach(cellID => {
+						colourTotals[cellID.charAt(0)] += Math.round((1/(60/this.projectDict['timeInterval'])) * 1000) / 1000;
+					});
+					for(let [collID, colourTotal] of Object.entries(colourTotals)){
+						$(`[cellid=${collID}${cellTotal}]`).text(`${colourTotal.toFixed(2)}`)
+						
+					}
+					cellTotal++;
+				}
+				
+			}
 		}
 	}
 }
@@ -163,7 +196,9 @@ export default {
 
 #time_sheet_container{
 	display: flex;
-	align-items: center;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: flex-start;
 	width: 100%;
 	height: calc(100vh - var(--navbar_height) - 10vh);
 	overflow-y: scroll;

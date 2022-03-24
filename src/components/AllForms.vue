@@ -326,6 +326,10 @@ export default {
 				}
 			}
 			let colourIds = Object.keys(this.masterDict['colours'])
+            if(!colourIds.includes('colourWhite')){
+                colourIds.push('colourWhite')
+                this.masterDict['colours']['colourWhite'] = {'name': 'White', 'colour': '#ffffff'}
+            }
 
 			this.masterDict['projects'][projectID] = {'name': name, 'colours': colourIds, 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval};
 			
@@ -334,8 +338,9 @@ export default {
 				for(let w = 1; w <= duration; w++){
 					this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
 					colourIds.forEach(colourID => {
-						this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
-						colourID;
+                        if(colourID != 'colourWhite'){
+                            this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
+                        }
 					});
 					date = addToDate(date, 7);
 				}
@@ -347,8 +352,9 @@ export default {
 				for(let w = 1; w <= duration; w+= 2){
 					this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
 					colourIds.forEach(colourID => {
-						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
-						colourID;
+						if(colourID != 'colourWhite'){
+                            this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
+                        }
 					});
 					date = addToDate(date, 14);
 				}
@@ -386,6 +392,9 @@ export default {
 					}
 				}
 			}
+            if(this.masterDict['colours'].includes('colourWhite')){
+                this.masterDict['colours']['colourWhite'] = {'colour': '#ffffff'}
+            }
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');

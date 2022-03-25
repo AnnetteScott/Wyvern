@@ -1,9 +1,11 @@
-'use strict'
-
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, Menu, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const path = require('path');
+import fs from "fs";
+const { dialog } = require('electron');
+const isDevelopment = true
+let win;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -12,22 +14,19 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-	const win = new BrowserWindow({
-		width: 800,
-		height: 600,
+	win = new BrowserWindow({
 		webPreferences: {
-		
-		// Use pluginOptions.nodeIntegration, leave this alone
-		// See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-		nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-		contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
-    }
-  })
+            nodeIntegration: true,
+            contextIsolation: false,
+            nativeWindowOpen: true
+        }
+  	})
 
+	win.maximize();
   	if (process.env.WEBPACK_DEV_SERVER_URL) {
 		// Load the url of the dev server if in development mode
 		await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-		if (!process.env.IS_TEST) win.webContents.openDevTools()
+		if (isDevelopment) win.webContents.openDevTools()
 	}else{
 		createProtocol('app')
 		// Load the index.html when not in development
@@ -35,26 +34,12 @@ async function createWindow() {
 	}
 }
 
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-	// On macOS it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
-	if (process.platform !== 'darwin') {
-		app.quit()
-	}
-})
-
-app.on('activate', () => {
-	// On macOS it's common to re-create a window in the app when the
-	// dock icon is clicked and there are no other windows open.
-	if (BrowserWindow.getAllWindows().length === 0) createWindow()
-})
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-	if (isDevelopment && !process.env.IS_TEST) {
+	if (isDevelopment) {
 		// Install Vue Devtools
 		try {
 		await installExtension(VUEJS3_DEVTOOLS)
@@ -63,19 +48,91 @@ app.on('ready', async () => {
 		}
 	}
 	createWindow()
+
+	// Build menu from template
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+    // Insert menu
+    Menu.setApplicationMenu(mainMenu);
 })
 
-// Exit cleanly on request from parent process in development mode.
-if (isDevelopment) {
-	if (process.platform === 'win32') {
-		process.on('message', (data) => {
-			if (data === 'graceful-exit') {
-				app.quit()
-			}
-		})
-	} else {
-		process.on('SIGTERM', () => {
-			app.quit()
-		})
-	}
+const mainMenuTemplate =  [
+    // Each object is a dropdown
+    {
+        label: "File",
+        submenu: [
+            {
+                label: 'Save', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+S' : 'Ctrl+S',
+                click(){ saveData() }
+            },  
+            {
+                label: 'Manual Save', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+Shift+S' : 'Ctrl+Shift+S',
+                click(){ manualSave() }
+            },
+            {
+                label: 'Open', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+O' : 'Ctrl+O',
+                click(){ loadData() }
+            },
+            {
+                label: 'Exit', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+W' : 'Ctrl+W',
+                click(){ app.quit() }
+            } 
+        ]
+    }
+];
+
+let saveFilePath = app.getPath('userData') + "\\data\\userData.json"
+function saveData(){
+	win.webContents.send("reedMasterDict");
+    ipcMain.on('readMasterDict', function(event, data) {
+        fs.writeFileSync(saveFilePath , JSON.stringify(data));
+		event;
+    })
+}
+
+function loadData(){
+	dialog.showOpenDialog(win, {
+        properties: ['openFile'],
+        filters: [{ name: 'json', extensions: ['json'] }]
+    }).then(result => {
+        let path = result['filePaths'][0];
+        let masterDict = JSON.parse(read_file(path));
+        fs.writeFileSync(saveFilePath, JSON.stringify(masterDict));
+        win.reload()
+    }).catch(err => {
+        console.log(err)
+    });
+}
+
+function manualSave(){
+    let masterDict = JSON.parse(read_file(saveFilePath));
+    dialog.showSaveDialog(win, {
+        properties: ['saveFile'],
+        filters: [{ name: 'json', extensions: ['json'] }]
+    }).then(result => {
+        let filepath = result.filePath;
+        fs.writeFileSync(filepath, JSON.stringify(masterDict));
+    }).catch(err => {
+        console.log(err)
+    });
+}
+
+if(!fs.existsSync(app.getPath('userData') + "\\data")){
+    fs.mkdirSync(app.getPath('userData') + "\\data");
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}, "saveVersion": 4}));
+}else if(!fs.existsSync(app.getPath('userData') + "\\data\\userData.json")){
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}, "saveVersion": 4}));
+}
+
+ipcMain.on('master_dict_read', function(event, arg) {
+    let masterDict = JSON.parse(read_file(saveFilePath));
+    event.sender.send('master_dict_reading', masterDict);
+
+});
+
+function read_file(path){
+    return fs.readFileSync(path, 'utf8');
 }

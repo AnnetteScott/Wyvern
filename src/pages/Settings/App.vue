@@ -80,10 +80,10 @@
         <!-- colours -->
 		<div id="colours_bottom" v-if="current_settings_page == `colours_bottom`">
 			<div class="settings_bottom_control">
-				<p>You Have {{ Object.keys(masterDict['colours']).length == 1 ? Object.keys(masterDict['colours']).length + ' Colour' : Object.keys(masterDict['colours']).length + ' Colours' }}</p>
+				<p>You Have {{ Object.keys(colourDict).length == 1 ? Object.keys(colourDict).length + ' Colour' : Object.keys(colourDict).length + ' Colours' }}</p>
 				<ButtonItem :title="`Create Colour`" @click="current_request_form=`createColourForm`" />
 			</div>
-			<div v-for="(colourDict, colourID) in masterDict['colours']" :key="colourDict" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">
+			<div v-for="(colourDict, colourID) in colourDict" :key="colourDict" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">
                 <p>{{ colourDict.name }}</p>
             </div>
 		</div>
@@ -113,11 +113,17 @@ export default {
 		return {
 			current_settings_page: '',
 			current_request_form: ``,
-			masterDict: {}
+			masterDict: {},
+            colourDict: {}
 		}
 	},
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
+        for(const [colourID, colour] of Object.entries(this.masterDict['colours'])){
+            if(colourID != 'colourWhite'){
+                this.colourDict[colourID] = colour;
+            }
+        }
 	},
 	methods: {
 		settings_tab_clicked(e, page){

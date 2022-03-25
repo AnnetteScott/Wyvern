@@ -59,10 +59,10 @@ export default {
 		BackgroundBubble
 	},
 	mounted() {
-		if(!localStorage.getItem('masterDict')){
-			localStorage.setItem('masterDict', JSON.stringify(this.$masterDict));
-		}
-		console.log(JSON.parse(localStorage.getItem('masterDict')));
+        setTimeout(() => {
+            console.log(JSON.parse(localStorage.getItem('masterDict')));
+        }, 1)
+		
 	}
 }
 </script>

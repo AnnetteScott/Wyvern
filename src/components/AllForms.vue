@@ -392,7 +392,7 @@ export default {
 					}
 				}
 			}
-            if(this.masterDict['colours'].includes('colourWhite')){
+            if(!(Object.keys(this.masterDict['colours']).includes('colourWhite'))){
                 this.masterDict['colours']['colourWhite'] = {'colour': '#ffffff'}
             }
 

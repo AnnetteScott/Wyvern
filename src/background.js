@@ -49,10 +49,19 @@ app.on('ready', async () => {
 	}
 	createWindow()
 
-	// Build menu from template
-    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-    // Insert menu
-    Menu.setApplicationMenu(mainMenu);
+    if(isDevelopment){
+        // Build menu from template
+        const mainMenu = Menu.buildFromTemplate(DEVmainMenuTemplate);
+        // Insert menu
+        Menu.setApplicationMenu(mainMenu);  
+        
+    }else{
+        // Build menu from template
+        const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+        // Insert menu
+        Menu.setApplicationMenu(mainMenu);  
+    }
+	
 })
 
 const mainMenuTemplate =  [
@@ -74,6 +83,40 @@ const mainMenuTemplate =  [
                 label: 'Open', 
                 accelerator: process.platform === 'darwin' ? 'Ctrl+O' : 'Ctrl+O',
                 click(){ loadData() }
+            },
+            {
+                label: 'Exit', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+W' : 'Ctrl+W',
+                click(){ app.quit() }
+            } 
+        ]
+    }
+];
+
+const DEVmainMenuTemplate =  [
+    // Each object is a dropdown
+    {
+        label: "File",
+        submenu: [
+            {
+                label: 'Save', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+S' : 'Ctrl+S',
+                click(){ saveData() }
+            },  
+            {
+                label: 'Manual Save', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+Shift+S' : 'Ctrl+Shift+S',
+                click(){ manualSave() }
+            },
+            {
+                label: 'Open', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+O' : 'Ctrl+O',
+                click(){ loadData() }
+            },
+            {
+                label: 'Dev Tools', 
+                accelerator: process.platform === 'darwin' ? 'Ctrl+O' : 'Ctrl+O',
+                click(){ win.webContents.openDevTools()}
             },
             {
                 label: 'Exit', 

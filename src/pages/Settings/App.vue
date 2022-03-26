@@ -68,7 +68,7 @@
 			<div v-for="(clientDict, clientID) in masterDict['clients']" :key="clientDict" class="list_item" :data="clientID" @click="open_edit_form($event, `editClientForm`, `clients`)">{{ clientDict.client }}</div>
 		</div>
 
-        <!-- project -->
+		<!-- project -->
 		<div id="projects_bottom" v-if="current_settings_page == `projects_bottom`">
 			<div class="settings_bottom_control">
 				<p>You Have {{ Object.keys(masterDict['projects']).length == 1 ? Object.keys(masterDict['projects']).length + ' Project' : Object.keys(masterDict['projects']).length + ' Projects' }}</p>
@@ -77,15 +77,17 @@
 			<div v-for="(projectDict, projectID) in masterDict['projects']" :key="projectDict" class="list_item" :data="projectID" @click="open_edit_form($event, `editProjectForm`, `projects`)">{{ projectDict.name }}</div>
 		</div>
 
-        <!-- colours -->
+		<!-- colours -->
 		<div id="colours_bottom" v-if="current_settings_page == `colours_bottom`">
 			<div class="settings_bottom_control">
-				<p>You Have {{ Object.keys(colourDict).length == 1 ? Object.keys(colourDict).length + ' Colour' : Object.keys(colourDict).length + ' Colours' }}</p>
+				<p>You Have {{ (Object.keys(masterDict['colours']).length - 1) == 1 ? (Object.keys(masterDict['colours']).length - 1) + ' Colour' : (Object.keys(masterDict['colours']).length - 1) + ' Colours' }}</p>
 				<ButtonItem :title="`Create Colour`" @click="current_request_form=`createColourForm`" />
 			</div>
-			<div v-for="(colourDict, colourID) in colourDict" :key="colourDict" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">
-                <p>{{ colourDict.name }}</p>
-            </div>
+			<template v-for="(colourDict, colourID) in masterDict['colours']" :key="colourDict">
+				<div v-if="colourID != `colourWhite`" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">
+					<p>{{ colourDict.name }}</p>
+				</div>
+			</template>
 		</div>
 		
 		<div v-if="current_settings_page == ``"></div>
@@ -113,17 +115,12 @@ export default {
 		return {
 			current_settings_page: '',
 			current_request_form: ``,
-			masterDict: {},
-            colourDict: {}
+			masterDict: {}
 		}
 	},
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
-        for(const [colourID, colour] of Object.entries(this.masterDict['colours'])){
-            if(colourID != 'colourWhite'){
-                this.colourDict[colourID] = colour;
-            }
-        }
+
 	},
 	methods: {
 		settings_tab_clicked(e, page){
@@ -138,7 +135,7 @@ export default {
 			this.current_request_form = form_name;
 			let id = $(event.target).attr('data');
 			let obj = this.masterDict[type][id];
-			const editedType = type.slice(0, -1)
+			const editedType = type.slice(0, -1);
 			setTimeout(() => {
 				if(editedType == 'user' || editedType == 'client'){
 					$(`#edit_${editedType}`).val(obj[editedType]);
@@ -155,11 +152,11 @@ export default {
 					$(`#edit_${editedType}_name`).val(obj['name']);
 					$(`#edit_${editedType}_duration`).val(obj['duration']);
 				}
-                else if(editedType == 'colour'){
+				else if(editedType == 'colour'){
 					$(`#edit_${editedType}ID`).attr(`${editedType}id`, id);
 					$(`#edit_${editedType}_name`).val(obj['name']);
 					$(`#edit_${editedType}_rate`).val(obj['rate']);
-					$(`#edit_${editedType}_rate`).val(obj['colour']);
+					$(`#edit_${editedType}_colour`).val(obj['colour']);
 				}
 
 			}, 1) 
@@ -251,12 +248,12 @@ export default {
 	overflow-y: scroll;
 	margin: 1px 10px 10px 10px;
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
-    border-radius: 10px;
+	border-radius: 10px;
 }
 
 .list_item {
 	position: relative;
-    z-index: 2;
+	z-index: 2;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
@@ -278,6 +275,7 @@ export default {
 
 .list_item p {
 	margin: 0px;
+	pointer-events: none;
 }
 
 </style>

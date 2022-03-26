@@ -9,8 +9,7 @@ module.exports = defineConfig({
                     "target": [
                         "nsis"
                     ],
-                  icon: 'public/WyvernIcon.ico',
-                  "requestedExecutionLevel": "requireAdministrator"
+                  icon: 'public/WyvernIcon.ico'
                 },
                 "nsis": {
                     "installerIcon": "public/WyvernIcon.ico",

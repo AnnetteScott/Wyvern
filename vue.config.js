@@ -1,5 +1,27 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+    pluginOptions: {
+        electronBuilder: {
+            builderOptions: {
+                productName: "Wyvern",
+                appId: 'Wyvern-App',
+                win: {
+                    "target": [
+                        "nsis"
+                    ],
+                  icon: 'public/WyvernIcon.ico',
+                  "requestedExecutionLevel": "requireAdministrator"
+                },
+                "nsis": {
+                    "installerIcon": "public/WyvernIcon.ico",
+                    "uninstallerIcon": "public/WyvernIcon.ico",
+                    "uninstallDisplayName": "Uninstall Wyvern",
+                    "oneClick": false,
+                    "allowToChangeInstallationDirectory": true
+                }
+            },
+        },
+    },
 	transpileDependencies: true,
 
     pages: {

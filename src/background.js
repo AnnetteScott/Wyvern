@@ -4,7 +4,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const path = require('path');
 import fs from "fs";
 const { dialog } = require('electron');
-const isDevelopment = true
+const isDevelopment = false;
 let win;
 
 // Scheme must be registered before the app is ready

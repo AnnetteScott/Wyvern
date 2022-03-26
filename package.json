@@ -1,6 +1,7 @@
 {
   "name": "Wyvern",
-  "version": "0.1.0",
+  "author": "NotNatural21",
+  "version": "4.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

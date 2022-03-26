@@ -9,15 +9,15 @@
 				<div  v-for="(time, index) in timeList" :key="time" :cellID="`${col}${index + 1}`" class="cell" :weekid="`${weekID}`" @mousedown="cellDown" @mouseover="cellHovered" @mouseup="cellRelease"/>
 			</template>
 
-            <!-- Weekly Cells -->
-            <template v-if="col == `Z`">
+			<!-- Weekly Cells -->
+			<template v-if="col == `Z`">
 				<div  v-for="(time, index) in infoList" :key="time" :cellID="`Z${index + cellIndexOffSet + 1}`" class="dateCell">{{ time }}</div>
 			</template>
 			<template v-if="col == `A` || col == `H`">
 				<div  v-for="(time, index) in infoList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 1}`" class="infoCell" :weekid="`${weekID}`"/>
 			</template>
-            
-            <template v-if="col == `Z`">
+			
+			<template v-if="col == `Z`">
 				<div  v-for="(time, index) in totalList" :key="time" :cellID="`Z${index + cellIndexOffSet + 3}`" class="dateCell">{{ time }}</div>
 			</template>
 			<template v-if="col == `A` && weekInterval == 1">
@@ -54,8 +54,8 @@ export default {
 			cellClicked: false,
 			previousDate: 'Z',
 			previousTime: '0',
-            cellIndexOffSet: 0,
-            weekInterval: ''
+			cellIndexOffSet: 0,
+			weekInterval: ''
 		}
 	},
 	mounted(){
@@ -123,12 +123,12 @@ export default {
 			}
 			this.timeList.push("Total Hours:");
 			this.timeList.push("Total Daily $:");
-            this.cellIndexOffSet = this.timeList.length;
+			this.cellIndexOffSet = this.timeList.length;
 
 			this.infoList = ["Weekly Hours:"];
 			this.infoList.push("Weekly $:");
 
-            this.totalList = ["Timesheet Hours:"];
+			this.totalList = ["Timesheet Hours:"];
 			this.totalList.push("Timesheet Total $:");
 
 			setTimeout(() => {
@@ -310,14 +310,14 @@ export default {
 	background-color: white;
 	width: 100%;
 	height: 25px;
-    max-height: 25px;
+	max-height: 25px;
 	border-bottom: 1px solid black;
 }
 .cell{
 	background-color: white;
 	width: 100%;
 	height: 25px;
-    max-height: 25px;
+	max-height: 25px;
 	border-bottom: 1px dashed black;
 }
 
@@ -325,8 +325,8 @@ export default {
 	background-color: white;
 	width: calc(700% + 5px);
 	height: 25px;
-    min-height: 25px;
-    max-height: 25px;
+	min-height: 25px;
+	max-height: 25px;
 	border-bottom: 1px solid black;
 	border-right: 1px solid black;
 }
@@ -335,8 +335,8 @@ export default {
 	background-color: white;
 	width: calc(700% + 5px);
 	height: 25px;
-    min-height: 25px;
-    max-height: 25px;
+	min-height: 25px;
+	max-height: 25px;
 	border-bottom: 1px solid black;
 	border-right: 1px solid black;
 }
@@ -345,8 +345,8 @@ export default {
 	background-color: white;
 	width: calc(1400% + 12px);
 	height: 25px;
-    min-height: 25px;
-    max-height: 25px;
+	min-height: 25px;
+	max-height: 25px;
 	border-bottom: 1px solid black;
 	border-right: 1px solid black;
 }

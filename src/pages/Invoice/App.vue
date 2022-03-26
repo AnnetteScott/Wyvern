@@ -74,53 +74,66 @@
 	</div>
 
 	<div id="invoice_page" style="display: none;">
-		<div style="-webkit-print-color-adjust: exact" id="invoice_sheet">
-			<div class="inner">
-				<div class="top_section">
-					<div class="top_left">
-						<h2 id="user_name_invoice"></h2>
-						<p id="user_addOne_invoice"></p>
-						<p id="user_addTwo_invoice"></p>
-						<p id="user_city_invoice"></p>
-						<p id="user_country_invoice"></p>
-						<p id="user_contact_invoice"></p>
-						<div class="box_with_heading">
-							<p>Client ID</p>
-							<p id="client_id_invoice"></p>
-						</div>
-						<div class="box_with_heading">
-							<p>Bill To</p>
-							<p id="client_name_invoice"></p>
-							<p id="client_addOne_invoice"></p>
-							<p id="client_addTwo_invoice"></p>
-							<p id="client_city_invoice"></p>
-							<p id="client_country_invoice"></p>
-						</div>
-					</div>
-					<div class="top_right">
-						<div class="title">INVOICE</div>
-						<div class="dual_box_heading">
+		<div id="PRINTtheTHING">
+			<div style="-webkit-print-color-adjust: exact" id="invoice_sheet">
+				<div class="inner">
+					<div class="top_section">
+						<div class="top_left">
+							<h2 id="user_name_invoice"></h2>
+							<p id="user_addOne_invoice"></p>
+							<p id="user_addTwo_invoice"></p>
+							<p id="user_city_invoice"></p>
+							<p id="user_country_invoice"></p>
+							<p id="user_contact_invoice"></p>
 							<div class="box_with_heading">
-								<p>Invoice #</p>
-								<p id="invoice_id_invoice"></p>
+								<p>Client ID</p>
+								<p id="client_id_invoice"></p>
 							</div>
 							<div class="box_with_heading">
-								<p>Date</p>
-								<p id="invoice_date_invoice"></p>
+								<p>Bill To</p>
+								<p id="client_name_invoice"></p>
+								<p id="client_addOne_invoice"></p>
+								<p id="client_addTwo_invoice"></p>
+								<p id="client_city_invoice"></p>
+								<p id="client_country_invoice"></p>
 							</div>
 						</div>
-						<div class="box_with_heading">
-							<p>Invoice Period</p>
-							<p id="invoice_date_period"></p>
-						</div>
-						<div class="box_with_heading">
-							<p>Invoice For</p>
-							<p id="invoice_for_invoice"></p>
+						<div class="top_right">
+							<div class="title">INVOICE</div>
+							<div class="dual_box_heading">
+								<div class="box_with_heading">
+									<p>Invoice #</p>
+									<p id="invoice_id_invoice"></p>
+								</div>
+								<div class="box_with_heading">
+									<p>Date</p>
+									<p id="invoice_date_invoice"></p>
+								</div>
+							</div>
+							<div class="box_with_heading">
+								<p>Invoice Period</p>
+								<p id="invoice_date_period"></p>
+							</div>
+							<div class="box_with_heading">
+								<p>Invoice For</p>
+								<p id="invoice_for_invoice"></p>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div id="bottom_section">
-				
+					<div id="bottom_section">
+						<div v-for="(col, index) in columnLetter" :key="col" :colID="col" class="invoice_sheet_column">
+							<div class="cell heading">{{ columnHeadings[index] }}</div>
+							<div v-for="(Info, colourID) in includedColours" :key="colourID" class="cell">{{ Info[keys[index]] }}</div>
+
+							<div v-if="col == 'C'" class="cell" style="border-left: 1px solid black" >Subtotal</div>
+							<div v-if="col == 'C'" class="cell" style="border-left: 1px solid black" >Tax</div>
+							<div v-if="col == 'C'" class="cell" style="border-left: 1px solid black" >Total</div>
+
+							<div v-if="col == 'D'" class="cell">{{ invoiceTotal }}</div>
+							<div v-if="col == 'D'" class="cell">0</div>
+							<div v-if="col == 'D'" class="cell">{{ invoiceTotal }}</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -145,7 +158,12 @@ export default {
 		return {
 			masterDict: {},
 			currentProjectID: '',
-			projWeek: {}
+			projWeek: {},
+			includedColours: {},
+			invoiceTotal: 0,
+			columnLetter: ['A', 'B', 'C', 'D'],
+			columnHeadings: ['Description', 'Rate', 'Quantity', 'Total $'],
+			keys: ['name', 'rate', 'QTY', 'Total'],
 		}
 	},
 	mounted() {
@@ -193,7 +211,24 @@ export default {
 			$('#client_addTwo_invoice').text(clientDict['addTwo']);
 			$('#client_city_invoice').text(clientDict['city']);
 			$('#client_country_invoice').text(clientDict['country']);
-			this.printInvoice();
+
+			this.invoiceTotal = 0;
+			for(const [colourID, cellList] of Object.entries(this.projWeek['colouredCells'])){
+				if(cellList !== []){
+					let qty = (Math.round((1/(60/projDict['timeInterval'])) * 1000) / 1000) * cellList.length;
+					let total = qty * parseFloat(this.masterDict['colours'][colourID]['rate'])
+					this.includedColours[colourID] = {'name': this.masterDict['colours'][colourID]['name'], 'rate': this.masterDict['colours'][colourID]['rate'], 'QTY': qty, 'Total': total};
+					this.invoiceTotal += total
+				}
+			}
+			this.includedColours['blank1'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
+			this.includedColours['blank2'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
+			this.includedColours['blank3'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
+
+			setTimeout(() => {
+				this.printInvoice();
+			}, 1)
+			
 		},
 		printInvoice(id="invoice_page"){
 			let html = `<title>Print Preview</title><link rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE5IDhINWMtMS42NiAwLTMgMS4zNC0zIDN2Nmg0djRoMTJ2LTRoNHYtNmMwLTEuNjYtMS4zNC0zLTMtM3ptLTMgMTFIOHYtNWg4djV6bTMtN2MtLjU1IDAtMS0uNDUtMS0xcy40NS0xIDEtMSAxIC40NSAxIDEtLjQ1IDEtMSAxem0tMS05SDZ2NGgxMlYzeiIvPjwvc3ZnPg==">`;

@@ -403,13 +403,13 @@ export default {
 
 		editUser(){
 			const userID = $(`#edit_userID`).attr('userid');
-			let user = $('#create_user').val();
-			let name = $('#create_user_name').val();
-			let addOne = $('#create_user_addOne').val();
-			let addTwo = $('#create_user_addTwo').val();
-			let city = $('#create_user_city').val();
-			let country = $('#create_user_country').val();
-			let contact = $('#create_user_contact').val();
+			let user = $('#edit_user').val();
+			let name = $('#edit_user_name').val();
+			let addOne = $('#edit_user_addOne').val();
+			let addTwo = $('#edit_user_addTwo').val();
+			let city = $('#edit_user_city').val();
+			let country = $('#edit_user_country').val();
+			let contact = $('#edit_user_contact').val();
 
 			this.masterDict['users'][userID] = {'user': user, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
@@ -419,13 +419,13 @@ export default {
 
 		editClient(){
 			const clientID = $(`#edit_clientID`).attr('clientid');
-			let client = $('#create_client').val();
-			let name = $('#create_client_name').val();
-			let addOne = $('#create_client_addOne').val();
-			let addTwo = $('#create_client_addTwo').val();
-			let city = $('#create_client_city').val();
-			let country = $('#create_client_country').val();
-			let contact = $('#create_client_contact').val();
+			let client = $('#edit_client').val();
+			let name = $('#edit_client_name').val();
+			let addOne = $('#edit_client_addOne').val();
+			let addTwo = $('#edit_client_addTwo').val();
+			let city = $('#edit_client_city').val();
+			let country = $('#edit_client_country').val();
+			let contact = $('#edit_client_contact').val();
 
 			this.masterDict['clients'][clientID] = {'client': client, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));

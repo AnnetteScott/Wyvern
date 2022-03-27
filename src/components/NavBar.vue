@@ -1,7 +1,8 @@
 <template>
 	<div id="navbar">
 		<h1>{{ title }}</h1>
-		<span class="menu_button" @click="navbar_menu_open = !navbar_menu_open"></span>
+		<span class="menu_button" @click="navbar_menu_open = !navbar_menu_open" style="background-image: url(./menu_white_24dp.svg)">
+        </span>
 	</div>
 
 	<div id="navbar_menu" :style="compute_navbar_menu_position">
@@ -13,6 +14,7 @@
 </template>
 
 <script>
+
 export default {
 	name: 'NavBar',
 	props: {
@@ -40,6 +42,7 @@ export default {
 <style scoped>
 @import url('../../public/root.css');
 
+
 #navbar {
 	position: fixed;
 	z-index: 999;
@@ -62,7 +65,6 @@ export default {
 	display: block;
 	height: 75%;
 	aspect-ratio: 1;
-	background-image: url(../assets/icons/menu_white_24dp.svg);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 100%;

@@ -6,7 +6,7 @@
 			{
 				title: `Wyvern`,
 				image: require(`../../assets/icons/home_white_24dp.svg`),
-				url: `/`
+				url: `/index.html`
 			},
 			{
 				title: `Settings`,
@@ -138,6 +138,7 @@ export default {
 			const editedType = type.slice(0, -1);
 			setTimeout(() => {
 				if(editedType == 'user' || editedType == 'client'){
+					$(`#edit_${editedType}ID`).val(obj[editedType]);
 					$(`#edit_${editedType}`).val(obj[editedType]);
 					$(`#edit_${editedType}_name`).val(obj['name']);
 					$(`#edit_${editedType}_addOne`).val(obj['addOne']);

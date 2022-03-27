@@ -6,7 +6,7 @@
 			{
 				title: `Wyvern`,
 				image: require(`../../assets/icons/home_white_24dp.svg`),
-				url: `/`
+				url: `/index.html`
 			},
 			{
 				title: `Settings`,
@@ -133,7 +133,6 @@ export default {
 					});
 					for(let [collID, colourTotal] of Object.entries(colourTotals)){
 						$(`[cellid=${collID}${cellTotal}]`).text(`${colourTotal.toFixed(2)}`)
-						
 					}
 					cellTotal++;
 				}
@@ -150,12 +149,13 @@ export default {
             let timeTotal = 0;
             let timeMoney = 0;
             for(let i = 0; i < this.projectDict['weekInterval'] * 7; i++){
-                let cellTotal = this.projectDict['timeList'].length + this.projectDict['colours'].length - 2;
+                let cellTotal = this.projectDict['timeList'].length + 1;
                 let colTotal = 0;
                 let colMoney = 0;
-                for(let index in this.projectDict['colours']){
+                for(let index in this.projectDict['colours']){ //Total up each colour per coloumn
                     if(this.projectDict['colours'][index] != 'colourWhite'){
                         let cellID = `${columns[i]}${cellTotal}`
+                        console.log(cellID)
                         colTotal += parseFloat($(`[cellid=${cellID}]`).text())
                         colMoney += parseFloat($(`[cellid=${cellID}]`).text()) * this.masterDict['colours'][this.projectDict['colours'][index]]['rate']
                         cellTotal++;

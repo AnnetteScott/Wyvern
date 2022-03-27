@@ -14,17 +14,17 @@
 				<div  v-for="(time, index) in infoList" :key="time" :cellID="`Z${index + cellIndexOffSet + 1}`" class="dateCell">{{ time }}</div>
 			</template>
 			<template v-if="col == `A` || col == `H`">
-				<div  v-for="(time, index) in infoList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 1}`" class="infoCell" :weekid="`${weekID}`"/>
+				<div  v-for="(time, index) in infoList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 1}`" class="infoCell" :weekid="`${weekID}`"></div>
 			</template>
 			
 			<template v-if="col == `Z`">
 				<div  v-for="(time, index) in totalList" :key="time" :cellID="`Z${index + cellIndexOffSet + 3}`" class="dateCell">{{ time }}</div>
 			</template>
 			<template v-if="col == `A` && weekInterval == 1">
-				<div  v-for="(time, index) in totalList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 3}`" class="totalCellOne" :weekid="`${weekID}`"/>
+				<div  v-for="(time, index) in totalList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 3}`" class="totalCellOne" :weekid="`${weekID}`"></div>
 			</template>
 			<template v-if="col == `A` && weekInterval == 2">
-				<div  v-for="(time, index) in totalList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 3}`" class="totalCellTwo" :weekid="`${weekID}`"/>
+				<div  v-for="(time, index) in totalList" :key="time" :cellID="`${col}${index + cellIndexOffSet + 3}`" class="totalCellTwo" :weekid="`${weekID}`"></div>
 			</template>
 		</div>
 	</template>

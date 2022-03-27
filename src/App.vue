@@ -6,7 +6,7 @@
             {
                 title: `Wyvern`,
                 image: require(`./assets/icons/home_white_24dp.svg`),
-                url: `/`
+                url: `/index.html`
             },
             {
                 title: `Settings`,

@@ -10,7 +10,7 @@ ipcRenderer.on('reedMasterDict', function(event, arg) {
         $('#saving_pop_up').removeClass('input_box_open');
     }, 1000)
     event.sender.send('readMasterDict', JSON.parse(window.localStorage.getItem('masterDict')));
-    arg;
+    arg
 });
 
 app.mount('#app');

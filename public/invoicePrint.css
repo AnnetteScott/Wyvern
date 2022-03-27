@@ -2,6 +2,9 @@
 	--i_page_margins: 40px;
 	--i_color: dodgerblue;
 }
+* {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 
 h2 {
     margin: 0px;

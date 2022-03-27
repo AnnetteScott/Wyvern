@@ -30,63 +30,75 @@
 			}
 		]"
 	/>
+	<SavingPopup />
 	<!-- Invoice Selector -->
 	<div class="form_container">
-		<div class="form">
-			<label for="project_selection">Choose a Project:</label>
-            <template v-if="isProjects">
-                <select id="project_selection" @change="onchange">
-                    <option v-for="(projDict, projID) in masterDict['projects']" :key="projDict" :data="projID">
-                        {{ projDict['name'] }}
-                    </option>
-                </select>
-            </template>
-            <template v-else>
-                <div class="advisory">Go To Settings To Create A Project</div>
-            </template>
-			<template v-if="currentProjectID !== ''">
-				<label for="week_selection">Choose a Week:</label>
-				<select id="week_selection">
-					<option v-for="(weekDict, weekID) in masterDict['projects'][currentProjectID]['weeks']" :key="weekDict" :data="weekID">
-					{{ weekID }}
-					</option>
-				</select>
-			</template>
-			
-			<label for="user_selection">Choose a User:</label>
-            <template v-if="isUsers">
-                <select id="user_selection">
-                    <option v-for="(userDict, userID) in masterDict['users']" :key="userDict" :data="userID">
-                        {{ userDict['user'] }}
-                    </option>
-                </select>
-            </template>
-            <template v-else>
-                <div class="advisory">Go To Settings To Create A User</div>
-            </template>
-			
-			<label for="client_selection">Choose a Client:</label>
-            <template v-if="isClients">
-                <select id="client_selection">
-                    <option v-for="(projDict, projID) in masterDict['clients']" :key="projDict" :data="projID">
-                        {{ projDict['client'] }}
-                    </option>
-                </select>
-            </template>
-            <template v-else>
-                <div class="advisory">Go To Settings To Create A Client</div>
-            </template>
+        <div class="form">
+            <div id="top">
+                <div class="side">
+                    <label for="project_selection">Choose a Project:</label>
+                    <template v-if="isProjects">
+                        <select id="project_selection" @change="onchange">
+                            <option v-for="(projDict, projID) in masterDict['projects']" :key="projDict" :data="projID">
+                                {{ projDict['name'] }}
+                            </option>
+                        </select>
+                    </template>
+                    <template v-else>
+                        <div class="advisory">Go To Settings To Create A Project</div>
+                    </template>
+                    <template v-if="currentProjectID !== ''">
+                        <label for="week_selection">Choose a Week:</label>
+                        <select id="week_selection">
+                            <option v-for="(weekDict, weekID) in masterDict['projects'][currentProjectID]['weeks']" :key="weekDict" :data="weekID">
+                            {{ weekID }}
+                            </option>
+                        </select>
+                    </template>
+                    
+                    <label for="user_selection">Choose a User:</label>
+                    <template v-if="isUsers">
+                        <select id="user_selection">
+                            <option v-for="(userDict, userID) in masterDict['users']" :key="userDict" :data="userID">
+                                {{ userDict['user'] }}
+                            </option>
+                        </select>
+                    </template>
+                    <template v-else>
+                        <div class="advisory">Go To Settings To Create A User</div>
+                    </template>
+                    
+                    <label for="client_selection">Choose a Client:</label>
+                    <template v-if="isClients">
+                        <select id="client_selection">
+                            <option v-for="(projDict, projID) in masterDict['clients']" :key="projDict" :data="projID">
+                                {{ projDict['client'] }}
+                            </option>
+                        </select>
+                    </template>
+                    <template v-else>
+                        <div class="advisory">Go To Settings To Create A Client</div>
+                    </template>
 
-			<label for="invoice_date">Invoice Date:</label>
-			<input id="invoice_date" type="date" />
+                    <label for="invoice_date">Invoice Date:</label>
+                    <input id="invoice_date" type="date" />
 
-			<label for="invoice_for">Invoice For:</label>
-			<input id="invoice_for" type="text" />
-			
-			<label for="invoice_ID">Invoice ID:</label>
-			<input id="invoice_ID" type="text" />
-			<ButtonItem :title="`Print Invoice`" @click="generateInvoice"/>
-		</div>
+                    <label for="invoice_for">Invoice For:</label>
+                    <input id="invoice_for" type="text" />
+                    
+                    <label for="invoice_ID">Invoice ID:</label>
+                    <input id="invoice_ID" type="text" />
+                </div>
+                <div class="side">
+                    <label for="invoice_include_colours">Include All Colours:</label>
+                    <input id="invoice_include_colours" type="checkbox" />
+                    
+                    <label for="invoice_add_records">Add To Records:</label>
+                    <input id="invoice_add_records" type="checkbox" checked/>
+                </div>
+            </div>    
+            <ButtonItem :title="`Print Invoice`" @click="generateInvoice"/>
+        </div>	
 	</div>
 
 	<div id="invoice_page" style="display: none;">
@@ -158,6 +170,7 @@
 
 <script>
 import NavBar from '../../components/NavBar.vue';
+import SavingPopup from '../../components/SavingPopup.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import { addToDate } from '../../../public/generalFunctions.js';
@@ -167,6 +180,7 @@ export default {
 	name: 'App',
 	components: {
 		NavBar,
+		SavingPopup,
 		BackgroundBubble,
 		ButtonItem
 	},
@@ -236,9 +250,12 @@ export default {
 			$('#client_city_invoice').text(clientDict['city']);
 			$('#client_country_invoice').text(clientDict['country']);
 
+            this.includedColours = {};
+            let includeAllColours = $('#invoice_include_colours')[0].checked
 			this.invoiceTotal = 0;
 			for(const [colourID, cellList] of Object.entries(this.projWeek['colouredCells'])){
-				if(cellList !== []){
+                console.log(cellList.length != 0 || includeAllColours)
+				if(cellList.length != 0 || includeAllColours){
 					let qty = (Math.round((1/(60/projDict['timeInterval'])) * 1000) / 1000) * cellList.length;
 					let total = qty * parseFloat(this.masterDict['colours'][colourID]['rate'])
 					this.includedColours[colourID] = {'name': this.masterDict['colours'][colourID]['name'], 'rate': this.masterDict['colours'][colourID]['rate'], 'QTY': qty, 'Total': total};
@@ -248,6 +265,7 @@ export default {
 			this.includedColours['blank1'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
 			this.includedColours['blank2'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
 			this.includedColours['blank3'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
+			this.includedColours['blank4'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
 
 			setTimeout(() => {
 				this.printInvoice();
@@ -276,7 +294,6 @@ export default {
 </script>
 
 <style>
-@import url('../../../public/invoicePrint.css');
 
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -311,9 +328,9 @@ input {
 	opacity: 1;
 	display: flex;
 	justify-content: center;
+    flex-direction: column;
 	align-items: center;
 	font-family: 'Segoe UI', sans-serif;
-	transition: 0.2s ease all;
 }
 
 .form{
@@ -327,11 +344,23 @@ input {
 	border-radius: 5px;
 	box-shadow: 0px 0px 10px -5px white inset,
 				0px 4px 16px -16px black;
-	transition: 0.3s ease all;
 }
 
 .form button:first-of-type{
 	margin-top: 20px;
+}
+
+#top{
+    display: flex;
+    flex-direction: row;
+}
+
+.side{
+    display: flex;
+	position: relative;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 select{
@@ -347,9 +376,16 @@ label{
     margin-top: 12px;
 }
 
+input[type="checkbox"]{
+    height: 30px;
+}
+
 .advisory{
     font-style: italic;
     color: #850c0c
 }
 
+.button_link{
+    width: 100% !important;
+}
 </style>

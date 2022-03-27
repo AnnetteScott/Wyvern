@@ -259,7 +259,7 @@ export default {
 	margin: 10px 10px 10px 10px;
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 	border-radius: 10px;
-	background-color: #ffffff3b;
+	background-color: #ffffff56;
 }
 
 .colour_item{
@@ -271,6 +271,7 @@ export default {
 	margin-top: 10px;
 	border-radius: 10px;
 	cursor: pointer;
+    border: 1px solid black
 }
 
 .colour_item:hover{

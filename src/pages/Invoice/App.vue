@@ -34,11 +34,16 @@
 	<div class="form_container">
 		<div class="form">
 			<label for="project_selection">Choose a Project:</label>
-			<select id="project_selection" @change="onchange">
-				<option v-for="(projDict, projID) in masterDict['projects']" :key="projDict" :data="projID">
-					{{ projDict['name'] }}
-				</option>
-			</select>
+            <template v-if="isProjects">
+                <select id="project_selection" @change="onchange">
+                    <option v-for="(projDict, projID) in masterDict['projects']" :key="projDict" :data="projID">
+                        {{ projDict['name'] }}
+                    </option>
+                </select>
+            </template>
+            <template v-else>
+                <div class="advisory">Go To Settings To Create A Project</div>
+            </template>
 			<template v-if="currentProjectID !== ''">
 				<label for="week_selection">Choose a Week:</label>
 				<select id="week_selection">
@@ -49,18 +54,29 @@
 			</template>
 			
 			<label for="user_selection">Choose a User:</label>
-			<select id="user_selection">
-				<option v-for="(userDict, userID) in masterDict['users']" :key="userDict" :data="userID">
-					{{ userDict['user'] }}
-				</option>
-			</select>
+            <template v-if="isUsers">
+                <select id="user_selection">
+                    <option v-for="(userDict, userID) in masterDict['users']" :key="userDict" :data="userID">
+                        {{ userDict['user'] }}
+                    </option>
+                </select>
+            </template>
+            <template v-else>
+                <div class="advisory">Go To Settings To Create A User</div>
+            </template>
 			
 			<label for="client_selection">Choose a Client:</label>
-			<select id="client_selection">
-				<option v-for="(projDict, projID) in masterDict['clients']" :key="projDict" :data="projID">
-					{{ projDict['client'] }}
-				</option>
-			</select>
+            <template v-if="isClients">
+                <select id="client_selection">
+                    <option v-for="(projDict, projID) in masterDict['clients']" :key="projDict" :data="projID">
+                        {{ projDict['client'] }}
+                    </option>
+                </select>
+            </template>
+            <template v-else>
+                <div class="advisory">Go To Settings To Create A Client</div>
+            </template>
+
 			<label for="invoice_date">Invoice Date:</label>
 			<input id="invoice_date" type="date" />
 
@@ -157,6 +173,9 @@ export default {
 	data() {
 		return {
 			masterDict: {},
+            isProjects: false,
+            isUsers: false,
+            isClients: false,
 			currentProjectID: '',
 			projWeek: {},
 			includedColours: {},
@@ -168,9 +187,14 @@ export default {
 	},
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
-		setTimeout(() => {
-			this.currentProjectID = $(`#project_selection option:selected`).attr('data'); 
-		}, 1)
+        if(Object.keys(this.masterDict['projects']).length != 0){
+            setTimeout(() => {
+                this.currentProjectID = $(`#project_selection option:selected`).attr('data'); 
+            }, 1)
+        }
+        this.isProjects = Object.keys(this.masterDict['projects']).length != 0;
+        this.isUsers = Object.keys(this.masterDict['users']).length != 0;
+        this.isClients = Object.keys(this.masterDict['clients']).length != 0;
 	},
 	methods: {
 		onchange(){
@@ -317,6 +341,15 @@ select{
 	width: 110px;
 	outline: none;
 	height: 27px;
+}
+
+label{
+    margin-top: 12px;
+}
+
+.advisory{
+    font-style: italic;
+    color: #850c0c
 }
 
 </style>

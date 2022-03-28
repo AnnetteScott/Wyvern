@@ -85,6 +85,7 @@
 			</div>
 			<template v-for="(colourDict, colourID) in masterDict['colours']" :key="colourDict">
 				<div v-if="colourID != `colourWhite`" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">
+					<div class="colour_preview" :style="{backgroundColor: colourDict['colour']}"></div>
 					<p>{{ colourDict.name }}</p>
 				</div>
 			</template>
@@ -262,7 +263,7 @@ export default {
 	width: 95%;
 	height: clamp(60px, 60px, 60px);
 	padding: 0px 20px;
-	background-color: #ffffff40;
+	background-color: #ffffff4f;
 	border-radius: 10px;
 	cursor: pointer;
 	font-family: 'Lora';
@@ -277,6 +278,13 @@ export default {
 .list_item p {
 	margin: 0px;
 	pointer-events: none;
+}
+
+.colour_preview{
+    width: 25px;
+    height: 80%;
+    margin-right: 10px;
+    border-radius: 10px;
 }
 
 </style>

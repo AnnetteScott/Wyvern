@@ -13,4 +13,5 @@ ipcRenderer.on('reedMasterDict', function(event, arg) {
     arg
 });
 
+
 app.mount('#app');

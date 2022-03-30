@@ -94,7 +94,11 @@
                     <input id="invoice_include_colours" type="checkbox" />
                     
                     <label for="invoice_add_records">Add To Records:</label>
-                    <input id="invoice_add_records" type="checkbox" checked/>
+                    <input id="invoice_add_records" type="checkbox" @click="changeState" checked/>
+                    <template v-if="addToRecord">
+                        <label for="records_account">Account:</label>
+                        <input id="records_account" type="text" />
+                    </template>
                 </div>
             </div>    
             <ButtonItem :title="`Print Invoice`" @click="generateInvoice"/>
@@ -173,7 +177,7 @@ import NavBar from '../../components/NavBar.vue';
 import SavingPopup from '../../components/SavingPopup.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
-import { addToDate } from '../../../public/generalFunctions.js';
+import { addToDate, generateID } from '../../../public/generalFunctions.js';
 import $ from 'jquery';
 
 export default {
@@ -197,6 +201,7 @@ export default {
 			columnLetter: ['A', 'B', 'C', 'D'],
 			columnHeadings: ['Description', 'Rate', 'Quantity', 'Total $'],
 			keys: ['name', 'rate', 'QTY', 'Total'],
+            addToRecord: true
 		}
 	},
 	mounted() {
@@ -214,9 +219,18 @@ export default {
 		onchange(){
 			this.currentProjectID = $(`#project_selection option:selected`).attr('data');
 		},
+        changeState(){
+            this.addToRecord = $('#invoice_add_records')[0].checked;
+        },
 		generateInvoice(){
 			//Invoice Date. Uses todays date if none is selected.
-			$('#invoice_date_invoice').text($('#invoice_date').val() ? $('#invoice_date').val() : new Date().toDateString());
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            today = dd + '/' + mm + '/' + yyyy;
+            let invoiceDate = $('#invoice_date').val() ? $('#invoice_date').val() : today
+			$('#invoice_date_invoice').text(invoiceDate);
 			
 			//Invoice Period
 			let invoice_period = this.masterDict['projects'][this.currentProjectID]['weeks'][$('#week_selection').val()]['startDate'];
@@ -226,7 +240,8 @@ export default {
 			//Invoice For
 			$('#invoice_for_invoice').text($('#invoice_for').val());
 			//Invoice ID
-			$('#invoice_id_invoice').text($('#invoice_ID').val());
+            let invoiceID = $('#invoice_ID').val()
+			$('#invoice_id_invoice').text(invoiceID);
 
 			let clientDict = this.masterDict['clients'][$("#client_selection option:selected").attr('data')];
 			let userDict = this.masterDict['users'][$("#user_selection option:selected").attr('data')];
@@ -254,7 +269,6 @@ export default {
             let includeAllColours = $('#invoice_include_colours')[0].checked
 			this.invoiceTotal = 0;
 			for(const [colourID, cellList] of Object.entries(this.projWeek['colouredCells'])){
-                console.log(cellList.length != 0 || includeAllColours)
 				if(cellList.length != 0 || includeAllColours){
 					let qty = (Math.round((1/(60/projDict['timeInterval'])) * 1000) / 1000) * cellList.length;
 					let total = qty * parseFloat(this.masterDict['colours'][colourID]['rate'])
@@ -270,7 +284,32 @@ export default {
 			setTimeout(() => {
 				this.printInvoice();
 			}, 1)
-			
+			if($('#invoice_add_records')[0].checked){
+                let transID = generateID();
+                while(Object.keys(this.masterDict['clients']).includes(transID)) {
+                    transID = generateID();
+                }
+
+                let date = new Date();
+                let month = date.getMonth();
+                let thisYear = date.getFullYear();
+                let yearID;
+                if(month < 3){
+                    yearID = `${thisYear - 1} - ${thisYear}`
+                }else{
+                    `${thisYear} - ${thisYear + 1}`
+                }
+                if(Object.keys(this.masterDict['records']).length == 0){
+                    let date = new Date();
+                    let thisYear = date.getFullYear();
+                    this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {}
+                    this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {}
+                }
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                this.masterDict['records'][yearID][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#records_account').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'contract work', 'amount': this.invoiceTotal}
+                localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+            }
+
 		},
 		printInvoice(id="invoice_page"){
 			let html = `<title>Print Preview</title><link rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0Ij48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTE5IDhINWMtMS42NiAwLTMgMS4zNC0zIDN2Nmg0djRoMTJ2LTRoNHYtNmMwLTEuNjYtMS4zNC0zLTMtM3ptLTMgMTFIOHYtNWg4djV6bTMtN2MtLjU1IDAtMS0uNDUtMS0xcy40NS0xIDEtMSAxIC40NSAxIDEtLjQ1IDEtMSAxem0tMS05SDZ2NGgxMlYzeiIvPjwvc3ZnPg==">`;
@@ -340,7 +379,7 @@ input {
 	justify-content: center;
 	align-items: center;
 	padding: 20px;
-	background-color: #FFFFFF23;
+	background-color: #FFFFFF57;
 	border-radius: 5px;
 	box-shadow: 0px 0px 10px -5px white inset,
 				0px 4px 16px -16px black;
@@ -363,6 +402,10 @@ input {
 	align-items: center;
 }
 
+.side:nth-child(1){
+    margin-right: 30px;
+}
+
 select{
 	margin: 0px 0px 10px;
 	border-radius: 10px;
@@ -374,6 +417,7 @@ select{
 
 label{
     margin-top: 12px;
+    font-family: 'Lora';
 }
 
 input[type="checkbox"]{

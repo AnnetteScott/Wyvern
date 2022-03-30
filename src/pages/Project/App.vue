@@ -138,47 +138,47 @@ export default {
 				}
 				
 			}
-            let columns = {};
-            if(this.projectDict['weekInterval'] == 1){
-                columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-            }else{
-                columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-            }
-            let weekTotal = 0;
-            let weekMoney = 0;
-            let timeTotal = 0;
-            let timeMoney = 0;
-            for(let i = 0; i < this.projectDict['weekInterval'] * 7; i++){
-                let cellTotal = this.projectDict['timeList'].length + 1;
-                let colTotal = 0;
-                let colMoney = 0;
-                for(let index in this.projectDict['colours']){ //Total up each colour per coloumn
-                    if(this.projectDict['colours'][index] != 'colourWhite'){
-                        let cellID = `${columns[i]}${cellTotal}`
-                        console.log(cellID)
-                        colTotal += parseFloat($(`[cellid=${cellID}]`).text())
-                        colMoney += parseFloat($(`[cellid=${cellID}]`).text()) * this.masterDict['colours'][this.projectDict['colours'][index]]['rate']
-                        cellTotal++;
-                    }
-                }
-                weekTotal += colTotal;
-                weekMoney += colMoney;
-                $(`[cellid=${columns[i]}${cellTotal}]`).text(`${colTotal}H`)
-                $(`[cellid=${columns[i]}${cellTotal + 1}]`).text(`$${colMoney.toFixed(2)}`)
-                if(i % 7 == 6){
-                    $(`[cellid=${columns[i - 6]}${cellTotal + 2}]`).text(`${weekTotal}H`);
-                    $(`[cellid=${columns[i - 6]}${cellTotal + 3}]`).text(`$${weekMoney.toFixed(2)}`);
-                    timeTotal += weekTotal;
-                    timeMoney += weekMoney;
-                    weekTotal = 0;
-                    weekMoney = 0;
-                }
-                if(i == this.projectDict['weekInterval'] * 7 - 1){
-                    $(`[cellid=A${cellTotal + 4}]`).text(timeTotal);
-                    $(`[cellid=A${cellTotal + 5}]`).text(`$${timeMoney.toFixed(2)}`);
-                }
-                
-            }
+			let columns = {};
+			if(this.projectDict['weekInterval'] == 1){
+				columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+			}else{
+				columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
+			}
+			let weekTotal = 0;
+			let weekMoney = 0;
+			let timeTotal = 0;
+			let timeMoney = 0;
+			for(let i = 0; i < this.projectDict['weekInterval'] * 7; i++){
+				let cellTotal = this.projectDict['timeList'].length + 1;
+				let colTotal = 0;
+				let colMoney = 0;
+				for(let index in this.projectDict['colours']){ //Total up each colour per coloumn
+					if(this.projectDict['colours'][index] != 'colourWhite'){
+						let cellID = `${columns[i]}${cellTotal}`
+						console.log(cellID)
+						colTotal += parseFloat($(`[cellid=${cellID}]`).text())
+						colMoney += parseFloat($(`[cellid=${cellID}]`).text()) * this.masterDict['colours'][this.projectDict['colours'][index]]['rate']
+						cellTotal++;
+					}
+				}
+				weekTotal += colTotal;
+				weekMoney += colMoney;
+				$(`[cellid=${columns[i]}${cellTotal}]`).text(`${colTotal}H`)
+				$(`[cellid=${columns[i]}${cellTotal + 1}]`).text(`$${colMoney.toFixed(2)}`)
+				if(i % 7 == 6){
+					$(`[cellid=${columns[i - 6]}${cellTotal + 2}]`).text(`${weekTotal}H`);
+					$(`[cellid=${columns[i - 6]}${cellTotal + 3}]`).text(`$${weekMoney.toFixed(2)}`);
+					timeTotal += weekTotal;
+					timeMoney += weekMoney;
+					weekTotal = 0;
+					weekMoney = 0;
+				}
+				if(i == this.projectDict['weekInterval'] * 7 - 1){
+					$(`[cellid=A${cellTotal + 4}]`).text(timeTotal);
+					$(`[cellid=A${cellTotal + 5}]`).text(`$${timeMoney.toFixed(2)}`);
+				}
+				
+			}
 		}
 	}
 }
@@ -260,6 +260,7 @@ export default {
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 	border-radius: 10px;
 	background-color: #ffffff56;
+	font-family: 'Lora';
 }
 
 .colour_item{
@@ -271,7 +272,7 @@ export default {
 	margin-top: 10px;
 	border-radius: 10px;
 	cursor: pointer;
-    border: 1px solid black
+	border: 1px solid black
 }
 
 .colour_item:hover{

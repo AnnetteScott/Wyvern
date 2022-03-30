@@ -4,8 +4,9 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const path = require('path');
 import fs from "fs";
 const { dialog } = require('electron');
-const isDevelopment = true;
+const isDevelopment = false;
 let win;
+let masterDict;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -142,8 +143,9 @@ function loadData(){
         filters: [{ name: 'json', extensions: ['json'] }]
     }).then(result => {
         let path = result['filePaths'][0];
-        let masterDict = JSON.parse(read_file(path));
-        fs.writeFileSync(saveFilePath, JSON.stringify(masterDict));
+        masterDict = JSON.parse(read_file(path));
+        win.webContents.send("loadData");
+        fs.writeFileSync(saveFilePath, masterDict);
         win.reload()
     }).catch(err => {
         console.log(err)
@@ -165,9 +167,9 @@ function manualSave(){
 
 if(!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}, "saveVersion": 4}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "records": {}, "saveVersion": 4}));
 }else if(!fs.existsSync(app.getPath('userData') + "\\data\\userData.json")){
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "taxes": {}, "saveVersion": 4}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "records": {}, "saveVersion": 4}));
 }
 
 ipcMain.on('master_dict_read', function(event, arg) {
@@ -179,3 +181,7 @@ ipcMain.on('master_dict_read', function(event, arg) {
 function read_file(path){
     return fs.readFileSync(path, 'utf8');
 }
+
+ipcMain.on('sendloadData', function(event, data) {
+    event.sender.send('loadTheMasterDict', masterDict);
+})

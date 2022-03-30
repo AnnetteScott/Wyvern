@@ -15,8 +15,18 @@ ipcRenderer.on('reedMasterDict', function(event, arg) {
 
 ipcRenderer.send('master_dict_read')
 ipcRenderer.on('master_dict_reading', function(event, data) {
+    event;
     if(!window.localStorage.getItem('masterDict')){
         window.localStorage.setItem('masterDict', JSON.stringify(data))
     }
+})
+
+ipcRenderer.on('loadData', function() {
+    ipcRenderer.send('sendloadData')
+})
+
+ipcRenderer.on('loadTheMasterDict', function(event, data) {
+    event;
+    window.localStorage.setItem('masterDict', JSON.stringify(data))
 })
 app.mount('#app');

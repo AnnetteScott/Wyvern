@@ -154,8 +154,7 @@ export default {
 				let colMoney = 0;
 				for(let index in this.projectDict['colours']){ //Total up each colour per coloumn
 					if(this.projectDict['colours'][index] != 'colourWhite'){
-						let cellID = `${columns[i]}${cellTotal}`
-						console.log(cellID)
+						let cellID = `${columns[i]}${cellTotal}`;
 						colTotal += parseFloat($(`[cellid=${cellID}]`).text())
 						colMoney += parseFloat($(`[cellid=${cellID}]`).text()) * this.masterDict['colours'][this.projectDict['colours'][index]]['rate']
 						cellTotal++;

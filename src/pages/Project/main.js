@@ -13,5 +13,9 @@ ipcRenderer.on('reedMasterDict', function(event, arg) {
     arg
 });
 
+ipcRenderer.on('loadData', function(event, data) {
+    window.localStorage.setItem('masterDict', data)
+    event;
+})
 
 app.mount('#app');

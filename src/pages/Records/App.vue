@@ -107,7 +107,6 @@ export default {
 		}
         setTimeout(() => {
             this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
-            console.log(this.recordDict)
         }, 1)
 	},
     methods: {

@@ -116,7 +116,7 @@ const DEVmainMenuTemplate =  [
             },
             {
                 label: 'Dev Tools', 
-                accelerator: process.platform === 'darwin' ? 'Ctrl+O' : 'Ctrl+O',
+                accelerator: process.platform === 'darwin' ? 'Ctrl+D' : 'Ctrl+D',
                 click(){ win.webContents.openDevTools()}
             },
             {
@@ -144,8 +144,8 @@ function loadData(){
     }).then(result => {
         let path = result['filePaths'][0];
         masterDict = JSON.parse(read_file(path));
-        win.webContents.send("loadData");
-        fs.writeFileSync(saveFilePath, masterDict);
+        win.webContents.send("loadData", JSON.stringify(masterDict));
+        fs.writeFileSync(saveFilePath, JSON.stringify(masterDict));
         win.reload()
     }).catch(err => {
         console.log(err)
@@ -153,6 +153,7 @@ function loadData(){
 }
 
 function manualSave(){
+    saveData();
     let masterDict = JSON.parse(read_file(saveFilePath));
     dialog.showSaveDialog(win, {
         properties: ['saveFile'],
@@ -181,7 +182,3 @@ ipcMain.on('master_dict_read', function(event, arg) {
 function read_file(path){
     return fs.readFileSync(path, 'utf8');
 }
-
-ipcMain.on('sendloadData', function(event, data) {
-    event.sender.send('loadTheMasterDict', masterDict);
-})

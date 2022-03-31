@@ -17,16 +17,13 @@ ipcRenderer.send('master_dict_read')
 ipcRenderer.on('master_dict_reading', function(event, data) {
     event;
     if(!window.localStorage.getItem('masterDict')){
-        window.localStorage.setItem('masterDict', JSON.stringify(data))
+        window.localStorage.setItem('masterDict', data)
     }
 })
 
-ipcRenderer.on('loadData', function() {
-    ipcRenderer.send('sendloadData')
+ipcRenderer.on('loadData', function(event, data) {
+    window.localStorage.setItem('masterDict', data)
+    event;
 })
 
-ipcRenderer.on('loadTheMasterDict', function(event, data) {
-    event;
-    window.localStorage.setItem('masterDict', JSON.stringify(data))
-})
 app.mount('#app');

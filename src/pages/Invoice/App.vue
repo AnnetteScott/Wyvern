@@ -30,7 +30,6 @@
 			}
 		]"
 	/>
-	<SavingPopup />
 	<!-- Invoice Selector -->
 	<div class="form_container">
         <div class="form">
@@ -88,11 +87,12 @@
                     
                     <label for="invoice_ID">Invoice ID:</label>
                     <input id="invoice_ID" type="text" />
-                </div>
-                <div class="side">
+                    
                     <label for="invoice_include_colours">Include All Colours:</label>
                     <input id="invoice_include_colours" type="checkbox" />
-                    
+                </div>
+                <div class="side">
+                    RECORD OPTIONS:
                     <label for="invoice_add_records">Add To Records:</label>
                     <input id="invoice_add_records" type="checkbox" @click="changeState" checked/>
                     <template v-if="addToRecord">
@@ -174,7 +174,6 @@
 
 <script>
 import NavBar from '../../components/NavBar.vue';
-import SavingPopup from '../../components/SavingPopup.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import { addToDate, generateID } from '../../../public/generalFunctions.js';
@@ -184,7 +183,6 @@ export default {
 	name: 'App',
 	components: {
 		NavBar,
-		SavingPopup,
 		BackgroundBubble,
 		ButtonItem
 	},
@@ -295,9 +293,9 @@ export default {
                 let thisYear = date.getFullYear();
                 let yearID;
                 if(month < 3){
-                    yearID = `${thisYear - 1} - ${thisYear}`
+                    yearID = `${thisYear - 1} - ${thisYear}`;
                 }else{
-                    `${thisYear} - ${thisYear + 1}`
+                    yearID = `${thisYear} - ${thisYear + 1}`;
                 }
                 if(Object.keys(this.masterDict['records']).length == 0){
                     let date = new Date();
@@ -322,7 +320,7 @@ export default {
 			 */
 			html += `<link rel="stylesheet" href="/invoicePrint.css" />`
 			html += '<body onload="window.focus(); window.print()">'+$("#"+id).html()+'</body>';
-			let w = window.open("","_blank", 'width=800,height=900,nodeIntegration=yes');
+			let w = window.open("","_blank", 'width=900,height=900,nodeIntegration=yes');
 			if (w) {
 				w.document.write(html); 
 				w.document.close() 

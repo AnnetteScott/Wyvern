@@ -43,58 +43,62 @@
 		<div class="tables">
 			<div id="transactions" class="outer_table">
 				<p>Transactions</p>
-                <div>
-                    <p>Month</p>
-                    <p>Date</p>
-                    <p>Account</p>
-                    <p>Type</p>
-                    <p>Item</p>
-                    <p>Category</p>
-                    <p>Amount</p>
-                </div>
-                <div v-for="(transDict, transID) in recordDict" :key="transID" :data="transDict" :class="transDict['type']">
-                    <p>{{ transDict['month'] }}</p>
-                    <p>{{ transDict['date'] }}</p>
-                    <p>{{ transDict['account'] }}</p>
-                    <p>{{ transDict['type'] }}</p>
-                    <p>{{ transDict['item'] }}</p>
-                    <p>{{ transDict['category'] }}</p>
-                    <p>${{ transDict['amount'] }}</p>
-                </div>
+				<div>
+					<p>Month</p>
+					<p>Date</p>
+					<p>Account</p>
+					<p>Type</p>
+					<p>Item</p>
+					<p>Category</p>
+					<p>Amount</p>
+				</div>
+				<div v-for="(transDict, transID) in recordDict" :key="transID" :data="transID" :class="transDict['type']" @click="editTransaction">
+					<p>{{ transDict['month'] }}</p>
+					<p>{{ transDict['date'] }}</p>
+					<p>{{ transDict['account'] }}</p>
+					<p>{{ transDict['type'] }}</p>
+					<p>{{ transDict['item'] }}</p>
+					<p>{{ transDict['category'] }}</p>
+					<p>${{ transDict['amount'] }}</p>
+				</div>
 			</div>
 			<div id="pivot" class="outer_table">
 				<p>Pivot Table</p>
 			</div>
-        </div>
-        <div class="tables">
-            <div id="home" class="outer_table">
-                <p>Home Expenses</p>
-            </div>
+		</div>
+		<div class="tables">
+			<div id="home" class="outer_table">
+				<p>Home Expenses</p>
+			</div>
 
-            <div id="assets" class="outer_table">
-                <p>Assets</p>
-            </div>
-        </div>
+			<div id="assets" class="outer_table">
+				<p>Assets</p>
+			</div>
+		</div>
 			
-		
+		<AllForms :requestForm="current_request_form" @cancelled="current_request_form=``"
+	@saveCookieForBeebViewing="saveCookie"/>
 	</div>
 </template>
 
 <script>
 import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
+import AllForms from '../../components/AllForms.vue';
 import $ from 'jquery'
 
 export default {
 	name: 'App',
 	components: {
 		NavBar,
-		BackgroundBubble
+		BackgroundBubble,
+        AllForms
 	},
 	data() {
 		return {
 			masterDict: {},
 			recordDict: {},
+            current_request_form: ''
 		}
 	},
 	mounted() {
@@ -102,18 +106,37 @@ export default {
 		if(Object.keys(this.masterDict['records']).length == 0){
 			let date = new Date();
 			let thisYear = date.getFullYear();
-			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {}
-			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {}
+			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {};
+			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {};
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		}
-        setTimeout(() => {
-            this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
-        }, 1)
+		setTimeout(() => {
+			this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
+		}, 1)
 	},
-    methods: {
-        onchange(){
+	methods: {
+		onchange(){
+			this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
+		},
+        saveCookie(){
+			this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
             this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
+		},
+        editTransaction(e){
+            this.current_request_form = 'editTransaction';
+            const ID = $(e.target).attr('data');
+            setTimeout(() => {
+                let newDate = this.recordDict[ID]['date'].split("/").reverse().join("-");
+                $(`#edit_transID`).attr('transid', ID)
+                $(`#edit_transID`).attr('transyear', $(`#year_selection option:selected`).attr('data'))
+                $(`#edit_trans_date`).val(newDate)
+                $(`#edit_trans_account`).val(this.recordDict[ID]['account'])
+                $(`#edit_trans_category`).val(this.recordDict[ID]['category'])
+                $(`#edit_trans_item`).val(this.recordDict[ID]['item'])
+                $(`#edit_trans_amount`).val(this.recordDict[ID]['amount'])
+            }, 1)
         }
-    }
+	}
 }
 </script>
 
@@ -134,7 +157,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-    overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 #selectors{
@@ -166,11 +189,11 @@ select{
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 	border-radius: 15px;
 	background-color: #ffffff5d;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: default;
-    overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	cursor: default;
+	overflow-y: scroll;
 }
 
 .outer_table > p{
@@ -178,47 +201,54 @@ select{
 	margin: 5px 0px;
 	font-size: 20px;
 	color: black;
-    background-color: white;
-    width: 50%;
+	background-color: white;
+	width: 50%;
 }
 
 #transactions > div{
-    width: 95%;
-    display: flex;
-    margin-bottom: 5px;
-    border: 1px solid black;
+	width: 95%;
+	display: flex;
+	margin-bottom: 5px;
+	border: 1px solid black;
 }
 
 #transactions > div:first-of-type{
-    background-color: white;
+	background-color: white;
 }
 
 #transactions > div > p{
-    font-size: 15px;
-    width: 100%;
-    margin: 0px;
-    border-left: 1px solid black;
+	font-size: 15px;
+	width: 100%;
+	margin: 0px;
+	border-left: 1px solid black;
+	pointer-events: none;
 }
 
 #transactions > div > p:nth-of-type(1){
-    border-left: 0px;
-    max-width: 8ch;
+	border-left: 0px;
+	max-width: 8ch;
 }
 
 #transactions > div > p:nth-of-type(2){
-    max-width: 12ch;
+	max-width: 12ch;
 }
 
 #transactions > div > p:nth-of-type(4){
-    max-width: 10ch;
+	max-width: 10ch;
 }
 
 #transactions > div > p:nth-of-type(7){
-    max-width: 12ch;
+	max-width: 12ch;
 }
 
-.credit{
-    background-color: rgb(5, 197, 5);
+.Credit{
+	background-color: #00ff00;
+	cursor: pointer;
+}
+
+.Debit{
+	background-color: #ff1100;
+	cursor: pointer;
 }
 
 </style>

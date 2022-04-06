@@ -187,11 +187,11 @@
 	<!-- Edit Colour -->
 	<div class="form_container" v-if="requestForm == `editColourForm`">
 		<div class="form">
-			<div id="edit_colourID" projectid="invalid"></div>
+			<div id="edit_colourID" colourid="invalid"></div>
 			<label for="edit_colour_name">Colour Name:</label>
 			<input id="edit_colour_name" type="text" />
 			
-			<label for="edit_colour_rate">Colour Rate</label>
+			<label for="edit_colour_rate">Colour Rate:</label>
 			<input id="edit_colour_rate" type="number" step="0.01" />
 
 			<label for="edit_colour_colour">Colour:</label>
@@ -200,6 +200,67 @@
 			<ButtonItem :title="`Save Colour`" @click="editColour"/>
 			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
 			<ButtonItem :title="`Delete`" @click="deleteColour"/>
+		</div>
+	</div>
+	
+	<!-- Create Transaction -->
+	<div class="form_container" v-if="requestForm == `createTransaction`">
+		<div class="form">
+			<div id="edit_transID" transid="invalid" transyear="invalid"></div>
+			<label for="create_trans_date">Transaction Date:</label>
+			<input id="create_trans_date" type="date" />
+
+			<label for="create_trans_account">Account:</label>
+			<input id="create_trans_account" type="text" />
+
+			<label for="create_trans_type">Type:</label>
+			<select id="create_trans_type">
+				<option value="Credit">Credit</option>
+				<option value="Debit">Debit</option>
+			</select>
+
+			<label for="create_trans_category">Category:</label>
+			<input id="create_trans_category" type="text" />
+			
+			<label for="create_trans_item">Item:</label>
+			<input id="create_trans_item" type="text" />
+
+			<label for="create_trans_amount">Amount:</label>
+			<input id="create_trans_amount" type="number" step="0.01" />
+
+			<ButtonItem :title="`Create Transaction`" @click="createTransaction"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+		</div>
+	</div>
+    
+    <!-- Edit Transaction -->
+	<div class="form_container" v-if="requestForm == `editTransaction`">
+		<div class="form">
+			<div id="edit_transID" transid="invalid" transyear="invalid"></div>
+			<label for="edit_trans_date">Transaction Date:</label>
+			<input id="edit_trans_date" type="date" />
+
+			<label for="edit_trans_account">Account:</label>
+			<input id="edit_trans_account" type="text" />
+
+			<label for="edit_trans_type">Type:</label>
+			<select id="edit_trans_type">
+				<option value="Credit">Credit</option>
+				<option value="Debit">Debit</option>
+			</select>
+
+			<label for="edit_trans_category">Category:</label>
+			<input id="edit_trans_category" type="text" />
+			
+			<label for="edit_trans_item">Item:</label>
+			<input id="edit_trans_item" type="text" />
+
+			<label for="edit_trans_amount">Amount:</label>
+			<input id="edit_trans_amount" type="number" step="0.01" />
+
+			<ButtonItem :title="`Save Transaction`" @click="editTransaction"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<ButtonItem :title="`Delete`" @click="deleteTransaction"/>
 		</div>
 	</div>
 </template>
@@ -221,10 +282,47 @@ export default {
 	},
 	data() {
 		return {
-			masterDict: {}
+			masterDict: {},
+			recordDict: {}
 		}
 	},
 	methods: {
+		editTransaction(){
+			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+			this.recordDict = this.masterDict['records'][$('#edit_transID').attr('transyear')];
+			const ID = $('#edit_transID').attr('transid')
+			let date = ($('#edit_trans_date').val()).split("-");
+			let month = parseInt(date[1]) - 1;
+			let year = parseInt(date[0]);
+			date = date.reverse().join("/");
+			let account = $('#edit_trans_account').val();
+			let type = $(`#edit_trans_type option:selected`).val();
+			let item = $('#edit_trans_item').val();
+			let category = $('#edit_trans_category').val();
+			let amount = type == 'Credit' ? Math.abs(parseFloat($('#edit_trans_amount').val())) : 0 - parseFloat($('#edit_trans_amount').val());
+			
+			let yearID;
+			if(month < 3){
+				yearID = `${year - 1} - ${year}`;
+			}else{
+				yearID = `${year} - ${year + 1}`;
+			}
+
+			delete this.recordDict[ID]
+			this.masterDict['records'][yearID][ID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+		},
+		deleteTransaction(){
+			const ID = $('#edit_transID').attr('transid');
+			const YEAR = $('#edit_transID').attr('transyear');
+			delete this.masterDict['records'][YEAR][ID];
+
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+		},
 		createUser(){
 			let user = $('#create_user').val();
 			let name = $('#create_user_name').val();
@@ -326,10 +424,10 @@ export default {
 				}
 			}
 			let colourIds = Object.keys(this.masterDict['colours'])
-            if(!colourIds.includes('colourWhite')){
-                colourIds.push('colourWhite')
-                this.masterDict['colours']['colourWhite'] = {'name': 'White', 'colour': '#ffffff'}
-            }
+			if(!colourIds.includes('colourWhite')){
+				colourIds.push('colourWhite')
+				this.masterDict['colours']['colourWhite'] = {'name': 'White', 'colour': '#ffffff'}
+			}
 
 			this.masterDict['projects'][projectID] = {'name': name, 'colours': colourIds, 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval};
 			
@@ -338,9 +436,9 @@ export default {
 				for(let w = 1; w <= duration; w++){
 					this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
 					colourIds.forEach(colourID => {
-                        if(colourID != 'colourWhite'){
-                            this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
-                        }
+						if(colourID != 'colourWhite'){
+							this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
+						}
 					});
 					date = addToDate(date, 7);
 				}
@@ -353,8 +451,8 @@ export default {
 					this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
 					colourIds.forEach(colourID => {
 						if(colourID != 'colourWhite'){
-                            this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
-                        }
+							this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
+						}
 					});
 					date = addToDate(date, 14);
 				}
@@ -392,9 +490,9 @@ export default {
 					}
 				}
 			}
-            if(!(Object.keys(this.masterDict['colours']).includes('colourWhite'))){
-                this.masterDict['colours']['colourWhite'] = {'colour': '#ffffff'}
-            }
+			if(!(Object.keys(this.masterDict['colours']).includes('colourWhite'))){
+				this.masterDict['colours']['colourWhite'] = {'colour': '#ffffff'}
+			}
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
@@ -485,12 +583,13 @@ export default {
 
 		editColour(){
 			const colourID = $(`#edit_colourID`).attr('colourid');
-			let colourName = $("#colour_creation_name").val();
-			let colourRate = (parseFloat($("#colour_creation_rate").val())).toFixed(2);
-			let colour = $("#colour_creation_colour").val();
+			console.log(colourID)
+			let colourName = $("#edit_colour_name").val();
+			let colourRate = (parseFloat($("#edit_colour_rate").val())).toFixed(2);
+			let colour = $("#edit_colour_colour").val();
 			
 			this.masterDict['colours'][colourID] = {'name': colourName, 'rate': colourRate, 'colour': colour};
-
+			console.log(this.masterDict)
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
@@ -526,6 +625,20 @@ export default {
 		deleteColour(){
 			const colourID = $(`#edit_colourID`).attr('colourid');
 			delete this.masterDict['colours'][colourID];
+			for(const[projectID, projectDict] of Object.entries(this.masterDict['projects'])){
+				const index = projectDict['colours'].indexOf(colourID);
+				if (index > -1) {
+					projectDict['colours'].splice(index, 1);
+				}
+				for(const [weekID, weekDict] of Object.entries(projectDict['weeks'])){
+					for(const [projColour, colouredCell] of Object.entries(weekDict['colouredCells'])){
+						if(projColour === colourID){
+							colouredCell;
+							delete this.masterDict['projects'][projectID]['weeks'][weekID]['colouredCells'][colourID]
+						}
+					}
+				}
+			}
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');

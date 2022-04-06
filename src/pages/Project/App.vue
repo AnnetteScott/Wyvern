@@ -32,11 +32,10 @@
 	/>
 	<div id="top_title">
 		<div id="projectTitle"></div>    
-		<div id="weekTitle">WEEK: </div> 
 	</div>
 	<div id="inner">
 		<div id="weeks_container">
-			<ButtonItem v-for="(weekDict, weekID) in projectDict['weeks']" :key="weekDict" class="list_item" :data="weekID" @click="weekButton" :title="weekID" />
+			<ButtonItem v-for="(weekDict, weekID) in projectDict['weeks']" :key="weekDict" class="week_item" :data="weekID" @click="weekButton" :title="weekID" />
 		</div>
 		<div id="time_sheet_container">
 			<TimeSheet :weekID="currentWeek" ref="TimeSheet"/> 
@@ -84,8 +83,11 @@ export default {
 	methods: {
 		weekButton(event){
 			this.weekID = $(event.target).attr('data');
+            $('.button_link').each((index, weekButton) => {
+                $(weekButton).removeClass('activeButton');
+            });
+            $(event.target).addClass('activeButton')
 			this.weekDict = this.projectDict['weeks'][this.weekID];
-			$(`#weekTitle`).text(`WEEK: ${this.weekID}`)
 			this.currentWeek = this.weekID;
 			setTimeout(() => {
 				this.$refs.TimeSheet.updateLib();
@@ -278,4 +280,7 @@ export default {
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.082), 0 10px 10px rgba(0, 0, 0, 0.11);
 }
 
+.activeButton{
+    background: linear-gradient(45deg, #054ff0, #05f0f0) !important;
+}
 </style>

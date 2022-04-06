@@ -278,6 +278,7 @@ export default {
 	min-width: 90px;
 	border-left: 1px solid black;
 	border-top: 1px solid black;
+    margin-top: 10px;
 }
 
 .column:last-child{

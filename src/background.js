@@ -4,7 +4,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const path = require('path');
 import fs from "fs";
 const { dialog } = require('electron');
-const isDevelopment = false;
+const isDevelopment = true;
 let win;
 let masterDict;
 
@@ -154,16 +154,19 @@ function loadData(){
 
 function manualSave(){
     saveData();
-    let masterDict = JSON.parse(read_file(saveFilePath));
-    dialog.showSaveDialog(win, {
-        properties: ['saveFile'],
-        filters: [{ name: 'json', extensions: ['json'] }]
-    }).then(result => {
-        let filepath = result.filePath;
-        fs.writeFileSync(filepath, JSON.stringify(masterDict));
-    }).catch(err => {
-        console.log(err)
-    });
+    setTimeout(function(){
+        let masterDict = JSON.parse(read_file(saveFilePath));
+        dialog.showSaveDialog(win, {
+            properties: ['saveFile'],
+            filters: [{ name: 'json', extensions: ['json'] }]
+        }).then(result => {
+            let filepath = result.filePath;
+            fs.writeFileSync(filepath, JSON.stringify(masterDict));
+        }).catch(err => {
+            console.log(err)
+        });    
+    }, 100)
+    
 }
 
 if(!fs.existsSync(app.getPath('userData') + "\\data")){

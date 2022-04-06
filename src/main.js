@@ -17,7 +17,7 @@ ipcRenderer.send('master_dict_read')
 ipcRenderer.on('master_dict_reading', function(event, data) {
     event;
     if(!window.localStorage.getItem('masterDict')){
-        window.localStorage.setItem('masterDict', data)
+        window.localStorage.setItem('masterDict', JSON.stringify(data))
     }
 })
 

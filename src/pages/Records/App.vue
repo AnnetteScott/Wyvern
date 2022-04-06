@@ -85,6 +85,15 @@
 					<p>Assets</p>
 					<ButtonItem :title="`+ New`" @click="''"/>
 				</div>
+                <div class="headings">
+					<p>Date Purchased</p>
+					<p>Item Description</p>
+					<p>Vendor</p>
+					<p>Unit Cost</p>
+					<p>Units</p>
+					<p>Total</p>
+					<p>Attached</p>
+				</div>
 			</div>
 		</div>
 			
@@ -122,8 +131,9 @@ export default {
 			let thisYear = date.getFullYear();
 			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {};
 			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {};
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+            this.masterDict['records']['categories'] = ['Contract Work']
 		}
+        localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		setTimeout(() => {
 			this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
 		}, 1)
@@ -233,18 +243,18 @@ select{
 	margin: 0px 10px;
 }
 
-#transactions > div:not(.title){
+.outer_table > div:not(.title){
 	display: flex;
     width: 95%;
 	margin-bottom: 5px;
 	border: 1px solid black;
 }
 
-#transactions > .headings{
+.outer_table > .headings{
 	background-color: white;
 }
 
-#transactions > div:not(.title) > p{
+.outer_table > div:not(.title) > p{
 	font-size: 15px;
 	width: 100%;
 	margin: 0px;
@@ -252,7 +262,7 @@ select{
 	pointer-events: none;
 }
 
-#transactions > div:not(.title) > p:nth-of-type(1){
+.outer_table> div:not(.title) > p:nth-of-type(1){
 	border-left: 0px;
 	max-width: 8ch;
 }
@@ -278,5 +288,14 @@ select{
 	background-color: #ff1100;
 	cursor: pointer;
 }
+
+#assets > div:not(.title) > p:nth-of-type(1){
+	max-width: 16ch;
+}
+
+#assets > div:not(.title) > p:nth-of-type(6){
+	max-width: 10ch;
+}
+
 
 </style>

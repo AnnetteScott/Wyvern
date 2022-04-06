@@ -47,6 +47,10 @@
 		<div class="settings_tab_button" @click="settings_tab_clicked($event, `colours_bottom`)">
 			<h2>Colours</h2>
 		</div>
+        
+        <div class="settings_tab_button" @click="settings_tab_clicked($event, `records_bottom`)">
+			<h2>Records</h2>
+		</div>
 	</div>
 
 	<div id="settings_sections">
@@ -87,6 +91,19 @@
 				<div v-if="colourID != `colourWhite`" class="list_item" :data="colourID" @click="open_edit_form($event, `editColourForm`, `colours`)">
 					<div class="colour_preview" :style="{backgroundColor: colourDict['colour']}"></div>
 					<p>{{ colourDict.name }}</p>
+				</div>
+			</template>
+		</div>
+        
+        <!-- colours -->
+		<div id="records_bottom" v-if="current_settings_page == `records_bottom`">
+			<div class="settings_bottom_control">
+				<p>You Have {{ ((masterDict['records']['categories']).length) == 1 ? ((masterDict['records']['categories']).length) + ' Category' : ((masterDict['records']['categories']).length) + ' Category' }}</p>
+				<ButtonItem :title="`Create Category`" @click="current_request_form=`createCategory`" />
+			</div>
+			<template v-for="Category in masterDict['records']['categories']" :key="Category">
+				<div v-if="colourID != `colourWhite`" class="list_item" :data="colourID" @click="open_edit_form($event, `editCategory`, `colours`)">
+					{{ Category }}
 				</div>
 			</template>
 		</div>

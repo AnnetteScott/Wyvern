@@ -220,7 +220,11 @@
 			</select>
 
 			<label for="create_trans_category">Category:</label>
-			<input id="create_trans_category" type="text" />
+			<select id="create_trans_type">
+				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
+                    {{ category }}
+                </option>
+			</select>
 			
 			<label for="create_trans_item">Item:</label>
 			<input id="create_trans_item" type="text" />
@@ -249,8 +253,12 @@
 				<option value="Debit">Debit</option>
 			</select>
 
-			<label for="edit_trans_category">Category:</label>
-			<input id="edit_trans_category" type="text" />
+			<label for="create_trans_category">Category:</label>
+			<select id="create_trans_type">
+				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
+                    {{ category }}
+                </option>
+			</select>
 			
 			<label for="edit_trans_item">Item:</label>
 			<input id="edit_trans_item" type="text" />

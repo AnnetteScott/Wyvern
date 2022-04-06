@@ -1,12 +1,18 @@
-export function generateID(){
+export function generateID(check = {}){
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     let length = 5;
     let result = '';
-    const charactersLength = characters.length;
-    for ( let i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    let is_duplicate = true;
+    while(is_duplicate){
+        //Generate an ID.
+        for ( let i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        //Check if it already exists. If so, generate again. If not, continue.
+        if(typeof ([result, result, result, result, result, result].reduce((check, level) => check && check[level], check)) == 'undefined'){
+            is_duplicate = false;
+        }
     }
-
     return result;
 }
 

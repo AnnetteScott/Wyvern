@@ -306,15 +306,9 @@ export default {
                 yearID = `${year} - ${year + 1}`;
             }
 			
-            let transID = generateID();
-			while(Object.keys(this.masterDict['records'][yearID]).includes(transID)) {
-				transID = generateID();
-			}
-
-
+            const transID = generateID(this.masterDict);
 
 			this.masterDict['records'][yearID][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
-
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
@@ -371,10 +365,7 @@ export default {
 			}
 			$("#create_user").removeClass('form_error');
 
-			let userID = generateID();
-			while(Object.keys(this.masterDict['users']).includes(userID)) {
-				userID = generateID();
-			}
+			const userID = generateID(this.masterDict);
 
 			this.masterDict['users'][userID] = {'user': user, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
 			
@@ -398,10 +389,7 @@ export default {
 			}
 			$("#create_client").removeClass('form_error');
 
-			let clientID = generateID();
-			while(Object.keys(this.masterDict['clients']).includes(clientID)) {
-				clientID = generateID();
-			}
+			const clientID = generateID(this.masterDict);
 
 			this.masterDict['clients'][clientID] = {'client': client, 'name': name, 'addOne': addOne, 'addTwo': addTwo, 'city': city, 'country': country, 'contact': contact};
 			
@@ -437,10 +425,7 @@ export default {
 			$('#create_project_duration').val('');
 			$('#create_project_date').val('');
 
-			let projectID = generateID();
-			while(Object.keys(this.masterDict['projects']).includes(projectID)) {
-				projectID = generateID();
-			}
+			const projectID = generateID(this.masterDict);
 			
 			let timeList = [];
 			for(let h = 0; h < 24; h++){
@@ -502,10 +487,7 @@ export default {
 			let colourRate = (parseFloat($("#create_colour_rate").val())).toFixed(2);
 			let colour = $("#create_colour_colour").val();
 
-			let colourID = generateID();
-			while(Object.keys(this.masterDict['colours']).includes(colourID)) {
-				colourID = generateID();
-			}
+			const colourID = generateID(this.masterDict);
 
 			this.masterDict['colours'][colourID] = {'name': colourName, 'rate': colourRate, 'colour': colour};
 			for (let [projectID, projectDict] of Object.entries(this.masterDict['projects'])) {

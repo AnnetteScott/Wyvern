@@ -283,10 +283,7 @@ export default {
 				this.printInvoice();
 			}, 1)
 			if($('#invoice_add_records')[0].checked){
-                let transID = generateID();
-                while(Object.keys(this.masterDict['clients']).includes(transID)) {
-                    transID = generateID();
-                }
+                const transID = generateID(this.masterDict);
 
                 let date = new Date();
                 let month = date.getMonth();

@@ -44,7 +44,7 @@
 			<div id="transactions" class="outer_table">
 				<div class="title">
 					<p>Transactions</p>
-					<ButtonItem :title="`+ New`" @click="''"/>
+					<ButtonItem :title="`+ New`" @click="current_request_form = 'createTransaction'"/>
 				</div>
                 
 				<div class="headings">
@@ -235,16 +235,13 @@ select{
 
 #transactions > div:not(.title){
 	display: flex;
+    width: 95%;
 	margin-bottom: 5px;
 	border: 1px solid black;
 }
 
 #transactions > .headings{
-	display: flex;
-	width: 95%;
-	margin-bottom: 5px;
 	background-color: white;
-	border: 1px solid black;
 }
 
 #transactions > div:not(.title) > p{

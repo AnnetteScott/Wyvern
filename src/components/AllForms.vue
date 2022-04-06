@@ -287,6 +287,39 @@ export default {
 		}
 	},
 	methods: {
+        createTransaction(){
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+			let date = ($('#create_trans_date').val()).split("-");
+			let month = parseInt(date[1]) - 1;
+			let year = parseInt(date[0]);
+			date = date.reverse().join("/");
+			let account = $('#create_trans_account').val();
+			let type = $(`#create_trans_type option:selected`).val();
+			let item = $('#create_trans_item').val();
+			let category = $('#create_trans_category').val();
+			let amount = type == 'Credit' ? Math.abs(parseFloat($('#create_trans_amount').val())) : 0 - parseFloat($('#create_trans_amount').val());
+            
+            let yearID;
+            if(month < 3){
+                yearID = `${year - 1} - ${year}`;
+            }else{
+                yearID = `${year} - ${year + 1}`;
+            }
+			
+            let transID = generateID();
+			while(Object.keys(this.masterDict['records'][yearID]).includes(transID)) {
+				transID = generateID();
+			}
+
+
+
+			this.masterDict['records'][yearID][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
+
+
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
 		editTransaction(){
 			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 			this.recordDict = this.masterDict['records'][$('#edit_transID').attr('transyear')];

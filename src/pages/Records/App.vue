@@ -43,6 +43,7 @@
 		<div class="tables">
 			<div id="transactions" class="outer_table">
 				<p>Transactions</p>
+                <ButtonItem :title="`Create Transaction`" @click="''"/>
 				<div>
 					<p>Month</p>
 					<p>Date</p>
@@ -85,6 +86,7 @@
 import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import AllForms from '../../components/AllForms.vue';
+import ButtonItem from '../../components/ButtonItem.vue';
 import $ from 'jquery'
 
 export default {
@@ -92,7 +94,8 @@ export default {
 	components: {
 		NavBar,
 		BackgroundBubble,
-        AllForms
+        AllForms,
+        ButtonItem
 	},
 	data() {
 		return {

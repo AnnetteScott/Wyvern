@@ -42,9 +42,12 @@
 		
 		<div class="tables">
 			<div id="transactions" class="outer_table">
-				<p>Transactions</p>
-                <ButtonItem :title="`Create Transaction`" @click="''"/>
-				<div>
+				<div class="title">
+					<p>Transactions</p>
+					<ButtonItem :title="`+ New`" @click="''"/>
+				</div>
+                
+				<div class="headings">
 					<p>Month</p>
 					<p>Date</p>
 					<p>Account</p>
@@ -64,16 +67,24 @@
 				</div>
 			</div>
 			<div id="pivot" class="outer_table">
-				<p>Pivot Table</p>
+				<div class="title">
+					<p>Pivot Table</p>
+				</div>
 			</div>
 		</div>
 		<div class="tables">
 			<div id="home" class="outer_table">
-				<p>Home Expenses</p>
+				<div class="title">
+					<p>Home Expenses</p>
+					<ButtonItem :title="`+ New`" @click="''"/>
+				</div>
 			</div>
 
 			<div id="assets" class="outer_table">
-				<p>Assets</p>
+				<div class="title">
+					<p>Assets</p>
+					<ButtonItem :title="`+ New`" @click="''"/>
+				</div>
 			</div>
 		</div>
 			
@@ -187,6 +198,7 @@ select{
 }
 
 .outer_table{
+	position: relative;
 	height: 95%;
 	width: 45%;
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
@@ -199,27 +211,43 @@ select{
 	overflow-y: scroll;
 }
 
-.outer_table > p{
+
+.outer_table .title{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 5px;
+}
+.outer_table .title > p{
 	font-family: 'Lora';
 	margin: 5px 0px;
 	font-size: 20px;
 	color: black;
 	background-color: white;
-	width: 50%;
+	width: 70%;
+	border-radius: 5px;
+}
+.outer_table .title .button_link{
+	margin: 0px 10px;
 }
 
-#transactions > div{
-	width: 95%;
+#transactions > div:not(.title){
 	display: flex;
 	margin-bottom: 5px;
 	border: 1px solid black;
 }
 
-#transactions > div:first-of-type{
+#transactions > .headings{
+	display: flex;
+	width: 95%;
+	margin-bottom: 5px;
 	background-color: white;
+	border: 1px solid black;
 }
 
-#transactions > div > p{
+#transactions > div:not(.title) > p{
 	font-size: 15px;
 	width: 100%;
 	margin: 0px;
@@ -227,20 +255,20 @@ select{
 	pointer-events: none;
 }
 
-#transactions > div > p:nth-of-type(1){
+#transactions > div:not(.title) > p:nth-of-type(1){
 	border-left: 0px;
 	max-width: 8ch;
 }
 
-#transactions > div > p:nth-of-type(2){
+#transactions > div:not(.title) > p:nth-of-type(2){
 	max-width: 12ch;
 }
 
-#transactions > div > p:nth-of-type(4){
+#transactions > div:not(.title) > p:nth-of-type(4){
 	max-width: 10ch;
 }
 
-#transactions > div > p:nth-of-type(7){
+#transactions > div:not(.title) > p:nth-of-type(7){
 	max-width: 12ch;
 }
 

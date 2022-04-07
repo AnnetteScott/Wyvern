@@ -211,7 +211,11 @@
 			<input id="create_trans_date" type="date" />
 
 			<label for="create_trans_account">Account:</label>
-			<input id="create_trans_account" type="text" />
+			<select id="create_trans_account">
+				<option v-for="account in masterDict['records']['accounts']" :key="account" :data="account">
+                    {{ account }}
+                </option>
+			</select>
 
 			<label for="create_trans_type">Type:</label>
 			<select id="create_trans_type">
@@ -220,7 +224,7 @@
 			</select>
 
 			<label for="create_trans_category">Category:</label>
-			<select id="create_trans_type">
+			<select id="create_trans_category">
 				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
                     {{ category }}
                 </option>
@@ -245,7 +249,11 @@
 			<input id="edit_trans_date" type="date" />
 
 			<label for="edit_trans_account">Account:</label>
-			<input id="edit_trans_account" type="text" />
+			<select id="edit_trans_account">
+				<option v-for="account in masterDict['records']['accounts']" :key="account" :data="account">
+                    {{ account }}
+                </option>
+			</select>
 
 			<label for="edit_trans_type">Type:</label>
 			<select id="edit_trans_type">
@@ -253,8 +261,8 @@
 				<option value="Debit">Debit</option>
 			</select>
 
-			<label for="create_trans_category">Category:</label>
-			<select id="create_trans_type">
+			<label for="edit_trans_category">Category:</label>
+			<select id="edit_trans_category">
 				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
                     {{ category }}
                 </option>
@@ -271,6 +279,56 @@
 			<ButtonItem :title="`Delete`" @click="deleteTransaction"/>
 		</div>
 	</div>
+    
+    <!-- Create Category -->
+	<div class="form_container" v-if="requestForm == `createCategory`">
+		<div class="form">
+			<label for="create_category">Category:</label>
+			<input id="create_category" type="text" />
+
+			<ButtonItem :title="`Create Category`" @click="createCategory"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+		</div>
+	</div>
+
+    <!-- Edit Category -->
+	<div class="form_container" v-if="requestForm == `editCategory`">
+		<div class="form">
+            <div id="edit_category_old" oldcategory='invalid'></div>
+			<label for="edit_category">Category:</label>
+			<input id="edit_category" type="text" />
+
+			<ButtonItem :title="`Save Category`" @click="editCategory"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+            <ButtonItem :title="`Delete`" @click="deleteCategory"/>
+		</div>
+	</div>
+    
+
+    <!-- Create Accounts -->
+	<div class="form_container" v-if="requestForm == `createAccount`">
+		<div class="form">
+			<label for="create_account">Account:</label>
+			<input id="create_account" type="text" />
+
+			<ButtonItem :title="`Create Account`" @click="createAccount"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+		</div>
+	</div>
+
+    <!-- Edit Accounts -->
+	<div class="form_container" v-if="requestForm == `editAccount`">
+		<div class="form">
+            <div id="edit_account_old" oldaccount='invalid'></div>
+			<label for="edit_account">Account:</label>
+			<input id="edit_account" type="text" />
+
+			<ButtonItem :title="`Save Account`" @click="editAccount"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+            <ButtonItem :title="`Delete`" @click="deleteAccount"/>
+		</div>
+	</div>
+    
 </template>
 
 
@@ -295,16 +353,104 @@ export default {
 		}
 	},
 	methods: {
+        createCategory(){
+            let category = $(`#create_category`).val()
+            if(category == ''){ //If no category was provided
+				$("#create_category").addClass('form_error');
+				return false;
+			}
+			$("#create_category").removeClass('form_error');
+            this.masterDict['records']['categories'].push(category);
+            
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
+        editCategory(){
+            let category =  $(`#edit_category_old`).attr(`oldcategory`);
+            const index = this.masterDict['records']['categories'].indexOf(category);
+            if (index > -1) {
+                this.masterDict['records']['categories'].splice(index, 1);
+            }
+
+            let newCategory = $(`#create_category`).val()
+            if(newCategory == ''){ //If no category was provided
+				$("#create_category").addClass('form_error');
+				return false;
+			}
+			$("#create_category").removeClass('form_error');
+            this.masterDict['records']['categories'].push(newCategory);
+ 
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
+        deleteCategory(){
+            let category =  $(`#edit_category_old`).attr(`oldcategory`);
+            const index = this.masterDict['records']['categories'].indexOf(category);
+            if (index > -1) {
+                this.masterDict['records']['categories'].splice(index, 1);
+            }
+
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
+        createAccount(){
+            let account = $(`#create_account`).val()
+            if(account == ''){ //If no category was provided
+				$("#create_account").addClass('form_error');
+				return false;
+			}
+			$("#create_account").removeClass('form_error');
+            this.masterDict['records']['accounts'].push(account);
+            
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
+        editAccount(){
+            let account =  $(`#edit_account_old`).attr(`oldaccount`);
+            const index = this.masterDict['records']['accounts'].indexOf(account);
+            if (index > -1) {
+                this.masterDict['records']['accounts'].splice(index, 1);
+            }
+
+            let newAccount = $(`#edit_account`).val()
+            if(newAccount == ''){ //If no category was provided
+				$("#edit_account").addClass('form_error');
+				return false;
+			}
+			$("#edit_account").removeClass('form_error');
+            this.masterDict['records']['categories'].push(newAccount);
+ 
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
+        deleteAccount(){
+            let account =  $(`#edit_account_old`).attr(`oldaccount`);
+            const index = this.masterDict['records']['accounts'].indexOf(account);
+            if (index > -1) {
+                this.masterDict['records']['accounts'].splice(index, 1);
+            }
+
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
         createTransaction(){
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 			let date = ($('#create_trans_date').val()).split("-");
 			let month = parseInt(date[1]) - 1;
 			let year = parseInt(date[0]);
 			date = date.reverse().join("/");
-			let account = $('#create_trans_account').val();
+
+			let account = $(`#create_trans_account option:selected`).val();
 			let type = $(`#create_trans_type option:selected`).val();
+			let category = $(`#create_trans_category option:selected`).val();
 			let item = $('#create_trans_item').val();
-			let category = $('#create_trans_category').val();
+
 			let amount = type == 'Credit' ? Math.abs(parseFloat($('#create_trans_amount').val())) : 0 - parseFloat($('#create_trans_amount').val());
             
             let yearID;
@@ -330,11 +476,14 @@ export default {
 			let month = parseInt(date[1]) - 1;
 			let year = parseInt(date[0]);
 			date = date.reverse().join("/");
-			let account = $('#edit_trans_account').val();
+
+			let account = $(`#edit_trans_account option:selected`).val();
 			let type = $(`#edit_trans_type option:selected`).val();
+			let category = $(`#edit_trans_category option:selected`).val();
 			let item = $('#edit_trans_item').val();
-			let category = $('#edit_trans_category').val();
-			let amount = type == 'Credit' ? Math.abs(parseFloat($('#edit_trans_amount').val())) : 0 - parseFloat($('#edit_trans_amount').val());
+
+            let preAmount = Math.abs(parseFloat($('#edit_trans_amount').val()))
+			let amount = type == 'Credit' ? preAmount : 0 - preAmount;
 			
 			let yearID;
 			if(month < 3){

@@ -95,17 +95,33 @@
 			</template>
 		</div>
         
-        <!-- colours -->
+        <!-- Records -->
 		<div id="records_bottom" v-if="current_settings_page == `records_bottom`">
-			<div class="settings_bottom_control">
-				<p>You Have {{ ((masterDict['records']['categories']).length) == 1 ? ((masterDict['records']['categories']).length) + ' Category' : ((masterDict['records']['categories']).length) + ' Category' }}</p>
-				<ButtonItem :title="`Create Category`" @click="current_request_form=`createCategory`" />
-			</div>
-			<template v-for="Category in masterDict['records']['categories']" :key="Category">
-				<div v-if="colourID != `colourWhite`" class="list_item" :data="colourID" @click="open_edit_form($event, `editCategory`, `colours`)">
-					{{ Category }}
-				</div>
-			</template>
+            <div class="column">
+                <div class="settings_section">
+                    <div class="settings_bottom_control">
+                        <p>You Have {{ ((masterDict['records']['categories']).length) == 1 ? ((masterDict['records']['categories']).length) + ' Category' : ((masterDict['records']['categories']).length) + ' Categories' }}</p>
+                        <ButtonItem :title="`Create Category`" @click="current_request_form=`createCategory`" />
+                    </div>
+                    <template v-for="Category in masterDict['records']['categories']" :key="Category">
+                        <div class="list_item" :data="Category" :category="Category" @click="open_edit_form($event, `editCategory`, `categories`)">
+                            {{ Category }}
+                        </div>
+                    </template>
+                </div>
+                <div class="settings_section">
+                    <div class="settings_bottom_control">
+                        <p>You Have {{ ((masterDict['records']['accounts']).length) == 1 ? ((masterDict['records']['accounts']).length) + ' Account' : ((masterDict['records']['accounts']).length) + ' Accounts' }}</p>
+                        <ButtonItem :title="`Create Account`" @click="current_request_form=`createAccount`" />
+                    </div>
+                    <template v-for="Account in masterDict['records']['accounts']" :key="Account">
+                        <div class="list_item" :data="`accounts`" :account="Account" @click="open_edit_form($event, `editAccount`, `accounts`)">
+                            {{ Account }}
+                        </div>
+                    </template>
+                </div>  
+            </div>
+			
 		</div>
 		
 		<div v-if="current_settings_page == ``"></div>
@@ -151,8 +167,14 @@ export default {
 		},
 		open_edit_form(event, form_name, type) {
 			this.current_request_form = form_name;
-			let id = $(event.target).attr('data');
-			let obj = this.masterDict[type][id];
+			let id;
+			let obj;
+			
+			if(type !== 'categories' && type != 'accounts'){
+				id = $(event.target).attr('data');
+				obj = this.masterDict[type][id];
+			}
+			
 			const editedType = type.slice(0, -1);
 			setTimeout(() => {
 				if(editedType == 'user' || editedType == 'client'){
@@ -177,6 +199,16 @@ export default {
 					$(`#edit_${editedType}_rate`).val(obj['rate']);
 					$(`#edit_${editedType}_colour`).val(obj['colour']);
 				}
+                else if(editedType == 'categorie'){
+                    let category = $(event.target).attr(`category`)
+                    $(`#edit_category_old`).attr(`oldcategory`, category);
+                    $(`#edit_category`).val(category);
+                }
+				else if(editedType == 'account'){
+                    let account = $(event.target).attr(`account`)
+                    $(`#edit_account_old`).attr(`oldaccount`, account);
+                    $(`#edit_account`).val(account);
+                }
 
 			}, 1) 
 		}
@@ -302,6 +334,38 @@ export default {
     height: 80%;
     margin-right: 10px;
     border-radius: 10px;
+}
+
+.column{
+    width: 100%;
+    display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 10px;
+	min-height: calc(100vh - var(--navbar_height) - 110px);
+}
+
+.settings_section{
+    width: 100%;
+    display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	min-height: calc(100vh - var(--navbar_height) - 110px);
+    background-color: #FFFFFF23;
+	border-radius: 5px;
+    gap: 10px;
+	box-shadow: 0px 0px 10px -5px white inset,
+				0px 4px 16px -16px black;
+}
+
+.settings_section > .list_item{
+    width: 90%;
+}
+
+#records_bottom{
+    overflow-y: unset !important;
 }
 
 </style>

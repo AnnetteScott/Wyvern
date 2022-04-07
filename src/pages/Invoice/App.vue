@@ -96,8 +96,17 @@
                     <label for="invoice_add_records">Add To Records:</label>
                     <input id="invoice_add_records" type="checkbox" @click="changeState" checked/>
                     <template v-if="addToRecord">
-                        <label for="records_account">Account:</label>
-                        <input id="records_account" type="text" />
+                        <label for="select_account">Account:</label>
+                        <template v-if="isAccounts">
+                            <select id="select_account">
+                                <option v-for="account in masterDict['records']['accounts']" :key="account" :data="account">
+                                    {{ account }}
+                                </option>
+                            </select>
+                        </template>
+                        <template v-else>
+                            <div class="advisory">Go To Settings To Create An Account</div>
+                        </template>
                     </template>
                 </div>
             </div>    
@@ -192,6 +201,7 @@ export default {
             isProjects: false,
             isUsers: false,
             isClients: false,
+            isAccounts: false,
 			currentProjectID: '',
 			projWeek: {},
 			includedColours: {},
@@ -212,6 +222,7 @@ export default {
         this.isProjects = Object.keys(this.masterDict['projects']).length != 0;
         this.isUsers = Object.keys(this.masterDict['users']).length != 0;
         this.isClients = Object.keys(this.masterDict['clients']).length != 0;
+        this.isAccounts = this.masterDict['records']['accounts'].length != 0;
 	},
 	methods: {
 		onchange(){
@@ -301,7 +312,7 @@ export default {
                     this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {}
                 }
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                this.masterDict['records'][yearID][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#records_account').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': this.invoiceTotal}
+                this.masterDict['records'][yearID][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#select_account option:selected').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': this.invoiceTotal}
                 localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
             }
 

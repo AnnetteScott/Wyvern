@@ -171,9 +171,9 @@ function manualSave(){
 
 if(!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "records": {}, "saveVersion": 4}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 5}));
 }else if(!fs.existsSync(app.getPath('userData') + "\\data\\userData.json")){
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "records": {}, "saveVersion": 4}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 5}));
 }
 
 ipcMain.on('master_dict_read', function(event, arg) {

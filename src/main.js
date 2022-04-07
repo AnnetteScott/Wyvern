@@ -19,6 +19,7 @@ ipcRenderer.on('master_dict_reading', function(event, data) {
     if(!window.localStorage.getItem('masterDict')){
         window.localStorage.setItem('masterDict', JSON.stringify(data))
     }
+    
 })
 
 ipcRenderer.on('loadData', function(event, data) {
@@ -26,4 +27,19 @@ ipcRenderer.on('loadData', function(event, data) {
     event;
 })
 
+saveChecker();
+
 app.mount('#app');
+
+
+
+
+function saveChecker(){
+    let masterDict = JSON.parse(window.localStorage.getItem('masterDict'));
+    if(masterDict['saveVersion'] == 4){
+        masterDict['records']['accounts'] = [];
+        masterDict['records']['categories'] = ['Contract Work'];
+        masterDict['saveVersion'] = 5;
+    }
+    window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
+}

@@ -34,9 +34,11 @@
 		<div id="selectors">
 			<label for="year_selection">Choose a Tax Year:</label>
 			<select id="year_selection"  @change="onchange">
-				<option v-for="(recordDict, recordYear) in masterDict['records']" :key="recordDict" :data="recordYear">
-					{{ recordYear }}
-				</option>
+                <template v-for="(recordDict, recordYear) in masterDict['records']" :key="recordDict" >
+                    <option v-if="recordYear !== 'categories' && recordYear !== 'accounts'" :data="recordYear">
+                        {{ recordYear }}
+                    </option>
+                </template>
 			</select>
 		</div>
 		
@@ -131,7 +133,6 @@ export default {
 			let thisYear = date.getFullYear();
 			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {};
 			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {};
-            this.masterDict['records']['categories'] = ['Contract Work']
 		}
         localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		setTimeout(() => {
@@ -154,10 +155,11 @@ export default {
                 $(`#edit_transID`).attr('transid', ID)
                 $(`#edit_transID`).attr('transyear', $(`#year_selection option:selected`).attr('data'))
                 $(`#edit_trans_date`).val(newDate)
-                $(`#edit_trans_account`).val(this.recordDict[ID]['account'])
-                $(`#edit_trans_category`).val(this.recordDict[ID]['category'])
                 $(`#edit_trans_item`).val(this.recordDict[ID]['item'])
                 $(`#edit_trans_amount`).val(this.recordDict[ID]['amount'])
+                $(`#edit_trans_account`).val(this.recordDict[ID]['account']);
+                $(`#edit_trans_type`).val(this.recordDict[ID]['type']);
+                $(`#edit_trans_category`).val(this.recordDict[ID]['category']);
             }, 1)
         }
 	}
@@ -246,7 +248,7 @@ select{
 .outer_table > div:not(.title){
 	display: flex;
     width: 95%;
-	margin-bottom: 5px;
+	margin-bottom: 6px;
 	border: 1px solid black;
 }
 

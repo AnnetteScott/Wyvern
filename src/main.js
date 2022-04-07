@@ -27,11 +27,11 @@ ipcRenderer.on('loadData', function(event, data) {
     event;
 })
 
-saveChecker();
+window.setTimeout(function(){
+    saveChecker();
+}, 1)
 
 app.mount('#app');
-
-
 
 
 function saveChecker(){

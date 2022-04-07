@@ -329,6 +329,45 @@
 		</div>
 	</div>
     
+    <!-- Create Asset -->
+	<div class="form_container" v-if="requestForm == `createAsset`">
+		<div class="form">
+			<label for="create_asset_date">Purchased Date:</label>
+			<input id="create_asset_date" type="date" />
+
+			<label for="create_asset_item">Item Description:</label>
+			<input id="create_asset_item" type="text" />
+
+			<label for="create_asset_vendor">Vendor:</label>
+			<input id="create_asset_vendor" type="text" />
+
+			<label for="create_asset_unit_cost">Unit Cost:</label>
+			<input id="create_asset_unit_cost" type="number" step="0.01" />
+
+			<label for="create_asset_units">Units:</label>
+			<input id="create_asset_units" type="number" step="0.01" />
+
+			<label for="create_asset_total">Total:</label>
+			<input id="create_asset_total" type="number" step="0.01" />
+
+			<ButtonItem :title="`Create Asset`" @click="createAsset"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+		</div>
+	</div>
+
+    <!-- Edit Asset -->
+	<div class="form_container" v-if="requestForm == `editAsset`">
+		<div class="form">
+            <div id="edit_account_old" oldaccount='invalid'></div>
+			<label for="edit_account">Account:</label>
+			<input id="edit_account" type="text" />
+
+			<ButtonItem :title="`Save Account`" @click="editAccount"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+            <ButtonItem :title="`Delete`" @click="deleteAccount"/>
+		</div>
+	</div>
+    
 </template>
 
 
@@ -353,6 +392,16 @@ export default {
 		}
 	},
 	methods: {
+        createAsset(){
+            let item = $('#create_asset_item').val();
+			let vendor = parseInt($('#create_asset_vendor').val());
+			let date = reDoDate($('#create_asset_date').val());
+			let unitCost = parseInt($(`#create_asset_unit_cost`).val());
+			let units = parseInt($(`#create_asset_units`).val());
+			let total = parseInt($(`#create_asset_total`).val());
+
+            
+        },
         createCategory(){
             let category = $(`#create_category`).val()
             if(category == ''){ //If no category was provided

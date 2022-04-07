@@ -58,7 +58,7 @@
 					<p>Category</p>
 					<p>Amount</p>
 				</div>
-				<div v-for="(transDict, transID) in recordDict" :key="transID" :data="transID" :class="transDict['type']" @click="editTransaction">
+				<div v-for="(transDict, transID) in recordDict['transactions']" :key="transID" :data="transID" :class="transDict['type']" @click="editTransaction">
 					<p>{{ transDict['month'] }}</p>
 					<p>{{ transDict['date'] }}</p>
 					<p>{{ transDict['account'] }}</p>
@@ -85,7 +85,7 @@
 			<div id="assets" class="outer_table">
 				<div class="title">
 					<p>Assets</p>
-					<ButtonItem :title="`+ New`" @click="''"/>
+					<ButtonItem :title="`+ New`" @click="current_request_form = 'createAsset'"/>
 				</div>
                 <div class="headings">
 					<p>Date Purchased</p>
@@ -128,11 +128,11 @@ export default {
 	},
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
-		if(Object.keys(this.masterDict['records']).length == 0){
+		if(Object.keys(this.masterDict['records']).length == 2){
 			let date = new Date();
 			let thisYear = date.getFullYear();
-			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {};
-			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {};
+			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': [], 'assets': []};
+			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': [], 'assets': []};
 		}
         localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		setTimeout(() => {

@@ -401,8 +401,12 @@ export default {
 			let total = parseInt($(`#create_asset_total`).val());
             let thisYear = $(`#year_selection option:selected`).attr('data')
             const assetID = generateID();
-
+            console.log(this.masterDict['records'][thisYear])
             this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
+
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
         },
         createCategory(){
             let category = $(`#create_category`).val()
@@ -494,7 +498,6 @@ export default {
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 			let date = ($('#create_trans_date').val()).split("-");
 			let month = parseInt(date[1]) - 1;
-			let year = parseInt(date[0]);
 			date = date.reverse().join("/");
 
 			let account = $(`#create_trans_account option:selected`).val();
@@ -504,16 +507,10 @@ export default {
 
 			let amount = type == 'Credit' ? Math.abs(parseFloat($('#create_trans_amount').val())) : 0 - parseFloat($('#create_trans_amount').val());
             
-            let yearID;
-            if(month < 3){
-                yearID = `${year - 1} - ${year}`;
-            }else{
-                yearID = `${year} - ${year + 1}`;
-            }
-			
+            let yearID = $(`#year_selection option:selected`).attr('data')
             const transID = generateID(this.masterDict);
-
-			this.masterDict['records'][yearID][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
+            
+			this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
@@ -543,8 +540,8 @@ export default {
 				yearID = `${year} - ${year + 1}`;
 			}
 
-			delete this.recordDict[ID]
-			this.masterDict['records'][yearID][ID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
+			delete this.recordDict['transactions'][ID]
+			this.masterDict['records'][yearID]['transactions'][ID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
@@ -552,7 +549,7 @@ export default {
 		deleteTransaction(){
 			const ID = $('#edit_transID').attr('transid');
 			const YEAR = $('#edit_transID').attr('transyear');
-			delete this.masterDict['records'][YEAR][ID];
+			delete this.masterDict['records'][YEAR]['transactions'][ID];
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
@@ -774,6 +771,7 @@ export default {
 			$('#edit_project_name').val('');
 			$('#edit_project_duration').val('');
 
+            let colourIds = Object.keys(this.masterDict['colours'])
 			let previousDur = this.masterDict['projects'][projectID]['duration'];
 			if(this.masterDict['projects'][projectID]['duration'] < duration){
 				if(this.masterDict['projects'][projectID]['weekInterval'] == 1){
@@ -781,14 +779,27 @@ export default {
 					for(let w = previousDur + 1; w <= duration; w++){
 						date = addToDate(date, 14);
 						this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
+                        colourIds.forEach(colourID => {
+                            if(colourID != 'colourWhite'){
+                                    this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
+                            }
+                        });
 					}
+
 					this.masterDict['projects'][projectID]['duration'] = duration;
+
 				}else if(this.masterDict['projects'][projectID]['weekInterval'] == 2){
+
 					let lastKey = `${previousDur - 1} - ${previousDur}`;
 					let date = this.masterDict['projects'][projectID]['weeks'][lastKey]['startDate'];
 					for(let w = previousDur + 1; w <= duration; w+= 2){
 						date = addToDate(date, 14);
 						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
+                        colourIds.forEach(colourID => {
+                            if(colourID != 'colourWhite'){
+                                    this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
+                            }
+                        });
 					}
 					if(duration % 2 == 1){
 						this.masterDict['projects'][projectID]['duration'] = duration + 1;

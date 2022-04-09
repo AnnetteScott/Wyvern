@@ -312,7 +312,7 @@ export default {
                     this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {}
                 }
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                this.masterDict['records'][yearID][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#select_account option:selected').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': this.invoiceTotal}
+                this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#select_account option:selected').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': this.invoiceTotal}
                 localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
             }
 

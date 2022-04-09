@@ -32,14 +32,17 @@
 	/>
 	<div id="inner">
 		<div id="selectors">
-			<label for="year_selection">Choose a Tax Year:</label>
-			<select id="year_selection"  @change="onchange">
-                <template v-for="(recordDict, recordYear) in masterDict['records']" :key="recordDict" >
-                    <option v-if="recordYear !== 'categories' && recordYear !== 'accounts'" :data="recordYear">
-                        {{ recordYear }}
-                    </option>
-                </template>
-			</select>
+            <div id="year_select">
+                <label for="year_selection">Choose a Tax Year:</label>
+                <select id="year_selection"  @change="onchange">
+                    <template v-for="(recordDict, recordYear) in masterDict['records']" :key="recordDict" >
+                        <option v-if="recordYear !== 'categories' && recordYear !== 'accounts'" :data="recordYear">
+                            {{ recordYear }}
+                        </option>
+                    </template>
+                </select>
+            </div>
+            <ButtonItem :title="`Delete This Year`" @click="deleteYear"/>
 		</div>
 		
 		<div class="tables">
@@ -96,6 +99,15 @@
 					<p>Total</p>
 					<p>Attached</p>
 				</div>
+                <div v-for="(assetDict, assetID) in recordDict['assets']" :key="assetID" :data="assetID" @click="editTransaction">
+					<p>{{ assetDict['date'] }}</p>
+					<p>{{ assetDict['item'] }}</p>
+					<p>{{ assetDict['vendor'] }}</p>
+					<p>{{ assetDict['unitCost'] }}</p>
+					<p>{{ assetDict['units'] }}</p>
+					<p>${{ assetDict['total'] }}</p>
+					<p>{{ assetDict['total'] }}</p>
+				</div>
 			</div>
 		</div>
 			
@@ -131,8 +143,8 @@ export default {
 		if(Object.keys(this.masterDict['records']).length == 2){
 			let date = new Date();
 			let thisYear = date.getFullYear();
-			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': [], 'assets': []};
-			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': [], 'assets': []};
+			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': {}, 'assets': {}};
+			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
 		}
         localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		setTimeout(() => {
@@ -151,16 +163,22 @@ export default {
             this.current_request_form = 'editTransaction';
             const ID = $(e.target).attr('data');
             setTimeout(() => {
-                let newDate = this.recordDict[ID]['date'].split("/").reverse().join("-");
+                let transDict = this.recordDict['transactions']
+                let newDate = transDict[ID]['date'].split("/").reverse().join("-");
                 $(`#edit_transID`).attr('transid', ID)
                 $(`#edit_transID`).attr('transyear', $(`#year_selection option:selected`).attr('data'))
                 $(`#edit_trans_date`).val(newDate)
-                $(`#edit_trans_item`).val(this.recordDict[ID]['item'])
-                $(`#edit_trans_amount`).val(this.recordDict[ID]['amount'])
-                $(`#edit_trans_account`).val(this.recordDict[ID]['account']);
-                $(`#edit_trans_type`).val(this.recordDict[ID]['type']);
-                $(`#edit_trans_category`).val(this.recordDict[ID]['category']);
+                $(`#edit_trans_item`).val(transDict[ID]['item'])
+                $(`#edit_trans_amount`).val(transDict[ID]['amount'])
+                $(`#edit_trans_account`).val(transDict[ID]['account']);
+                $(`#edit_trans_type`).val(transDict[ID]['type']);
+                $(`#edit_trans_category`).val(transDict[ID]['category']);
             }, 1)
+        },
+        deleteYear(){
+            let thisYear = $(`#year_selection option:selected`).attr('data');
+            delete this.masterDict['records'][thisYear];
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
         }
 	}
 }
@@ -188,7 +206,11 @@ export default {
 
 #selectors{
 	margin-top: 5px;
-	height: 20px;
+    height: 30px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 label{

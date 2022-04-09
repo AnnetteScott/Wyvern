@@ -399,8 +399,10 @@ export default {
 			let unitCost = parseInt($(`#create_asset_unit_cost`).val());
 			let units = parseInt($(`#create_asset_units`).val());
 			let total = parseInt($(`#create_asset_total`).val());
+            let thisYear = $(`#year_selection option:selected`).attr('data')
+            const assetID = generateID();
 
-            
+            this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
         },
         createCategory(){
             let category = $(`#create_category`).val()

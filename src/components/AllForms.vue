@@ -358,13 +358,29 @@
     <!-- Edit Asset -->
 	<div class="form_container" v-if="requestForm == `editAsset`">
 		<div class="form">
-            <div id="edit_account_old" oldaccount='invalid'></div>
-			<label for="edit_account">Account:</label>
-			<input id="edit_account" type="text" />
+            <div id="edit_assetID" assetid="invalid" assetyear="invalid"></div>
 
-			<ButtonItem :title="`Save Account`" @click="editAccount"/>
+			<label for="edit_asset_date">Purchased Date:</label>
+			<input id="edit_asset_date" type="date" />
+
+			<label for="edit_asset_item">Item Description:</label>
+			<input id="edit_asset_item" type="text" />
+
+			<label for="edit_asset_vendor">Vendor:</label>
+			<input id="edit_asset_vendor" type="text" />
+
+			<label for="edit_asset_unit_cost">Unit Cost:</label>
+			<input id="edit_asset_unit_cost" type="number" step="0.01" />
+
+			<label for="edit_asset_units">Units:</label>
+			<input id="edit_asset_units" type="number" step="0.01" />
+
+			<label for="edit_asset_total">Total:</label>
+			<input id="edit_asset_total" type="number" step="0.01" />
+
+			<ButtonItem :title="`Save Account`" @click="editAsset"/>
 			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-            <ButtonItem :title="`Delete`" @click="deleteAccount"/>
+            <ButtonItem :title="`Delete`" @click="deleteAsset"/>
 		</div>
 	</div>
     
@@ -395,7 +411,9 @@ export default {
         createAsset(){
             let item = $('#create_asset_item').val();
 			let vendor = parseInt($('#create_asset_vendor').val());
-			let date = reDoDate($('#create_asset_date').val());
+            let date = ($('#create_asset_date').val()).split("-");
+			date = date.reverse().join("/");
+
 			let unitCost = parseInt($(`#create_asset_unit_cost`).val());
 			let units = parseInt($(`#create_asset_units`).val());
 			let total = parseInt($(`#create_asset_total`).val());
@@ -405,6 +423,18 @@ export default {
             this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
 
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
+        editAsset(){
+
+        },
+        deleteAsset(){
+            const ID = $('#edit_assetID').attr('assetid');
+			const YEAR = $('#edit_assetID').attr('assetyear');
+			delete this.masterDict['records'][YEAR]['assets'][ID];
+
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
         },
@@ -498,6 +528,7 @@ export default {
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 			let date = ($('#create_trans_date').val()).split("-");
 			let month = parseInt(date[1]) - 1;
+            let thisYear = parseInt(date[0]);
 			date = date.reverse().join("/");
 
 			let account = $(`#create_trans_account option:selected`).val();
@@ -506,10 +537,18 @@ export default {
 			let item = $('#create_trans_item').val();
 
 			let amount = type == 'Credit' ? Math.abs(parseFloat($('#create_trans_amount').val())) : 0 - parseFloat($('#create_trans_amount').val());
-            
-            let yearID = $(`#year_selection option:selected`).attr('data')
+
+            let yearID;
+            if(month < 3){
+                yearID = `${thisYear - 1} - ${thisYear}`;
+            }else{
+                yearID = `${thisYear} - ${thisYear + 1}`;
+            }
+
             const transID = generateID(this.masterDict);
-            
+            if(!Object.keys(this.masterDict['records']).includes(yearID)){
+                this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
+            }
 			this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));

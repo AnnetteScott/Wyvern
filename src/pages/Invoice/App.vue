@@ -305,11 +305,11 @@ export default {
                 }else{
                     yearID = `${thisYear} - ${thisYear + 1}`;
                 }
-                if(Object.keys(this.masterDict['records']).length == 0){
+                if(Object.keys(this.masterDict['records']).length == 2){
                     let date = new Date();
                     let thisYear = date.getFullYear();
-                    this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {}
-                    this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {}
+                    this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': {}, 'assets': {}};
+                    this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
                 }
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#select_account option:selected').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': this.invoiceTotal}

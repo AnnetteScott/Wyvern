@@ -305,7 +305,7 @@ export default {
                 }else{
                     yearID = `${thisYear} - ${thisYear + 1}`;
                 }
-                if(Object.keys(this.masterDict['records']).length == 2){
+                if(Object.keys(this.masterDict['records']).length == 3){
                     let date = new Date();
                     let thisYear = date.getFullYear();
                     this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': {}, 'assets': {}};

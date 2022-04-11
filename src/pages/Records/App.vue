@@ -36,7 +36,7 @@
                 <label for="year_selection">Choose a Tax Year:</label>
                 <select id="year_selection"  @change="onchange">
                     <template v-for="(recordDict, recordYear) in masterDict['records']" :key="recordDict" >
-                        <option v-if="recordYear !== 'categories' && recordYear !== 'accounts'" :data="recordYear">
+                        <option v-if="recordYear !== 'categories' && recordYear !== 'accounts' && recordYear !== 'homeExpenses'" :data="recordYear">
                             {{ recordYear }}
                         </option>
                     </template>
@@ -80,9 +80,20 @@
 		<div class="tables">
 			<div id="home" class="outer_table">
 				<div class="title">
-					<p>Home Expenses</p>
-					<ButtonItem :title="`+ New`" @click="''"/>
+					<p>Repeating Home Expenses</p>
+					<ButtonItem :title="`+ New`" @click="current_request_form = 'createHome'"/>
 				</div>
+                <div class="headings">
+					<p>Start Date</p>
+					<p>Receiver</p>
+					<p>Category</p>
+					<p>Full Amount</p>
+					<p>Percent</p>
+					<p>Claimed Amount</p>
+					<p>How Often</p>
+					<p>Last Occurence</p>
+				</div>
+               <!--  ADD ME -->
 			</div>
 
 			<div id="assets" class="outer_table">
@@ -140,7 +151,7 @@ export default {
 	},
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
-		if(Object.keys(this.masterDict['records']).length == 2){
+		if(Object.keys(this.masterDict['records']).length == 3){
 			let date = new Date();
 			let thisYear = date.getFullYear();
 			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': {}, 'assets': {}};

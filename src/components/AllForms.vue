@@ -383,6 +383,42 @@
             <ButtonItem :title="`Delete`" @click="deleteAsset"/>
 		</div>
 	</div>
+
+    <!-- Create Home Expenses -->
+	<div class="form_container" v-if="requestForm == `createHome`">
+		<div class="form">
+			<label for="create_home_date">Starting Date:</label>
+			<input id="create_home_date" type="date" />
+
+			<label for="create_home_receiver">Receiver:</label>
+			<input id="create_home_receiver" type="text" />
+
+			<label for="create_home_category">Category:</label>
+			<select id="create_home_category">
+				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
+                    {{ category }}
+                </option>
+			</select>
+
+			<label for="create_home_fullAmount">Full Amount:</label>
+			<input id="create_home_fullAmount" type="number" step="0.01" />
+
+			<label for="create_home_percentage">Percentage:</label>
+			<input id="create_home_percentage" type="number" step="0.01" />
+
+            <label for="create_home_often">How Often:</label>
+			<select id="create_home_often">
+				<option data="Monthly">Monthly</option>
+				<option data="Fortnightly">Fortnightly</option>
+				<option data="Weekly">Weekly</option>
+				<option data="Daily">Daily</option>
+				<option data="28 Days">28 Days</option>
+			</select>
+
+			<ButtonItem :title="`Create Reapeating Home Expense`" @click="createHome"/>
+			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+		</div>
+	</div>
     
 </template>
 
@@ -408,6 +444,31 @@ export default {
 		}
 	},
 	methods: {
+        createHome(){
+            let startDate = ($('#create_home_date').val()).split("-");
+			startDate = startDate.reverse().join("/");
+            let receiver = $('#create_home_receiver').val();
+            let category = $('#create_home_category option:selected').val();
+            let fullAmount = parseFloat($('#create_home_fullAmount').val());
+            let percent = parseFloat($('create_home_percentage').val());
+            let often = $('#create_home_often option:selected').val();
+            let claimedAmount = fullAmount * (percent / 100);
+
+            const homeID = generateID(this.masterDict);
+
+            this.masterDict['records']['homeExpenses'][homeID] = {'startDate': startDate};
+            this.masterDict['records']['homeExpenses'][homeID]['receiver'] = receiver;
+            this.masterDict['records']['homeExpenses'][homeID]['category'] = category;
+            this.masterDict['records']['homeExpenses'][homeID]['fullAmount'] = fullAmount;
+            this.masterDict['records']['homeExpenses'][homeID]['percent'] = percent;
+            this.masterDict['records']['homeExpenses'][homeID]['claimedAmount'] = claimedAmount;
+            this.masterDict['records']['homeExpenses'][homeID]['often'] = often;
+            this.masterDict['records']['homeExpenses'][homeID]['lastOccurence'] = startDate;
+
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+        },
         createAsset(){
             let item = $('#create_asset_item').val();
 			let vendor = parseInt($('#create_asset_vendor').val());
@@ -418,7 +479,7 @@ export default {
 			let units = parseInt($(`#create_asset_units`).val());
 			let total = parseInt($(`#create_asset_total`).val());
             let thisYear = $(`#year_selection option:selected`).attr('data')
-            const assetID = generateID();
+            const assetID = generateID(this.masterDict);
             console.log(this.masterDict['records'][thisYear])
             this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
 

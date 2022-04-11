@@ -41,5 +41,9 @@ function saveChecker(){
         masterDict['records']['categories'] = ['Contract Work'];
         masterDict['saveVersion'] = 5;
     }
+    if(masterDict['saveVersion'] == 5){
+        masterDict['records']['homeExpenses'] = {};
+        masterDict['saveVersion'] = 6;
+    }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

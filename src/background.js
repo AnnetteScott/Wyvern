@@ -4,7 +4,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const path = require('path');
 import fs from "fs";
 const { dialog } = require('electron');
-const isDevelopment = false;
+const isDevelopment = true;
 let win;
 let masterDict;
 

@@ -99,7 +99,7 @@
 					<p>Total</p>
 					<p>Attached</p>
 				</div>
-                <div v-for="(assetDict, assetID) in recordDict['assets']" :key="assetID" :data="assetID" @click="editTransaction">
+                <div v-for="(assetDict, assetID) in recordDict['assets']" :key="assetID" class="asset" :data="assetID" @click="editAsset">
 					<p>{{ assetDict['date'] }}</p>
 					<p>{{ assetDict['item'] }}</p>
 					<p>{{ assetDict['vendor'] }}</p>
@@ -174,6 +174,23 @@ export default {
                 $(`#edit_trans_type`).val(transDict[ID]['type']);
                 $(`#edit_trans_category`).val(transDict[ID]['category']);
             }, 1)
+        },
+        editAsset(e){
+            this.current_request_form = 'editAsset';
+            const ID = $(e.target).attr('data');
+            setTimeout(() => {
+                let assetDict = this.recordDict['assets']
+                let newDate = assetDict[ID]['date'].split("/").reverse().join("-");
+                $(`#edit_assetID`).attr('assetid', ID)
+                $(`#edit_assetID`).attr('assetyear', $(`#year_selection option:selected`).attr('data'))
+                $(`#edit_asset_date`).val(newDate)
+                $(`#edit_asset_item`).val(assetDict[ID]['item'])
+                $(`#edit_asset_vendor`).val(assetDict[ID]['vendor'])
+                $(`#edit_asset_unit_cost`).val(assetDict[ID]['unitCost']);
+                $(`#edit_asset_units`).val(assetDict[ID]['units']);
+                $(`#edit_asset_total`).val(assetDict[ID]['total']);
+            }, 1)
+            
         },
         deleteYear(){
             let thisYear = $(`#year_selection option:selected`).attr('data');
@@ -319,6 +336,11 @@ select{
 
 #assets > div:not(.title) > p:nth-of-type(6){
 	max-width: 10ch;
+}
+
+.asset{
+    background-color: white;
+	cursor: pointer;
 }
 
 

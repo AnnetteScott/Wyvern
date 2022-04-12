@@ -93,7 +93,16 @@
 					<p>How Often</p>
 					<p>Last Occurence</p>
 				</div>
-               <!--  ADD ME -->
+               <div v-for="(homeDict, homeID) in masterDict['records']['homeExpenses']" class="asset" :key="homeID" :data="homeID" @click="''">
+					<p>{{ homeDict['startDate'] }}</p>
+					<p>{{ homeDict['receiver'] }}</p>
+					<p>{{ homeDict['category'] }}</p>
+					<p>{{ homeDict['fullAmount'] }}</p>
+					<p>{{ homeDict['percent'] }}</p>
+					<p>{{ homeDict['claimedAmount'] }}</p>
+					<p>{{ homeDict['often'] }}</p>
+					<p>{{ homeDict['lastOccurence'] }}</p>
+				</div>
 			</div>
 
 			<div id="assets" class="outer_table">
@@ -144,20 +153,19 @@ export default {
 	},
 	data() {
 		return {
-			masterDict: {},
+			masterDict: JSON.parse(localStorage.getItem('masterDict')),
 			recordDict: {},
             current_request_form: ''
 		}
 	},
 	mounted() {
-		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
 		if(Object.keys(this.masterDict['records']).length == 3){
 			let date = new Date();
 			let thisYear = date.getFullYear();
 			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': {}, 'assets': {}};
 			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		}
-        localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		setTimeout(() => {
 			this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
 		}, 1)
@@ -350,7 +358,9 @@ select{
 }
 
 .asset{
-    background-color: white;
+	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
+	border-radius: 5px;
+	background-color: #ffffff5d;
 	cursor: pointer;
 }
 

@@ -450,7 +450,7 @@ export default {
             let receiver = $('#create_home_receiver').val();
             let category = $('#create_home_category option:selected').val();
             let fullAmount = parseFloat($('#create_home_fullAmount').val());
-            let percent = parseFloat($('create_home_percentage').val());
+            let percent = parseFloat($('#create_home_percentage').val());
             let often = $('#create_home_often option:selected').val();
             let claimedAmount = fullAmount * (percent / 100);
 

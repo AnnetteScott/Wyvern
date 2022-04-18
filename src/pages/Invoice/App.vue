@@ -281,10 +281,13 @@ export default {
 				if(cellList.length != 0 || includeAllColours){
 					let qty = (Math.round((1/(60/projDict['timeInterval'])) * 1000) / 1000) * cellList.length;
 					let total = qty * parseFloat(this.masterDict['colours'][colourID]['rate'])
-					this.includedColours[colourID] = {'name': this.masterDict['colours'][colourID]['name'], 'rate': this.masterDict['colours'][colourID]['rate'], 'QTY': qty, 'Total': total};
+					this.includedColours[colourID] = {'name': this.masterDict['colours'][colourID]['name'], 'rate': this.masterDict['colours'][colourID]['rate'], 'QTY': qty, 'Total': total.toFixed(2)};
 					this.invoiceTotal += total
 				}
 			}
+
+            this.invoiceTotal = this.invoiceTotal.toFixed(2)
+
 			this.includedColours['blank1'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
 			this.includedColours['blank2'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};
 			this.includedColours['blank3'] = {'name': '', 'rate': '', 'QTY': '', 'Total': ''};

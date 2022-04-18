@@ -90,10 +90,17 @@ export default {
 	color: white;
 	font-family: inherit;
 	text-decoration: none;
-	opacity: 0.7;
 	transition: 0.1s ease all;
+	opacity: 0.8;
 }
+
+#navbar_menu > a > img{
+    height: 50px;
+    width: 50px;
+}
+
 #navbar_menu a:hover {
 	opacity: 1;
 }
+
 </style>

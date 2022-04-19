@@ -1,12 +1,13 @@
 <template>
 	<template v-if="weekID != ``">
 		<div v-for="(col, index) in columnLetter" :key="col" :colID="col" class="column">
-			<div :cellID="`${col}0`" class="dateCell">{{ dateList[index] }}</div>
+			<div :cellID="`${col}0`" class="dateCell">{{ dayList[index] }}</div>
+			<div :cellID="`${col}1`" class="dateCell">{{ dateList[index] }}</div>
 			<template v-if="col == `Z`">
-				<div  v-for="(time, index) in timeList" :key="time" :cellID="`Z${index + 1}`" class="dateCell">{{ time }}</div>
+				<div  v-for="(time, index) in timeList" :key="time" :cellID="`Z${index + 2}`" class="dateCell">{{ time }}</div>
 			</template>
 			<template v-else>
-				<div  v-for="(time, index) in timeList" :key="time" :cellID="`${col}${index + 1}`" class="cell" :weekid="`${weekID}`" @mousedown="cellDown" @mouseover="cellHovered" @mouseup="cellRelease"/>
+				<div  v-for="(time, index) in timeList" :key="time" :cellID="`${col}${index + 2}`" class="cell" :weekid="`${weekID}`" @mousedown="cellDown" @mouseover="cellHovered" @mouseup="cellRelease"/>
 			</template>
 
 			<!-- Weekly Cells -->
@@ -32,7 +33,7 @@
 </template>
 
 <script>
-import { addToDate } from '../../public/generalFunctions.js';
+import { addToDate, dateToAmerica } from '../../public/generalFunctions.js';
 import $ from 'jquery'
 
 export default {
@@ -47,6 +48,7 @@ export default {
 			weekDict: {},
 			columnLetter: [],
 			dateList: [],
+			dayList: [],
 			timeList: [],
 			infoList: [],
 			totalList: [],
@@ -76,6 +78,8 @@ export default {
 			this.dateList = [];
 			this.timeList = [];
 			this.weekInterval = this.projDict['weekInterval'];
+
+            
 			if(this.selectedCellsList != []){
 				this.selectedCellsList.forEach(cellIDR => {
 					let colouredCells = this.listOfValuesArr(this.weekDict['colouredCells']);
@@ -96,7 +100,8 @@ export default {
 			}
 			this.selectedCellsList = [];
 			this.cellClicked = false;
-			
+
+			//Colour coloured cells
 			setTimeout(() => {
 				$(`.cell`).css({"background-color": 'white', "border-color": "black"});
 				for(const colourID of Object.keys(this.weekDict['colouredCells'])){
@@ -123,7 +128,7 @@ export default {
 			}
 			this.timeList.push("Total Hours:");
 			this.timeList.push("Total Daily $:");
-			this.cellIndexOffSet = this.timeList.length;
+			this.cellIndexOffSet = this.timeList.length + 1;
 
 			this.infoList = ["Weekly Hours:"];
 			this.infoList.push("Weekly $:");
@@ -136,8 +141,8 @@ export default {
 					$(`.column > div:nth-child(${i})`).css("pointer-events", "none");
 					$(`.column > div:nth-child(${i})`).css("user-select", "none");
 				}
-				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-top", "2px solid black");
-				$(`.column > div:nth-child(${this.projDict['timeList'].length + 1})`).css("border-bottom", "2px solid black");
+				$(`.column > div:nth-child(${this.projDict['timeList'].length + 3})`).css("border-top", "2px solid black");
+				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-bottom", "2px solid black");
 			}, 1)
 			
 			if(this.projDict['weekInterval'] == 1){
@@ -145,6 +150,17 @@ export default {
 			}else{
 				this.columnLetter = ['Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
 			}
+
+            //Day list
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            this.dayList = ['Day'];
+            this.dateList.forEach(date => {
+                if(date != `Date | Time`){
+                    let newDate = new Date(dateToAmerica(date))
+                    this.dayList.push(days[newDate.getDay()])
+                }
+            });
+
 		},
 		cellDown(event){
 			this.cellClicked = true;
@@ -207,9 +223,11 @@ export default {
 			const cellCol = cellID[0];
 			const cellNum = cellID.substring(1);
 			$(`[cellid=${cellCol}0]`).css({"background-color": "#D1D3D9"});
+			$(`[cellid=${cellCol}1]`).css({"background-color": "#D1D3D9"});
 			$(`[cellid=Z${cellNum}]`).css({"background-color": "#D1D3D9"});
 			if(this.previousDate != cellCol){
 				$(`[cellid=${this.previousDate}0]`).css({"background-color": "#ffffff"});
+				$(`[cellid=${this.previousDate}1]`).css({"background-color": "#ffffff"});
 				this.previousDate = cellCol;
 			}
 			if(this.previousTime != cellNum){
@@ -302,6 +320,13 @@ export default {
 
 .column > div:nth-child(1){
 	top: 0px;
+	position: sticky;
+	pointer-events: none;
+	user-select: none;
+}
+
+.column > div:nth-child(2){
+	top: 26px;
 	position: sticky;
 	pointer-events: none;
 	user-select: none;

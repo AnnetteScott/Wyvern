@@ -58,6 +58,18 @@ export function reDoDate(startingDate){
 	let day = parseInt(startDate.split("/")[0]);
 	let month = parseInt(startDate.split("/")[1]);
 	let year = parseInt(startDate.split("/")[2]);
-	let newDate = day.toString() + "/" + month.toString() + "/" + year.toString()
-	return newDate;
+	if(day < 10 && month < 10){
+        return "0" + day.toString() + "/" + "0" + month.toString() + "/" + year.toString()
+    }else if(day < 10 && month >= 10){
+        return "0" + day.toString() + "/" + month.toString() + "/" + year.toString()
+    }else if(day >= 10 && month < 10){
+        return day.toString() + "/" + "0" +  month.toString() + "/" + year.toString()
+    }else{
+        return day.toString() + "/" + month.toString() + "/" + year.toString()
+    } 
+}
+
+export function dateToAmerica(date){
+    date = date.split('/');
+    return date[1] + '/' + date[0] + '/' + date [2];
 }

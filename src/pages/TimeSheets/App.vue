@@ -98,6 +98,7 @@ export default {
 	gap: 10px;
 	min-height: calc(100vh - var(--navbar_height) - 110px);
 	overflow-y: scroll;
+	overflow-x: hidden;
 	margin: 1px 10px 10px 10px;
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
     border-radius: 10px;

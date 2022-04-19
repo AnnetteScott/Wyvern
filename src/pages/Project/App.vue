@@ -121,7 +121,7 @@ export default {
 			this.$refs.TimeSheet.updateLib();
 		},
 		updateColourTotals(){
-			let cellTotal = this.projectDict['timeList'].length + 1;
+			let cellTotal = this.projectDict['timeList'].length + 2;
 			for(const [colourID, cellArr] of Object.entries(this.weekDict['colouredCells'])){
 				if(colourID != 'colourWhite'){
 					let colourTotals = {};
@@ -151,7 +151,7 @@ export default {
 			let timeTotal = 0;
 			let timeMoney = 0;
 			for(let i = 0; i < this.projectDict['weekInterval'] * 7; i++){
-				let cellTotal = this.projectDict['timeList'].length + 1;
+				let cellTotal = this.projectDict['timeList'].length + 2;
 				let colTotal = 0;
 				let colMoney = 0;
 				for(let index in this.projectDict['colours']){ //Total up each colour per coloumn

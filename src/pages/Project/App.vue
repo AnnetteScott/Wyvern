@@ -175,7 +175,7 @@ export default {
 					weekMoney = 0;
 				}
 				if(i == this.projectDict['weekInterval'] * 7 - 1){
-					$(`[cellid=A${cellTotal + 4}]`).text(timeTotal);
+					$(`[cellid=A${cellTotal + 4}]`).text(`${timeTotal}H`);
 					$(`[cellid=A${cellTotal + 5}]`).text(`$${timeMoney.toFixed(2)}`);
 				}
 				

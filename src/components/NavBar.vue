@@ -91,7 +91,8 @@ export default {
 	font-family: inherit;
 	text-decoration: none;
 	transition: 0.1s ease all;
-	opacity: 0.8;
+	opacity: 1;
+    width: 95%;
 }
 
 #navbar_menu > a > img{
@@ -100,7 +101,9 @@ export default {
 }
 
 #navbar_menu a:hover {
-	opacity: 1;
+    background-color: #ffffff40;
+	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
+    border-radius: 10px;
 }
 
 </style>

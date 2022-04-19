@@ -103,7 +103,7 @@ export default {
 
 			//Colour coloured cells
 			setTimeout(() => {
-				$(`.cell`).css({"background-color": 'white', "border-color": "black"});
+				$(`.cell`).css({"border-color": "black"});
 				for(const colourID of Object.keys(this.weekDict['colouredCells'])){
 					this.weekDict['colouredCells'][colourID].forEach(cellID => {
 						$(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
@@ -137,12 +137,20 @@ export default {
 			this.totalList.push("Timesheet Total $:");
 
 			setTimeout(() => {
-				for(let i = this.projDict['timeList'].length + 2; i <= this.timeList.length + this.infoList.length + this.totalList.length + 1; i++) {
+				for(let i = this.projDict['timeList'].length + 3; i <= this.timeList.length + this.infoList.length + this.totalList.length + 1; i++) {
 					$(`.column > div:nth-child(${i})`).css("pointer-events", "none");
 					$(`.column > div:nth-child(${i})`).css("user-select", "none");
 				}
 				$(`.column > div:nth-child(${this.projDict['timeList'].length + 3})`).css("border-top", "2px solid black");
 				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-bottom", "2px solid black");
+
+                for(let i = 0; i <= this.timeList.length + this.infoList.length + this.totalList.length + 1; i++) {
+                    $('.column').each(function(i, obj) {
+                        if(i == 7){
+                            $(obj).css("border-right", "1px solid black");
+                        }
+                    });
+				}
 			}, 1)
 			
 			if(this.projDict['weekInterval'] == 1){
@@ -349,12 +357,14 @@ export default {
 
 .infoCell{
 	background-color: white;
-	width: calc(700% + 5px);
+	width: calc(700% + 6px);
 	height: 25px;
 	min-height: 25px;
 	max-height: 25px;
 	border-bottom: 1px solid black;
 	border-right: 1px solid black;
+    font-weight: bold;
+
 }
 
 .totalCellOne{
@@ -375,6 +385,7 @@ export default {
 	max-height: 25px;
 	border-bottom: 1px solid black;
 	border-right: 1px solid black;
+    font-weight: bold;
 }
 
 #user_selection_tip{

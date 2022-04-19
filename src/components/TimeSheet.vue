@@ -1,13 +1,13 @@
 <template>
 	<template v-if="weekID != ``">
 		<div v-for="(col, index) in columnLetter" :key="col" :colID="col" class="column">
-			<div :cellID="`${col}0`" class="dateCell">{{ dayList[index] }}</div>
-			<div :cellID="`${col}1`" class="dateCell">{{ dateList[index] }}</div>
+			<div :cellID="`${col}-1`" class="dateCell">{{ dayList[index] }}</div>
+			<div :cellID="`${col}0`" class="dateCell">{{ dateList[index] }}</div>
 			<template v-if="col == `Z`">
-				<div  v-for="(time, index) in timeList" :key="time" :cellID="`Z${index + 2}`" class="dateCell">{{ time }}</div>
+				<div  v-for="(time, index) in timeList" :key="time" :cellID="`Z${index + 1}`" class="dateCell">{{ time }}</div>
 			</template>
 			<template v-else>
-				<div  v-for="(time, index) in timeList" :key="time" :cellID="`${col}${index + 2}`" class="cell" :weekid="`${weekID}`" @mousedown="cellDown" @mouseover="cellHovered" @mouseup="cellRelease"/>
+				<div  v-for="(time, index) in timeList" :key="time" :cellID="`${col}${index + 1}`" class="cell" :weekid="`${weekID}`" @mousedown="cellDown" @mouseover="cellHovered" @mouseup="cellRelease"/>
 			</template>
 
 			<!-- Weekly Cells -->
@@ -128,7 +128,7 @@ export default {
 			}
 			this.timeList.push("Total Hours:");
 			this.timeList.push("Total Daily $:");
-			this.cellIndexOffSet = this.timeList.length + 1;
+			this.cellIndexOffSet = this.timeList.length;
 
 			this.infoList = ["Weekly Hours:"];
 			this.infoList.push("Weekly $:");
@@ -230,12 +230,12 @@ export default {
 
 			const cellCol = cellID[0];
 			const cellNum = cellID.substring(1);
+			$(`[cellid=${cellCol}-1]`).css({"background-color": "#D1D3D9"});
 			$(`[cellid=${cellCol}0]`).css({"background-color": "#D1D3D9"});
-			$(`[cellid=${cellCol}1]`).css({"background-color": "#D1D3D9"});
 			$(`[cellid=Z${cellNum}]`).css({"background-color": "#D1D3D9"});
 			if(this.previousDate != cellCol){
+				$(`[cellid=${this.previousDate}-1]`).css({"background-color": "#ffffff"});
 				$(`[cellid=${this.previousDate}0]`).css({"background-color": "#ffffff"});
-				$(`[cellid=${this.previousDate}1]`).css({"background-color": "#ffffff"});
 				this.previousDate = cellCol;
 			}
 			if(this.previousTime != cellNum){

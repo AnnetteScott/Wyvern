@@ -37,12 +37,13 @@
 		<div id="weeks_container">
 			<template v-for="(weekDict, weekID) in projectDict['weeks']" :key="weekDict">
 				<template v-if="weekDict['invoiced'] == true">
-					<ButtonItem class="week_item" :data="weekID" @click="weekButton" :title="weekID" :image="require(`../../assets/icons/checkmark.svg`)"/>
+					<ButtonItem class="week_item" :data="weekID" @click="weekButton" :title="weekID" :image="require(`../../assets/icons/checkmark.svg`)" @contextmenu="rightClickWeek"/>
 				</template>
 				<template v-else>
-					<ButtonItem class="week_item" :data="weekID" @click="weekButton" :title="weekID"/>
+					<ButtonItem class="week_item" :data="weekID" @click="weekButton" :title="weekID" @contextmenu="rightClickWeek"/>
 				</template>
 			</template>
+            <ButtonItem class="week_item" @click="addWeek" :title="`+`"/>
 		</div>
 		<div id="time_sheet_container">
 			<TimeSheet :weekID="currentWeek" ref="TimeSheet"/> 
@@ -52,6 +53,9 @@
 			<div v-for="colourID in projectDict['colours']" :key="colourID" :colourid="colourID" class="colour_item" :style="`background-color:${masterDict['colours'][colourID]['colour']};`" @click="colourCell">{{ masterDict['colours'][colourID]['name'] }}</div>
 		</div>
 	</div>
+	<div id="week_button_menu">
+		<div class="context_option" @click="toggleCheckMark">Toggle Invoice Status</div>
+	</div>
 
 </template>
 
@@ -60,7 +64,8 @@ import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import TimeSheet from '../../components/TimeSheet.vue';
-import $ from 'jquery'
+import $ from 'jquery';
+import {addToDate } from '../../../public/generalFunctions.js';
 
 export default {
 	name: 'App',
@@ -78,16 +83,68 @@ export default {
 			masterDict: {},
 			currentWeek: ``,
 			selectedCellsList: [],
-			weekID: ''
+			weekID: '',
+			week: ''
 		}
 	},
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
 		this.projectID = localStorage.getItem('projectID');
 		this.projectDict = this.masterDict['projects'][this.projectID]
-		$(`#projectTitle`).text(`PROJECT: ${this.projectDict['name']}`)
+		$(`#projectTitle`).text(`PROJECT: ${this.projectDict['name']}`);
 	},
 	methods: {
+		rightClickWeek(e) {
+			let position = $(e.target).position();  
+			$(`#week_button_menu`).removeClass('visible');
+			setTimeout(() => {
+				$(`#week_button_menu`).addClass('visible');
+				this.week = $(e.target).attr('data')
+			}, 1)
+			$('#week_button_menu').css({
+				left: position.left + 128.25 +'px', //16.75 should be 145
+				top: position.top + 5 + 'px' //95 should be 100
+			})
+			const scope = document.getElementById("app");
+			scope.addEventListener("click", (e) => {
+				if(e.target.offsetParent != $('#week_button_menu')){
+					$(`#week_button_menu`).removeClass('visible');
+				}
+			}) 
+		},
+		toggleCheckMark(){
+			this.projectDict['weeks'][this.week]['invoiced'] ? this.projectDict['weeks'][this.week]['invoiced'] = false : this.projectDict['weeks'][this.week]['invoiced'] = true;
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+		},
+        addWeek(){
+            let colourIds = Object.keys(this.masterDict['colours'])
+            let duration = this.projectDict['duration'];
+            if(this.projectDict['weekInterval'] == 1){
+                let date = this.projectDict['weeks'][`${duration}`]['startDate'];
+                date = addToDate(date, 14);
+                this.projectDict['weeks'][`${duration + 1}`] = {'startDate': date, 'colouredCells': {}, 'invoiced': false};
+                colourIds.forEach(colourID => {
+                    if(colourID != 'colourWhite'){
+                        this.projectDict['weeks'][`${duration}`]['colouredCells'][colourID] = [];
+                    }
+                });
+                this.projectDict['duration'] += 1;
+
+            }else if(this.projectDict['weekInterval'] == 2){
+                let lastKey = `${duration - 1} - ${duration}`;
+                let date = this.projectDict['weeks'][lastKey]['startDate'];
+                date = addToDate(date, 14);
+                this.projectDict['weeks'][`${duration + 1} - ${duration + 2}`] = {'startDate': date, 'colouredCells': {}, 'invoiced': false};
+                colourIds.forEach(colourID => {
+                    if(colourID != 'colourWhite'){
+                        this.projectDict['weeks'][`${duration + 1} - ${duration + 2}`]['colouredCells'][colourID] = [];
+                    }
+                });
+                this.projectDict['duration'] += 2;
+            }
+            console.log(this.projectDict)
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+        },
 		weekButton(event){
 			this.weekID = $(event.target).attr('data');
 			$('.button_link').each((index, weekButton) => {
@@ -289,5 +346,32 @@ export default {
 
 .activeButton{
 	background: linear-gradient(45deg, #054ff0, #05f0f0) !important;
+}
+
+#week_button_menu{
+	position: fixed;
+	z-index: 500;
+	width: 200px;
+	background: #1b1a1a;
+	border-radius: 10px;
+	transform: scale(0);
+	transform-origin: top left;
+}
+
+#week_button_menu.visible{
+	transform: scale(1);
+	transition: transform 200ms ease-in-out;
+}
+
+#week_button_menu .context_option{
+	padding: 8px 10px;
+	font-size: 15px;
+	color: #eee;
+	cursor: pointer;
+	border-radius: inherit;
+}
+
+#week_button_menu .context_option:hover{
+	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 }
 </style>

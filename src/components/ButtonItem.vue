@@ -48,6 +48,10 @@ export default {
     pointer-events: none;
 }
 
+.button_link img {
+    pointer-events: none;
+}
+
 .button_link:hover{
     background: linear-gradient(90deg, #8202cc, #bb02cc);
 }

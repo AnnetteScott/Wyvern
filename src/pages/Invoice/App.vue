@@ -92,7 +92,10 @@
                     <input id="invoice_include_colours" type="checkbox" />
                 </div>
                 <div class="side">
-                    RECORD OPTIONS:
+                    OTHER OPTIONS:
+                    <label for="invoice_check_invoice">Check Invoice State:</label>
+                    <input id="invoice_check_invoice" type="checkbox" @click="checkInvoice" checked/>
+                    
                     <label for="invoice_add_records">Add To Records:</label>
                     <input id="invoice_add_records" type="checkbox" @click="changeState" checked/>
                     <template v-if="addToRecord">
@@ -256,6 +259,10 @@ export default {
 			let userDict = this.masterDict['users'][$("#user_selection option:selected").attr('data')];
 			let projDict = this.masterDict['projects'][this.currentProjectID];
 			this.projWeek = projDict['weeks'][$("#week_selection option:selected").attr('data')];
+
+            if($('#invoice_check_invoice')[0].checked){
+                this.projWeek['invoiced'] = true;
+            }
 
 			//User
 			$('#user_name_invoice').text(userDict['name']);

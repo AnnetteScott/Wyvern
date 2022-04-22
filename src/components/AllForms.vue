@@ -753,7 +753,7 @@ export default {
 			
 			if(weekInterval == 1){
 				for(let w = 1; w <= duration; w++){
-					this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
+					this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}, 'invoiced': false};
 					colourIds.forEach(colourID => {
 						if(colourID != 'colourWhite'){
 							this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
@@ -767,7 +767,7 @@ export default {
 					this.masterDict['projects'][projectID]['duration'] = duration;
 				}   
 				for(let w = 1; w <= duration; w+= 2){
-					this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
+					this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}, 'invoiced': false};
 					colourIds.forEach(colourID => {
 						if(colourID != 'colourWhite'){
 							this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
@@ -871,7 +871,7 @@ export default {
 					let date = this.masterDict['projects'][projectID]['weeks'][`${previousDur}`]['startDate'];
 					for(let w = previousDur + 1; w <= duration; w++){
 						date = addToDate(date, 14);
-						this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}};
+						this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}, 'invoiced': false};
                         colourIds.forEach(colourID => {
                             if(colourID != 'colourWhite'){
                                     this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
@@ -882,12 +882,11 @@ export default {
 					this.masterDict['projects'][projectID]['duration'] = duration;
 
 				}else if(this.masterDict['projects'][projectID]['weekInterval'] == 2){
-
 					let lastKey = `${previousDur - 1} - ${previousDur}`;
 					let date = this.masterDict['projects'][projectID]['weeks'][lastKey]['startDate'];
 					for(let w = previousDur + 1; w <= duration; w+= 2){
 						date = addToDate(date, 14);
-						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}};
+						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}, 'invoiced': false};
                         colourIds.forEach(colourID => {
                             if(colourID != 'colourWhite'){
                                     this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];

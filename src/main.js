@@ -45,5 +45,15 @@ function saveChecker(){
         masterDict['records']['homeExpenses'] = {};
         masterDict['saveVersion'] = 6;
     }
+    if(masterDict['saveVersion'] == 6){
+        masterDict['colours']['colourWhite']['name'] = 'Clear';
+        for(const[projectID, projectDict] of Object.entries(masterDict['projects'])){
+            for(const[weekID, weekDict] of Object.entries(projectDict['weeks'])){
+                masterDict['projects'][projectID]['weeks'][weekID]['invoiced'] = false;
+                weekDict['invoiced'] = false;
+            }
+        }
+        masterDict['saveVersion'] = 7;
+    }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

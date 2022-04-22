@@ -103,7 +103,7 @@ export default {
 
 			//Colour coloured cells
 			setTimeout(() => {
-				$(`.cell`).css({"border-color": "black"});
+				$(`.cell`).css({"background-color": 'white', "border-color": "black"});
 				for(const colourID of Object.keys(this.weekDict['colouredCells'])){
 					this.weekDict['colouredCells'][colourID].forEach(cellID => {
 						$(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
@@ -136,13 +136,22 @@ export default {
 			this.totalList = ["Timesheet Hours:"];
 			this.totalList.push("Timesheet Total $:");
 
+            //Remove pointer events for the info section
 			setTimeout(() => {
 				for(let i = this.projDict['timeList'].length + 3; i <= this.timeList.length + this.infoList.length + this.totalList.length + 1; i++) {
 					$(`.column > div:nth-child(${i})`).css("pointer-events", "none");
 					$(`.column > div:nth-child(${i})`).css("user-select", "none");
 				}
+                //Set border for bottom of timelist timesheet section
 				$(`.column > div:nth-child(${this.projDict['timeList'].length + 3})`).css("border-top", "2px solid black");
 				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-bottom", "2px solid black");
+
+				$(`.column > div:nth-child(${this.timeList.length})`).css("border-bottom", "2px solid black");
+				$(`.column > div:nth-child(${this.timeList.length + 1})`).css({"border-top": '1px solid black', "font-weight": "bold"});
+				$(`.column > div:nth-child(${this.timeList.length + 2})`).css({"font-weight": "bold"});
+
+				$(`[colid=Z] > div:nth-child(${this.timeList.length + 1})`).css({"font-weight": "normal"});
+				$(`[colid=Z] > div:nth-child(${this.timeList.length + 2})`).css({"font-weight": "normal"});
 
                 for(let i = 0; i <= this.timeList.length + this.infoList.length + this.totalList.length + 1; i++) {
                     $('.column').each(function(i, obj) {
@@ -307,9 +316,8 @@ export default {
     margin-top: 10px;
 }
 
-.column:last-child{
-	border-right: 1px solid black;
-	margin-right: 10px;
+#time_sheet_container > div:nth-last-child(2){
+    border-right: 1px solid black;
 }
 
 .column:nth-child(1){
@@ -348,7 +356,6 @@ export default {
 	border-bottom: 1px solid black;
 }
 .cell{
-	background-color: white;
 	width: 100%;
 	height: 25px;
 	max-height: 25px;
@@ -379,7 +386,7 @@ export default {
 
 .totalCellTwo{
 	background-color: white;
-	width: calc(1400% + 12px);
+	width: calc(1400% + 14px);
 	height: 25px;
 	min-height: 25px;
 	max-height: 25px;

@@ -4,7 +4,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const path = require('path');
 import fs from "fs";
 const { dialog } = require('electron');
-const isDevelopment = false;
+const isDevelopment = true;
 let win;
 let masterDict;
 
@@ -171,9 +171,9 @@ function manualSave(){
 
 if(!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 5}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'White', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 7}));
 }else if(!fs.existsSync(app.getPath('userData') + "\\data\\userData.json")){
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 5}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'White', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 7}));
 }
 
 ipcMain.on('master_dict_read', function(event, arg) {

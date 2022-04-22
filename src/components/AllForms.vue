@@ -747,10 +747,6 @@ export default {
 				}
 			}
 			let colourIds = Object.keys(this.masterDict['colours'])
-			if(!colourIds.includes('colourWhite')){
-				colourIds.push('colourWhite')
-				this.masterDict['colours']['colourWhite'] = {'name': 'White', 'colour': '#ffffff'}
-			}
 
 			this.masterDict['projects'][projectID] = {'name': name, 'colours': colourIds, 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval};
 			
@@ -809,9 +805,6 @@ export default {
 						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
 					}
 				}
-			}
-			if(!(Object.keys(this.masterDict['colours']).includes('colourWhite'))){
-				this.masterDict['colours']['colourWhite'] = {'colour': '#ffffff'}
 			}
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));

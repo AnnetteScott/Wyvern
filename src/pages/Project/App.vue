@@ -55,8 +55,10 @@
 	</div>
 	<div id="week_button_menu">
 		<div class="context_option" @click="toggleCheckMark">Toggle Invoice Status</div>
+		<div class="context_option" @click="show_delete=true">Delete Week</div>
 	</div>
-
+    <DeleteBox :showDelete="show_delete" @dontDelete="show_delete=false"
+	@doDelete="deleteWeek"/>
 </template>
 
 <script>
@@ -64,6 +66,7 @@ import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import TimeSheet from '../../components/TimeSheet.vue';
+import DeleteBox from '../../components/DeleteBox.vue';
 import $ from 'jquery';
 import {addToDate } from '../../../public/generalFunctions.js';
 
@@ -73,7 +76,8 @@ export default {
 		NavBar,
 		BackgroundBubble,
 		ButtonItem,
-		TimeSheet
+		TimeSheet,
+        DeleteBox
 	},
 	data() {
 		return {
@@ -84,7 +88,8 @@ export default {
 			currentWeek: ``,
 			selectedCellsList: [],
 			weekID: '',
-			week: ''
+			week: '',
+            show_delete: false
 		}
 	},
 	mounted() {
@@ -142,8 +147,21 @@ export default {
                 });
                 this.projectDict['duration'] += 2;
             }
-            console.log(this.projectDict)
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+        },
+        deleteWeek(){
+            this.show_delete = false;
+            delete this.projectDict['weeks'][this.week];
+            let weekKeys = Object.keys(this.projectDict['weeks'])
+            let lastKey = weekKeys[weekKeys.length - 1]
+            if(this.projectDict['weekInterval'] == 1){
+                this.projectDict['duration'] = parseInt(lastKey)
+            }
+            else if(this.projectDict['weekInterval'] == 2){
+                this.projectDict['duration'] = parseInt(lastKey.split(' - ')[1])
+            }
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+            console.log(this.masterDict)
         },
 		weekButton(event){
 			this.weekID = $(event.target).attr('data');

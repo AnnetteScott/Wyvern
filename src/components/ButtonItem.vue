@@ -1,6 +1,7 @@
 <template>
 	<div class="button_link" :title="$props.title">
 		<p>{{ title }}</p>
+		<img :src="image" draggable="false" alt="">
 	</div>
 </template>
 
@@ -9,7 +10,8 @@ export default {
 	name: 'ButtonLink',
 	props: {
 		title: String,
-		glow: Boolean
+		glow: Boolean,
+        image: String
 	}
 }
 </script>

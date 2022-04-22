@@ -35,7 +35,14 @@
 	</div>
 	<div id="inner">
 		<div id="weeks_container">
-			<ButtonItem v-for="(weekDict, weekID) in projectDict['weeks']" :key="weekDict" class="week_item" :data="weekID" @click="weekButton" :title="weekID" />
+			<template v-for="(weekDict, weekID) in projectDict['weeks']" :key="weekDict">
+				<template v-if="weekDict['invoiced'] == true">
+					<ButtonItem class="week_item" :data="weekID" @click="weekButton" :title="weekID" :image="require(`../../assets/icons/checkmark.svg`)"/>
+				</template>
+				<template v-else>
+					<ButtonItem class="week_item" :data="weekID" @click="weekButton" :title="weekID"/>
+				</template>
+			</template>
 		</div>
 		<div id="time_sheet_container">
 			<TimeSheet :weekID="currentWeek" ref="TimeSheet"/> 
@@ -83,10 +90,10 @@ export default {
 	methods: {
 		weekButton(event){
 			this.weekID = $(event.target).attr('data');
-            $('.button_link').each((index, weekButton) => {
-                $(weekButton).removeClass('activeButton');
-            });
-            $(event.target).addClass('activeButton')
+			$('.button_link').each((index, weekButton) => {
+				$(weekButton).removeClass('activeButton');
+			});
+			$(event.target).addClass('activeButton')
 			this.weekDict = this.projectDict['weeks'][this.weekID];
 			this.currentWeek = this.weekID;
 			setTimeout(() => {
@@ -281,6 +288,6 @@ export default {
 }
 
 .activeButton{
-    background: linear-gradient(45deg, #054ff0, #05f0f0) !important;
+	background: linear-gradient(45deg, #054ff0, #05f0f0) !important;
 }
 </style>

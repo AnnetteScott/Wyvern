@@ -316,8 +316,9 @@ export default {
                 }
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#select_account option:selected').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': this.invoiceTotal}
-                localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
             }
+            this.projWeek['invoiced'] = true;
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 
 		},
 		printInvoice(id="invoice_page"){

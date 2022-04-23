@@ -57,7 +57,9 @@ export default {
 			previousDate: 'Z',
 			previousTime: '0',
 			cellIndexOffSet: 0,
-			weekInterval: ''
+			weekInterval: '',
+            timeInterval: 0,
+            timeIndex: 0
 		}
 	},
 	mounted(){
@@ -68,18 +70,52 @@ export default {
 			})
 		}
 		document.addEventListener('mousemove', onMouseMove);
+        
+        window.setInterval(() => {
+            if(this.timeInterval !== 0){
+                this.currentTime();
+            }
+        }, 60 * 1000)
 	},
 	methods: {
+        currentTime() {
+            let today = new Date();
+            let mins = today.getMinutes();
+            let minutes;
+            if(mins > 48){
+                minutes = 0;
+            }else{
+                minutes = (Math.round(today.getMinutes() / this.timeInterval) * this.timeInterval) % 60;
+            }
+            if (minutes == 0){
+                minutes = '00'
+            }
+            let hours = parseInt(today.getHours());
+            if (minutes === 0 && today.getMinutes >= 31){
+                hours++;
+                hours = hours % 24;
+            }
+            let time;
+            if(hours < 10){
+                time = "0" + hours + ":" + minutes;
+            }else{
+                time = hours + ":" + minutes;
+            }
+            this.timeIndex = this.timeList.indexOf(time) + 1;
+            const cellID = `Z${this.timeIndex}`;
+            $(`[colid=Z] > div`).css({"background-color": 'white'});
+            $(`[cellid=${cellID}]`).css({"background-color": 'green'});
+        },
 		updateLib(){
-			this.masterDict = JSON.parse(localStorage.getItem('masterDict'))
+            this.masterDict = JSON.parse(localStorage.getItem('masterDict'))
 			this.projDict = this.masterDict['projects'][localStorage.getItem('projectID')]
 			this.weekDict = this.projDict['weeks'][this.$props.weekID];
 			this.columnLetter = [];
 			this.dateList = [];
 			this.timeList = [];
 			this.weekInterval = this.projDict['weekInterval'];
+            this.timeInterval = this.projDict['timeInterval'];
 
-            
 			if(this.selectedCellsList != []){
 				this.selectedCellsList.forEach(cellIDR => {
 					let colouredCells = this.listOfValuesArr(this.weekDict['colouredCells']);
@@ -160,6 +196,7 @@ export default {
                         }
                     });
 				}
+                this.currentTime();
 			}, 1)
 			
 			if(this.projDict['weekInterval'] == 1){
@@ -177,7 +214,6 @@ export default {
                     this.dayList.push(days[newDate.getDay()])
                 }
             });
-
 		},
 		cellDown(event){
 			this.cellClicked = true;
@@ -213,10 +249,9 @@ export default {
 			}
 
 			let firstTimeID = "Z" + cellID.substring(1);
-			let timeInterval = this.projDict['timeInterval'];
 			let firstTime = ($(`[cellid=${firstTimeID}]`).text()).split(":");
 			let timeSelected = this.selectedCellsList.length * Math.round((1/(60/this.projDict['timeInterval'])) * 1000) / 1000;
-			let timePeriod = `${firstTime[0]}:${firstTime[1]} - ${firstTime[0]}:${parseInt(firstTime[1]) + timeInterval - 1}`
+			let timePeriod = `${firstTime[0]}:${firstTime[1]} - ${firstTime[0]}:${parseInt(firstTime[1]) + this.timeInterval - 1}`
 			$('#user_selection_tip').text(`Time Selected: ${timeSelected.toFixed(2)}H\n${timePeriod} `);
 			$('#user_selection_tip').removeClass('hidden'); 
 
@@ -227,12 +262,11 @@ export default {
 				this.selectCell(event.target);
 				this.selectedCellsList.push(cellID);
 
-				let timeInterval = this.projDict['timeInterval'];
 				let timeSelected = this.selectedCellsList.length * Math.round((1/(60/this.projDict['timeInterval'])) * 1000) / 1000;
 				let minTimeCell = "Z" + this.minCell(this.selectedCellsList);
 				let maxTimeCell = "Z" + this.maxCell(this.selectedCellsList);
 				let maxTime = ($(`[cellid=${maxTimeCell}]`).text()).split(":");
-				let timePeriod = `${$(`[cellid=${minTimeCell}]`).text()} - ${maxTime[0]}:${parseInt(maxTime[1]) + timeInterval - 1}`;
+				let timePeriod = `${$(`[cellid=${minTimeCell}]`).text()} - ${maxTime[0]}:${parseInt(maxTime[1]) + this.timeInterval - 1}`;
 				
 				$('#user_selection_tip').text(`Time Selected: ${timeSelected.toFixed(2)}H\n${timePeriod} `);
 			}
@@ -248,8 +282,12 @@ export default {
 				this.previousDate = cellCol;
 			}
 			if(this.previousTime != cellNum){
-				$(`[cellid=Z${this.previousTime}]`).css({"background-color": "#ffffff"});
-				this.previousTime = cellNum;
+                if(this.previousTime === this.timeIndex){
+                    $(`[cellid=Z${this.previousTime}]`).css({"background-color": "green"});
+                }else{
+                    $(`[cellid=Z${this.previousTime}]`).css({"background-color": "#ffffff"});
+                }
+				this.previousTime = parseInt(cellNum);
 			}
 
 		},

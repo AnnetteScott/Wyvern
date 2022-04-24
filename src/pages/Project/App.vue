@@ -55,7 +55,7 @@
 			
 		<div id="colour_container">
 			<div v-for="colourID in projectDict['colours']" :key="colourID" :colourid="colourID" class="colour_item" :style="`background-color:${masterDict['colours'][colourID]['colour']};`" @click="colourCell">
-                <p>{{ masterDict['colours'][colourID]['name'] }}</p>
+                <p v-bind:style="`color: ${pickTextColorBasedOnBgColor(masterDict['colours'][colourID]['colour'])}`">{{ masterDict['colours'][colourID]['name'] }}</p>
             </div>
 		</div>
 	</div>
@@ -182,8 +182,7 @@ export default {
 				setTimeout(() => {
 					this.updateColourTotals();
 				}, 1)
-			}, 1)
-			
+			}, 1)			
 		},
 		colourCell(event){
 			this.selectedCellsList = localStorage.getItem('selectedCellsList').split(',');
@@ -268,7 +267,22 @@ export default {
 			$(`[cellid=A${cellTotal + 5}]`).text(`$${timeMoney.toFixed(2)}`);
             let neededHours = this.projectDict['targetHours'] - timeTotal <= 0 ? 0 : this.projectDict['targetHours'] - timeTotal;
             $(`#hours_left`).text(neededHours)
-		}
+		},
+        pickTextColorBasedOnBgColor(bgColor) {
+            let color = (bgColor.charAt(0) === '#') ? bgColor.substring(1, 7) : bgColor;
+            let r = parseInt(color.substring(0, 2), 16); // hexToR
+            let g = parseInt(color.substring(2, 4), 16); // hexToG
+            let b = parseInt(color.substring(4, 6), 16); // hexToB
+            let uicolors = [r / 255, g / 255, b / 255];
+            let c = uicolors.map((col) => {
+                if (col <= 0.03928) {
+                return col / 12.92;
+                }
+                return Math.pow((col + 0.055) / 1.055, 2.4);
+            });
+            let L = (0.2126 * c[0]) + (0.7152 * c[1]) + (0.0722 * c[2]);
+            return (L > 0.179) ? '#000000' : '#ffffff';
+        }
 	}
 }
 </script>
@@ -369,10 +383,6 @@ export default {
     pointer-events: none;
     font-family: 'Lora';
     font-size: 17px;
-    box-shadow: 0px 4px 16px -16px white;
-	border-radius: 7px;
-    padding: 0px 8px;
-	background-color: #ffffff83;
 }
 
 .colour_item:hover{

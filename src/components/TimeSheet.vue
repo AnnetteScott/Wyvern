@@ -75,36 +75,21 @@ export default {
             if(this.timeInterval !== 0){
                 this.currentTime();
             }
-        }, 60 * 1000)
+        }, 30 * 1000)
 	},
 	methods: {
         currentTime() {
-            let today = new Date();
-            let mins = today.getMinutes();
-            let minutes;
-            if(mins > 48){
-                minutes = 0;
-            }else{
-                minutes = (Math.round(today.getMinutes() / this.timeInterval) * this.timeInterval) % 60;
-            }
-            if (minutes == 0){
-                minutes = '00'
-            }
-            let hours = parseInt(today.getHours());
-            if (minutes === 0 && today.getMinutes >= 31){
-                hours++;
-                hours = hours % 24;
-            }
-            let time;
-            if(hours < 10){
-                time = "0" + hours + ":" + minutes;
-            }else{
-                time = hours + ":" + minutes;
-            }
+            let time = this.roundToNearestTime(new Date(), this.timeInterval);
             this.timeIndex = this.timeList.indexOf(time) + 1;
             const cellID = `Z${this.timeIndex}`;
             $(`[colid=Z] > div`).css({"background-color": 'white'});
-            $(`[cellid=${cellID}]`).css({"background-color": '#69f5cb'});
+            $(`[cellid=${cellID}]`).css({"background-color": '#90ffde'});
+        },
+        roundToNearestTime(oldDate, minutes){
+            const ms = 1000 * 60 * minutes;
+            let date = new Date(Math.round(oldDate.getTime() / ms) * ms);
+            let time = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes()
+            return time;
         },
 		updateLib(){
             this.masterDict = JSON.parse(localStorage.getItem('masterDict'))
@@ -283,7 +268,7 @@ export default {
 			}
 			if(this.previousTime != cellNum){
                 if(this.previousTime === this.timeIndex){
-                    $(`[cellid=Z${this.previousTime}]`).css({"background-color": "#69f5cb"});
+                    $(`[cellid=Z${this.previousTime}]`).css({"background-color": "#90ffde"});
                 }else{
                     $(`[cellid=Z${this.previousTime}]`).css({"background-color": "#ffffff"});
                 }

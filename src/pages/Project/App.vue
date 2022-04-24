@@ -1,7 +1,7 @@
 <template>
 	<BackgroundBubble />
 	<NavBar 
-		:title="`Project Time Sheets`"
+		:title="`Project: ${projectDict['name']}`"
 		:links="[
 			{
 				title: `Wyvern`,
@@ -31,7 +31,11 @@
 		]"
 	/>
 	<div id="top_title">
-		<div id="projectTitle"></div>    
+        <template v-if="weekID !== ''">
+            <p>Complete </p>
+            <p id="hours_left" style="font-weight: bold;"></p>
+            <p>more hours to reach {{ projectDict['targetHours'] }}H</p>
+        </template>
 	</div>
 	<div id="inner">
 		<div id="weeks_container">
@@ -50,7 +54,9 @@
 		</div>
 			
 		<div id="colour_container">
-			<div v-for="colourID in projectDict['colours']" :key="colourID" :colourid="colourID" class="colour_item" :style="`background-color:${masterDict['colours'][colourID]['colour']};`" @click="colourCell">{{ masterDict['colours'][colourID]['name'] }}</div>
+			<div v-for="colourID in projectDict['colours']" :key="colourID" :colourid="colourID" class="colour_item" :style="`background-color:${masterDict['colours'][colourID]['colour']};`" @click="colourCell">
+                <p>{{ masterDict['colours'][colourID]['name'] }}</p>
+            </div>
 		</div>
 	</div>
 	<div id="week_button_menu">
@@ -89,14 +95,14 @@ export default {
 			selectedCellsList: [],
 			weekID: '',
 			week: '',
-            show_delete: false
+            show_delete: false,
+            projectTitle: ''
 		}
 	},
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
 		this.projectID = localStorage.getItem('projectID');
-		this.projectDict = this.masterDict['projects'][this.projectID]
-		$(`#projectTitle`).text(`PROJECT: ${this.projectDict['name']}`);
+		this.projectDict = this.masterDict['projects'][this.projectID];
 	},
 	methods: {
 		rightClickWeek(e) {
@@ -256,12 +262,12 @@ export default {
 					weekTotal = 0;
 					weekMoney = 0;
 				}
-				if(i == this.projectDict['weekInterval'] * 7 - 1){
-					$(`[cellid=A${cellTotal + 4}]`).text(`${timeTotal}H`);
-					$(`[cellid=A${cellTotal + 5}]`).text(`$${timeMoney.toFixed(2)}`);
-				}
 				
 			}
+            $(`[cellid=A${cellTotal + 4}]`).text(`${timeTotal}H`);
+			$(`[cellid=A${cellTotal + 5}]`).text(`$${timeMoney.toFixed(2)}`);
+            let neededHours = this.projectDict['targetHours'] - timeTotal <= 0 ? 0 : this.projectDict['targetHours'] - timeTotal;
+            $(`#hours_left`).text(neededHours)
 		}
 	}
 }
@@ -290,11 +296,12 @@ export default {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-evenly;
+	justify-content: center;
 }
 
-#top_title > div{
-	font-size: 20px;
+#top_title > p{
+	font-size: 17px;
+    padding: 0px 4px;
 }
 
 #weeks_container{
@@ -356,6 +363,16 @@ export default {
 	border-radius: 10px;
 	cursor: pointer;
 	border: 1px solid black
+}
+
+.colour_item p{
+    pointer-events: none;
+    font-family: 'Lora';
+    font-size: 17px;
+    box-shadow: 0px 4px 16px -16px white;
+	border-radius: 7px;
+    padding: 0px 8px;
+	background-color: #ffffff83;
 }
 
 .colour_item:hover{

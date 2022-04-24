@@ -192,6 +192,7 @@ export default {
 					$(`#edit_${editedType}ID`).attr(`${editedType}id`, id);
 					$(`#edit_${editedType}_name`).val(obj['name']);
 					$(`#edit_${editedType}_duration`).val(obj['duration']);
+					$(`#edit_${editedType}_target`).val(obj['targetHours']);
 				}
 				else if(editedType == 'colour'){
 					$(`#edit_${editedType}ID`).attr(`${editedType}id`, id);

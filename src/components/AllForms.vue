@@ -127,6 +127,9 @@
 
 			<label for="create_project_duration">Project duration:</label>
 			<input id="create_project_duration" type="number" />
+            
+            <label for="create_project_target">Target Hours Per TimeSheet:</label>
+			<input id="create_project_target" type="number" />
 
 			<label for="create_project_date">Project start date:</label>
 			<input id="create_project_date" type="date" />
@@ -160,6 +163,9 @@
 
 			<label for="edit_project_duration">Project duration:</label>
 			<input id="edit_project_duration" type="number" />
+            
+            <label for="edit_project_target">Target Hours Per TimeSheet:</label>
+			<input id="edit_project_target" type="number" />
 
 			<ButtonItem :title="`Save Project`" @click="editProject"/>
 			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
@@ -707,6 +713,7 @@ export default {
 		createProject(){
 			let name = $('#create_project_name').val();
 			let duration = parseInt($('#create_project_duration').val());
+			let target = parseInt($('#create_project_target').val());
 			let date = reDoDate($('#create_project_date').val());
 			let timeInterval = parseInt($(`#time_interval option:selected`).val())
 			let weekInterval = parseInt($(`#week_interval option:selected`).val())
@@ -720,12 +727,21 @@ export default {
 				$("#create_project_name").removeClass('form_error');
 				return false;
 			}
-			if(date == 'NaN/NaN/NaN'){ //If no date was provided
-				$("#create_project_date").addClass('form_error');
+            if(isNaN(target)){ //If no target was provided
+				$("#create_project_target").addClass('form_error');
 				$("#create_project_duration").removeClass('form_error');
 				return false;
 			}
+			if(date == 'NaN/NaN/NaN'){ //If no date was provided
+				$("#create_project_date").addClass('form_error');
+				$("#create_project_target").removeClass('form_error');
+				return false;
+			}
 			$("#create_project_date").removeClass('form_error');
+            $("#create_project_name").removeClass('form_error');
+            $("#create_project_duration").removeClass('form_error');
+            $("#create_project_target").removeClass('form_error');
+
 			$('#create_project_name').val('');
 			$('#create_project_duration').val('');
 			$('#create_project_date').val('');
@@ -748,7 +764,7 @@ export default {
 			}
 			let colourIds = Object.keys(this.masterDict['colours'])
 
-			this.masterDict['projects'][projectID] = {'name': name, 'colours': colourIds, 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval};
+			this.masterDict['projects'][projectID] = {'name': name, 'colours': colourIds, 'weeks': {}, 'timeList': timeList, 'duration': duration, 'weekInterval': weekInterval, 'timeInterval': timeInterval, 'targetHours': target};
 			
 			
 			if(weekInterval == 1){
@@ -847,6 +863,7 @@ export default {
 		editProject(){
 			const projectID = $(`#edit_projectID`).attr('projectid');
 			const name = $('#edit_project_name').val();
+			const target = parseInt($('#edit_project_target').val());
 			let duration = parseInt($('#edit_project_duration').val());
 
 			if(name == '' || name == null){ //If no project name was entered.
@@ -858,11 +875,19 @@ export default {
 				$("#edit_project_name").removeClass('form_error');
 				return false;
 			}
+            if(isNaN(target)){ //If no duration was provided
+				$("#edit_project_target").addClass('form_error');
+				$("#edit_project_duration").removeClass('form_error');
+				return false;
+			}
 
 			$("#edit_project_name").removeClass('form_error');
 			$("#edit_project_duration").removeClass('form_error');
+			$("#edit_project_target").removeClass('form_error');
+
 			$('#edit_project_name').val('');
 			$('#edit_project_duration').val('');
+			$('#edit_project_target').val('');
 
             let colourIds = Object.keys(this.masterDict['colours'])
 			let previousDur = this.masterDict['projects'][projectID]['duration'];
@@ -902,6 +927,7 @@ export default {
 			}
 
 			this.masterDict['projects'][projectID]['name'] = name;
+			this.masterDict['projects'][projectID]['targetHours'] = target;
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');

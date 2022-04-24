@@ -55,5 +55,12 @@ function saveChecker(){
         }
         masterDict['saveVersion'] = 7;
     }
+    if(masterDict['saveVersion'] == 7){
+        for(const[projectID, projectDict] of Object.entries(masterDict['projects'])){
+            projectDict['targetHours'] = 0;
+            console.log(projectID);
+        }
+        masterDict['saveVersion'] = 8;
+    }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

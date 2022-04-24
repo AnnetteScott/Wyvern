@@ -104,7 +104,7 @@ export default {
             this.timeIndex = this.timeList.indexOf(time) + 1;
             const cellID = `Z${this.timeIndex}`;
             $(`[colid=Z] > div`).css({"background-color": 'white'});
-            $(`[cellid=${cellID}]`).css({"background-color": 'green'});
+            $(`[cellid=${cellID}]`).css({"background-color": '#69f5cb'});
         },
 		updateLib(){
             this.masterDict = JSON.parse(localStorage.getItem('masterDict'))
@@ -283,7 +283,7 @@ export default {
 			}
 			if(this.previousTime != cellNum){
                 if(this.previousTime === this.timeIndex){
-                    $(`[cellid=Z${this.previousTime}]`).css({"background-color": "green"});
+                    $(`[cellid=Z${this.previousTime}]`).css({"background-color": "#69f5cb"});
                 }else{
                     $(`[cellid=Z${this.previousTime}]`).css({"background-color": "#ffffff"});
                 }

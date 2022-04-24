@@ -93,7 +93,7 @@
                 </div>
                 <div class="side">
                     OTHER OPTIONS:
-                    <label for="invoice_check_invoice">Check Invoice State:</label>
+                    <label for="invoice_check_invoice">Mark Invoice as Done:</label>
                     <input id="invoice_check_invoice" type="checkbox" @click="checkInvoice" checked/>
                     
                     <label for="invoice_add_records">Add To Records:</label>

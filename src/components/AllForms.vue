@@ -486,7 +486,6 @@ export default {
 			let total = parseInt($(`#create_asset_total`).val());
             let thisYear = $(`#year_selection option:selected`).attr('data')
             const assetID = generateID(this.masterDict);
-            console.log(this.masterDict['records'][thisYear])
             this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
 
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
@@ -941,7 +940,6 @@ export default {
 			let colour = $("#edit_colour_colour").val();
 			
 			this.masterDict['colours'][colourID] = {'name': colourName, 'rate': colourRate, 'colour': colour};
-			console.log(this.masterDict)
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');

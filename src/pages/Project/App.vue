@@ -30,13 +30,19 @@
 			}
 		]"
 	/>
-	<div id="top_title">
-        <template v-if="weekID !== ''">
-            <p>Complete </p>
-            <p id="hours_left" style="font-weight: bold;"></p>
-            <p>more hours to reach {{ projectDict['targetHours'] }}H</p>
-        </template>
-	</div>
+    <div id="container">
+        <div id="top_title">
+            <template v-if="weekID !== ''">
+                <p>Complete </p>
+                <p id="hours_left" style="font-weight: bold;"></p>
+                <p>more hours to reach {{ projectDict['targetHours'] }}H</p>
+            </template>
+            <template v-else>
+                Click on a week to get started!
+            </template>
+        </div>
+    </div>
+	
 	<div id="inner">
 		<div id="weeks_container">
 			<template v-for="(weekDict, weekID) in projectDict['weeks']" :key="weekDict">
@@ -57,6 +63,9 @@
 			<div v-for="colourID in projectDict['colours']" :key="colourID" :colourid="colourID" class="colour_item" :style="`background-color:${masterDict['colours'][colourID]['colour']};`" @click="colourCell">
                 <p v-bind:style="`color: ${pickTextColorBasedOnBgColor(masterDict['colours'][colourID]['colour'])}`">{{ masterDict['colours'][colourID]['name'] }}</p>
             </div>
+            <div class="colour_item" style="background-color: #000" @click="current_request_form=`createColourForm`">
+                <p style="color: #fff">+</p>
+            </div>
 		</div>
 	</div>
 	<div id="week_button_menu">
@@ -65,6 +74,8 @@
 	</div>
     <DeleteBox :showDelete="show_delete" @dontDelete="show_delete=false"
 	@doDelete="deleteWeek"/>
+    <AllForms :requestForm="current_request_form" @cancelled="current_request_form=``"
+	@saveCookieForBeebViewing="saveCookie"/>
 </template>
 
 <script>
@@ -73,6 +84,7 @@ import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import TimeSheet from '../../components/TimeSheet.vue';
 import DeleteBox from '../../components/DeleteBox.vue';
+import AllForms from '../../components/AllForms.vue';
 import $ from 'jquery';
 import {addToDate } from '../../../public/generalFunctions.js';
 
@@ -83,7 +95,8 @@ export default {
 		BackgroundBubble,
 		ButtonItem,
 		TimeSheet,
-        DeleteBox
+        DeleteBox,
+        AllForms
 	},
 	data() {
 		return {
@@ -96,6 +109,7 @@ export default {
 			weekID: '',
 			week: '',
             show_delete: false,
+            current_request_form: ``,
             projectTitle: ''
 		}
 	},
@@ -105,6 +119,17 @@ export default {
 		this.projectDict = this.masterDict['projects'][this.projectID];
 	},
 	methods: {
+        saveCookie(){
+			this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
+            this.projectDict = this.masterDict['projects'][this.projectID];
+            this.weekDict = this.projectDict['weeks'][this.weekID];
+            setTimeout(() => {
+				this.$refs.TimeSheet.updateLib();
+				setTimeout(() => {
+					this.updateColourTotals();
+				}, 1)
+			}, 1)	
+		},
 		rightClickWeek(e) {
 			let position = $(e.target).position();  
 			$(`#week_button_menu`).removeClass('visible');
@@ -167,7 +192,6 @@ export default {
                 this.projectDict['duration'] = parseInt(lastKey.split(' - ')[1])
             }
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
-            console.log(this.masterDict)
         },
 		weekButton(event){
 			this.weekID = $(event.target).attr('data');
@@ -305,12 +329,23 @@ export default {
 	flex-direction: row;
 }
 
+#container{
+    display: flex;
+    align-items: center;
+	justify-content: center;
+}
+
 #top_title{
+    margin-top: 5px;
 	height: 30px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+    width: 400px;
+    box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
+    border-radius: 10px;
+    background-color: #ffffff56;
 }
 
 #top_title > p{

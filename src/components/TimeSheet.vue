@@ -126,8 +126,8 @@ export default {
 			setTimeout(() => {
 				$(`.cell`).css({"background-color": 'white', "border-color": "black"});
 				for(const colourID of Object.keys(this.weekDict['colouredCells'])){
-					this.weekDict['colouredCells'][colourID].forEach(cellID => {
-						$(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
+                    this.weekDict['colouredCells'][colourID].forEach(cellID => {
+                        $(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
 					});
 				}
 			}, 1)
@@ -168,6 +168,7 @@ export default {
 				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-bottom", "2px solid black");
 
 				$(`.column > div:nth-child(${this.timeList.length})`).css("border-bottom", "2px solid black");
+				$(`.column > div:nth-child(${this.timeList.length - 1})`).css("border-bottom", "1px dashed black");
 				$(`.column > div:nth-child(${this.timeList.length + 1})`).css({"border-top": '1px solid black', "font-weight": "bold"});
 				$(`.column > div:nth-child(${this.timeList.length + 2})`).css({"font-weight": "bold"});
 

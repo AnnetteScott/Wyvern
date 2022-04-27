@@ -477,7 +477,7 @@ export default {
         },
         createAsset(){
             let item = $('#create_asset_item').val();
-			let vendor = parseInt($('#create_asset_vendor').val());
+			let vendor = $('#create_asset_vendor').val();
             let date = ($('#create_asset_date').val()).split("-");
 			date = date.reverse().join("/");
 

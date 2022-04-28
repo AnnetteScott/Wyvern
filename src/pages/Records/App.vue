@@ -345,6 +345,7 @@ select{
 }
 
 .Debit{
+    color: white;
 	background-color: #ff1100;
 	cursor: pointer;
 }

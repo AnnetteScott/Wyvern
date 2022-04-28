@@ -58,7 +58,7 @@ function saveChecker(){
     if(masterDict['saveVersion'] == 7){
         for(const[projectID, projectDict] of Object.entries(masterDict['projects'])){
             projectDict['targetHours'] = 0;
-            console.log(projectID);
+            projectID;
         }
         masterDict['saveVersion'] = 8;
     }

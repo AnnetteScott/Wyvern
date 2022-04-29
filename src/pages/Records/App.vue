@@ -47,7 +47,7 @@
 		
 		<div class="tables">
 			<SortableTable 
-				id="transactions2"
+				id="transactions"
 				title="Transactions"
 				:headings="[
 					'Month',
@@ -72,11 +72,7 @@
 				:clickable="true"
 			/>
 
-			<div id="pivot" class="outer_table">
-				<div class="title">
-					<p>Pivot Table</p>
-				</div>
-			</div>
+			
 		</div>
 		<div class="tables">
 			<div id="home" class="outer_table">
@@ -105,7 +101,25 @@
 					<p>{{ homeDict['lastOccurence'] }}</p>
 				</div>
 			</div>
-
+		</div>
+        <div class="tables">
+            <div id="pivot" class="outer_table">
+				<div class="title">
+					<p>Pivot Table</p>
+				</div>
+                <div class="headings">
+                    <p v-for="column in colNames" :key="column">
+                        {{ column }}
+                    </p>
+                </div>
+                <div class="headings">
+                    <p v-for="category in pivotDict['categories']" :key="category">
+                        {{ category }}
+                    </p>
+                </div>
+			</div>
+        </div>
+		<div class="tables">
 			<div id="assets" class="outer_table">
 				<div class="title">
 					<p>Assets</p>
@@ -130,8 +144,7 @@
 					<p>{{ assetDict['total'] }}</p>
 				</div>
 			</div>
-		</div>
-			
+		</div>			
 		<AllForms :requestForm="current_request_form" @cancelled="current_request_form=``"
 	@saveCookieForBeebViewing="saveCookie"/>
 	</div>
@@ -159,11 +172,13 @@ export default {
 	data() {
 		return {
 			masterDict: JSON.parse(localStorage.getItem('masterDict')),
+			pivotDict: {},
 			recordDict: {},
 			all_transactions: [],
             current_request_form: '',
             transID: '',
-            receiptID: ''
+            receiptID: '',
+            colNames: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Grand Total"]
 		}
 	},
 	mounted() {
@@ -184,12 +199,13 @@ export default {
         if(!Object.keys(this.masterDict['records']).includes(yearID)){
             this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
         }
-		setTimeout(() => {
-            $(`#year_selection`).val(yearID);
-			this.recordDict = this.masterDict['records'][yearID];
-			this.listAllTransactions();
-            console.log(this.masterDict);
-		}, 1)
+        $(`#year_selection`).val(yearID);
+        this.recordDict = this.masterDict['records'][yearID];
+        this.listAllTransactions();
+        setTimeout(() => {
+            this.calculatePivotTable()
+        }, 1)
+        
 	},
     created(){
 		ipcRenderer.on('uploaded_file_done', function() {
@@ -199,6 +215,25 @@ export default {
 		}.bind(this))
 	},
 	methods: {
+        calculatePivotTable(){
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            this.pivotDict = {'categories': {}, 'months': {}};
+            this.masterDict['records']['categories'].forEach((category, index) => {
+                this.pivotDict['categories'][category] = {'grandTotal': 0}
+                monthNames.forEach((month, index1) => {
+                    this.pivotDict['categories'][category][month] = 0;
+                    this.pivotDict['months'][month] = 0;
+                    index1;
+                });
+                index;
+            });
+            for(const [transID, transDict] of Object.entries(this.recordDict['transactions'])){
+                this.pivotDict['categories'][transDict['category']][transDict['month']] += transDict['amount'];
+                this.pivotDict['months'][transDict['month']] += transDict['amount'];
+                transID;
+            }
+            console.log(this.pivotDict)
+        },
         uploadReceipt(event){
             this.transID = $(event.target).attr('data');
             const receiptID = generateID(this.masterDict);
@@ -261,6 +296,32 @@ export default {
             let thisYear = $(`#year_selection option:selected`).attr('data');
             delete this.masterDict['records'][thisYear];
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+        },
+        calculateTax(amount){
+            let firstTax = [0.105, 14000];
+            let secondTax = [0.175, 48000];
+            let thirdTax = [0.3, 70000];
+            let fourthTax = [0.33, 180000];
+            let fifthTax = [0.39]; 
+
+            let firstAmount = amount > firstTax[1] ? firstTax[1] * firstTax[0]: amount * firstTax[0];
+            
+            amount = Math.max(0, amount - firstTax[1]);
+
+            let secondAmount = amount > secondTax[1] ? secondTax[1] * secondTax[0]: amount * secondTax[0];
+            amount = Math.max(0, amount - secondTax[1]);
+
+            let thirdAmount = amount > thirdTax[1] ? thirdTax[1] * thirdTax[0]: amount * thirdTax[0];
+            amount = Math.max(0, amount - thirdTax[1]);
+
+            let fourthAmount = amount > fourthTax[1] ? fourthTax[1] * fourthTax[0]: amount * fourthTax[0];
+            amount = Math.max(0, amount - fourthTax[1]);
+            
+            let fifthAmount = amount * fifthTax[0];
+
+            let totalTax = firstAmount + secondAmount + thirdAmount + fourthAmount + fifthAmount;
+
+            return totalTax;
         }
 	}
 }
@@ -364,6 +425,10 @@ select{
 	border-left: 1px solid black;
 }
 
+.headings > p:first-child{
+	border-left: 0px solid black;
+}
+
 #transactions_list{
     width: 100%;
     display: flex;
@@ -433,5 +498,10 @@ select{
 	cursor: pointer;
 }
 
+
+#pivot{
+    width: 95%;
+    height: 90%;
+}
 
 </style>

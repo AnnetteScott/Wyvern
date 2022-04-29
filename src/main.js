@@ -65,8 +65,8 @@ function saveChecker(){
     if(masterDict['saveVersion'] == 8){
         for(const[yearID, recordsDict] of Object.entries(masterDict['records'])){
             if(yearID != 'accounts' && yearID != 'categories' && yearID != 'homeExpenses'){
-                for(const[transID, trandDict] of Object.entries(recordsDict['transactions'])){
-                    trandDict['receiptID'] = '';
+                for(const[transID, transDict] of Object.entries(recordsDict['transactions'])){
+                    transDict['receiptID'] = '';
                     transID;
                 }
             }

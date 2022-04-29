@@ -241,7 +241,7 @@ export default {
             let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             let yyyy = today.getFullYear();
             today = dd + '/' + mm + '/' + yyyy;
-            let invoiceDate = $('#invoice_date').val() ? $('#invoice_date').val() : today
+            let invoiceDate = $('#invoice_date').val() ? $('#invoice_date').val().split('-')[2] + '/' + $('#invoice_date').val().split('-')[1] + '/' + $('#invoice_date').val().split('-')[0] : today;
 			$('#invoice_date_invoice').text(invoiceDate);
 			
 			//Invoice Period
@@ -322,7 +322,7 @@ export default {
                     this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
                 }
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#select_account option:selected').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': this.invoiceTotal}
+                this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#select_account option:selected').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': parseFloat(this.invoiceTotal), 'receiptID': ''}
             }
             this.projWeek['invoiced'] = true;
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));

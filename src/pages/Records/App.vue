@@ -46,42 +46,32 @@
 		</div>
 		
 		<div class="tables">
-			<div id="transactions" class="outer_table">
-				<div class="title">
-					<p>Transactions</p>
-					<ButtonItem :title="`+ New`" @click="current_request_form = 'createTransaction'"/>
-				</div>
-                
-				<div class="headings">
-					<p class="month">Month</p>
-					<p class="ten">Date</p>
-					<p class="ten">Account</p>
-					<p class="ten">Type</p>
-					<p class="ten">Item</p>
-					<p class="ten">Category</p>
-					<p class="eight">Amount</p>
-					<p class="eight" style="border-left: 1px solid black">Receipt</p>
-				</div>
-                <div id="transactions_list">
-                    <div v-for="(transDict, transID) in recordDict['transactions']" :key="transID" :data="transID" :class="transDict['type']" @click="editTransaction">
-                        <p class="month">{{ transDict['month'] }}</p>
-                        <p class="ten">{{ transDict['date'] }}</p>
-                        <p class="ten">{{ transDict['account'] }}</p>
-                        <p class="ten">{{ transDict['type'] }}</p>
-                        <p class="ten">{{ transDict['item'] }}</p>
-                        <p class="ten">{{ transDict['category'] }}</p>
-                        <p class="eight">${{ transDict['amount'] }}</p>
-                        <div class="eight" style="border-left: 1px solid black; pointer-events: none;">
-                            <template v-if="transDict['receiptID'] != ''">
-                                <img :src="require(`../../assets/icons/file_download_black_24dp.svg`)" draggable="false" alt="" @click.stop="downloadReceipt" :data="transDict['receiptID']" style="pointer-events:all;">
-                            </template>
-                            <template v-else>
-                                <img :src="require(`../../assets/icons/file_upload_black_24dp.svg`)" draggable="false" alt="" @click.stop="uploadReceipt" :data="transID" style="pointer-events:all;">
-                            </template>
-                        </div>
-                    </div>
-                </div>
-			</div>
+			<SortableTable 
+				id="transactions2"
+				title="Transactions"
+				:headings="[
+					'Month',
+					'Date',
+					'Account',
+					'Type',
+					'Item',
+					'Category',
+					'Amount'
+				]"
+				emphasis=""
+				:sort="[
+					'Month',
+					'Date',
+					'Account',
+					'Type',
+					'Category',
+					'Amount'
+				]"
+				sort_default="Date"
+				:data="all_transactions"
+				:clickable="true"
+			/>
+
 			<div id="pivot" class="outer_table">
 				<div class="title">
 					<p>Pivot Table</p>
@@ -154,20 +144,23 @@ import AllForms from '../../components/AllForms.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import { generateID } from '../../../public/generalFunctions.js';
 import $ from 'jquery';
+import SortableTable from '@/components/SortableTable.vue';
 const { ipcRenderer } = window.require("electron");
 
 export default {
 	name: 'App',
 	components: {
-		NavBar,
-		BackgroundBubble,
-        AllForms,
-        ButtonItem
-	},
+    NavBar,
+    BackgroundBubble,
+    AllForms,
+    ButtonItem,
+    SortableTable
+},
 	data() {
 		return {
 			masterDict: JSON.parse(localStorage.getItem('masterDict')),
 			recordDict: {},
+			all_transactions: [],
             current_request_form: '',
             transID: '',
             receiptID: ''
@@ -194,12 +187,14 @@ export default {
 		setTimeout(() => {
             $(`#year_selection`).val(yearID);
 			this.recordDict = this.masterDict['records'][yearID];
-            console.log(this.masterDict)
+			this.listAllTransactions();
+            console.log(this.masterDict);
 		}, 1)
 	},
     created(){
 		ipcRenderer.on('uploaded_file_done', function() {
             this.recordDict['transactions'][this.transID]['receiptID'] = this.receiptID;
+			this.listAllTransactions();
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		}.bind(this))
 	},
@@ -217,10 +212,17 @@ export default {
         },
 		onchange(){
 			this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
+			this.listAllTransactions();
 		},
         saveCookie(){
 			this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
             this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
+			this.listAllTransactions();
+		},
+		listAllTransactions() {
+			Object.keys(this.recordDict['transactions']).forEach(function(key) {
+				this.all_transactions.push(this.recordDict['transactions'][key]);
+			}.bind(this));
 		},
         editTransaction(e){
             this.current_request_form = 'editTransaction';
@@ -353,7 +355,6 @@ select{
 	margin-bottom: 6px;
 	border: 1px solid black;
     background-color: white;
-    pointer-events: none;
 }
 
 .headings > p{
@@ -361,7 +362,6 @@ select{
 	width: 100%;
 	margin: 0px;
 	border-left: 1px solid black;
-	pointer-events: none;;
 }
 
 #transactions_list{

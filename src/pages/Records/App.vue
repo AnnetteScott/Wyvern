@@ -53,23 +53,34 @@
 				</div>
                 
 				<div class="headings">
-					<p>Month</p>
-					<p>Date</p>
-					<p>Account</p>
-					<p>Type</p>
-					<p>Item</p>
-					<p>Category</p>
-					<p>Amount</p>
+					<p class="month">Month</p>
+					<p class="ten">Date</p>
+					<p class="ten">Account</p>
+					<p class="ten">Type</p>
+					<p class="ten">Item</p>
+					<p class="ten">Category</p>
+					<p class="eight">Amount</p>
+					<p class="eight" style="border-left: 1px solid black">Receipt</p>
 				</div>
-				<div v-for="(transDict, transID) in recordDict['transactions']" :key="transID" :data="transID" :class="transDict['type']" @click="editTransaction">
-					<p>{{ transDict['month'] }}</p>
-					<p>{{ transDict['date'] }}</p>
-					<p>{{ transDict['account'] }}</p>
-					<p>{{ transDict['type'] }}</p>
-					<p>{{ transDict['item'] }}</p>
-					<p>{{ transDict['category'] }}</p>
-					<p>${{ transDict['amount'] }}</p>
-				</div>
+                <div id="transactions_list">
+                    <div v-for="(transDict, transID) in recordDict['transactions']" :key="transID" :data="transID" :class="transDict['type']" @click="editTransaction">
+                        <p class="month">{{ transDict['month'] }}</p>
+                        <p class="ten">{{ transDict['date'] }}</p>
+                        <p class="ten">{{ transDict['account'] }}</p>
+                        <p class="ten">{{ transDict['type'] }}</p>
+                        <p class="ten">{{ transDict['item'] }}</p>
+                        <p class="ten">{{ transDict['category'] }}</p>
+                        <p class="eight">${{ transDict['amount'] }}</p>
+                        <div class="eight" style="border-left: 1px solid black; pointer-events: none;">
+                            <template v-if="transDict['receiptID'] != ''">
+                                <img :src="require(`../../assets/icons/file_download_black_24dp.svg`)" draggable="false" alt="" @click.stop="downloadReceipt" :data="transDict['receiptID']" style="pointer-events:all;">
+                            </template>
+                            <template v-else>
+                                <img :src="require(`../../assets/icons/file_upload_black_24dp.svg`)" draggable="false" alt="" @click.stop="uploadReceipt" :data="transID" style="pointer-events:all;">
+                            </template>
+                        </div>
+                    </div>
+                </div>
 			</div>
 			<div id="pivot" class="outer_table">
 				<div class="title">
@@ -141,7 +152,9 @@ import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import AllForms from '../../components/AllForms.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
-import $ from 'jquery'
+import { generateID } from '../../../public/generalFunctions.js';
+import $ from 'jquery';
+const { ipcRenderer } = window.require("electron");
 
 export default {
 	name: 'App',
@@ -155,22 +168,53 @@ export default {
 		return {
 			masterDict: JSON.parse(localStorage.getItem('masterDict')),
 			recordDict: {},
-            current_request_form: ''
+            current_request_form: '',
+            transID: '',
+            receiptID: ''
 		}
 	},
 	mounted() {
+        let date = new Date();
+		let thisYear = date.getFullYear();
+        let month = date.getMonth();
+        let yearID;
+        if(month < 3){
+            yearID = `${thisYear - 1} - ${thisYear}`;
+        }else{
+            yearID = `${thisYear} - ${thisYear + 1}`;
+        }
 		if(Object.keys(this.masterDict['records']).length == 3){
-			let date = new Date();
-			let thisYear = date.getFullYear();
 			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': {}, 'assets': {}};
 			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		}
+        if(!Object.keys(this.masterDict['records']).includes(yearID)){
+            this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
+        }
 		setTimeout(() => {
-			this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
+            $(`#year_selection`).val(yearID);
+			this.recordDict = this.masterDict['records'][yearID];
+            console.log(this.masterDict)
 		}, 1)
 	},
+    created(){
+		ipcRenderer.on('uploaded_file_done', function() {
+            this.recordDict['transactions'][this.transID]['receiptID'] = this.receiptID;
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+		}.bind(this))
+	},
 	methods: {
+        uploadReceipt(event){
+            this.transID = $(event.target).attr('data');
+            const receiptID = generateID(this.masterDict);
+			ipcRenderer.send('upload_file', receiptID)
+			this.receiptID = receiptID;
+        },
+        downloadReceipt(event){
+            const receiptID = $(event.target).attr('data');
+            console.log(receiptID)
+            ipcRenderer.send('download_file', receiptID)
+        },
 		onchange(){
 			this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
 		},
@@ -303,40 +347,64 @@ select{
 	margin: 0px 10px;
 }
 
-.outer_table > div:not(.title){
+.headings{
 	display: flex;
     width: 95%;
 	margin-bottom: 6px;
 	border: 1px solid black;
+    background-color: white;
+    pointer-events: none;
 }
 
-.outer_table > .headings{
-	background-color: white;
-}
-
-.outer_table > div:not(.title) > p{
+.headings > p{
 	font-size: 15px;
+	width: 100%;
+	margin: 0px;
+	border-left: 1px solid black;
+	pointer-events: none;;
+}
+
+#transactions_list{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#transactions_list > div{
+    width: 95%;
+    display: flex;
+	margin-bottom: 6px;
+	border: 1px solid black;
+}
+
+#transactions_list > div > p{
+    font-size: 15px;
 	width: 100%;
 	margin: 0px;
 	border-left: 1px solid black;
 	pointer-events: none;
 }
 
-.outer_table> div:not(.title) > p:nth-of-type(1){
-	border-left: 0px;
+.month{
+	border-left: 0px !important;
 	max-width: 8ch;
+	min-width: 8ch;
 }
 
-#transactions > div:not(.title) > p:nth-of-type(2){
-	max-width: 12ch;
+.twelve{
+	min-width: 12ch;
+	max-width: 15ch;
 }
 
-#transactions > div:not(.title) > p:nth-of-type(4){
-	max-width: 10ch;
+.ten{
+	min-width: 10ch;
+	max-width: 15ch;
 }
 
-#transactions > div:not(.title) > p:nth-of-type(7){
-	max-width: 12ch;
+.eight{
+	min-width: 8ch;
+	max-width: 15ch;
 }
 
 .Credit{

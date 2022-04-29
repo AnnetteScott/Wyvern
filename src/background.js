@@ -158,7 +158,7 @@ function manualSave(){
         let masterDict = JSON.parse(read_file(saveFilePath));
         dialog.showSaveDialog(win, {
             properties: ['saveFile'],
-            filters: [{ name: 'json', extensions: ['json'] }]
+            filters: [{ name: '.json', extensions: ['json'] }]
         }).then(result => {
             let filepath = result.filePath;
             fs.writeFileSync(filepath, JSON.stringify(masterDict));
@@ -171,15 +171,65 @@ function manualSave(){
 
 if(!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 7}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 8}));
 }else if(!fs.existsSync(app.getPath('userData') + "\\data\\userData.json")){
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work'], 'homeExpenses': {}}, "saveVersion": 7}));
+    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work'], 'homeExpenses': {}}, "saveVersion": 8}));
+}
+
+if(!fs.existsSync(app.getPath('userData') + "\\data\\receipts")){
+    fs.mkdirSync(app.getPath('userData') + "\\data\\receipts");
 }
 
 ipcMain.on('master_dict_read', function(event, arg) {
     let masterDict = JSON.parse(read_file(saveFilePath));
     event.sender.send('master_dict_reading', masterDict);
 
+});
+
+ipcMain.on('upload_file', function(event, receiptID) {
+    dialog.showOpenDialog(win, {
+        properties: ['openFile'],
+        filters: [{ name: '.pdf', extensions: ['pdf'] }]
+    }).then(result => {
+        let path = result['filePaths'][0];
+        fs.copyFile(path, `${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, (err) => {
+            if (err) throw err;
+            console.log('source was copied to destination');
+            win.webContents.send("uploaded_file_done");
+        });
+    }).catch(err => {
+        console.log(err)
+    });
+});
+
+ipcMain.on('upload_file_input', function(event, receiptID) {
+    dialog.showOpenDialog(win, {
+        properties: ['openFile'],
+        filters: [{ name: '.pdf', extensions: ['pdf'] }]
+    }).then(result => {
+        let path = result['filePaths'][0];
+        fs.copyFile(path, `${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, (err) => {
+            if (err) throw err;
+            console.log('source was copied to destination');
+            win.webContents.send("uploaded_file_input");
+        });
+    }).catch(err => {
+        console.log(err)
+    });
+});
+
+ipcMain.on('download_file', function(event, receiptID) {
+    dialog.showSaveDialog(win, {
+        properties: ['saveFile'],
+        filters: [{ name: '.pdf', extensions: ['pdf'] }]
+    }).then(result => {
+        let filepath = result.filePath;
+        fs.copyFile(`${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, filepath, (err) => {
+            if (err) throw err;
+        });
+    }).catch(err => {
+        console.log(err)
+    });    
 });
 
 function read_file(path){

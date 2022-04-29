@@ -127,8 +127,8 @@
 
 			<label for="create_project_duration">Project duration:</label>
 			<input id="create_project_duration" type="number" />
-            
-            <label for="create_project_target">Target Hours Per TimeSheet:</label>
+			
+			<label for="create_project_target">Target Hours Per TimeSheet:</label>
 			<input id="create_project_target" type="number" />
 
 			<label for="create_project_date">Project start date:</label>
@@ -163,8 +163,8 @@
 
 			<label for="edit_project_duration">Project duration:</label>
 			<input id="edit_project_duration" type="number" />
-            
-            <label for="edit_project_target">Target Hours Per TimeSheet:</label>
+			
+			<label for="edit_project_target">Target Hours Per TimeSheet:</label>
 			<input id="edit_project_target" type="number" />
 
 			<ButtonItem :title="`Save Project`" @click="editProject"/>
@@ -219,8 +219,8 @@
 			<label for="create_trans_account">Account:</label>
 			<select id="create_trans_account">
 				<option v-for="account in masterDict['records']['accounts']" :key="account" :data="account">
-                    {{ account }}
-                </option>
+					{{ account }}
+				</option>
 			</select>
 
 			<label for="create_trans_type">Type:</label>
@@ -232,8 +232,8 @@
 			<label for="create_trans_category">Category:</label>
 			<select id="create_trans_category">
 				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
-                    {{ category }}
-                </option>
+					{{ category }}
+				</option>
 			</select>
 			
 			<label for="create_trans_item">Item:</label>
@@ -242,12 +242,19 @@
 			<label for="create_trans_amount">Amount:</label>
 			<input id="create_trans_amount" type="number" step="0.01" />
 
+			<template v-if="fileUploaded === false">
+				<ButtonItem :title="`Upload Receipt`" @click="TriggerUpload"/>
+			</template>
+			<template v-else>
+				Your receipt has been uploaded
+			</template>
+
 			<ButtonItem :title="`Create Transaction`" @click="createTransaction"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<ButtonItem :title="`Cancel`" @click="cancelTransaction"/>
 		</div>
 	</div>
-    
-    <!-- Edit Transaction -->
+	
+	<!-- Edit Transaction -->
 	<div class="form_container" v-if="requestForm == `editTransaction`">
 		<div class="form">
 			<div id="edit_transID" transid="invalid" transyear="invalid"></div>
@@ -257,8 +264,8 @@
 			<label for="edit_trans_account">Account:</label>
 			<select id="edit_trans_account">
 				<option v-for="account in masterDict['records']['accounts']" :key="account" :data="account">
-                    {{ account }}
-                </option>
+					{{ account }}
+				</option>
 			</select>
 
 			<label for="edit_trans_type">Type:</label>
@@ -270,8 +277,8 @@
 			<label for="edit_trans_category">Category:</label>
 			<select id="edit_trans_category">
 				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
-                    {{ category }}
-                </option>
+					{{ category }}
+				</option>
 			</select>
 			
 			<label for="edit_trans_item">Item:</label>
@@ -285,8 +292,8 @@
 			<ButtonItem :title="`Delete`" @click="deleteTransaction"/>
 		</div>
 	</div>
-    
-    <!-- Create Category -->
+	
+	<!-- Create Category -->
 	<div class="form_container" v-if="requestForm == `createCategory`">
 		<div class="form">
 			<label for="create_category">Category:</label>
@@ -297,21 +304,21 @@
 		</div>
 	</div>
 
-    <!-- Edit Category -->
+	<!-- Edit Category -->
 	<div class="form_container" v-if="requestForm == `editCategory`">
 		<div class="form">
-            <div id="edit_category_old" oldcategory='invalid'></div>
+			<div id="edit_category_old" oldcategory='invalid'></div>
 			<label for="edit_category">Category:</label>
 			<input id="edit_category" type="text" />
 
 			<ButtonItem :title="`Save Category`" @click="editCategory"/>
 			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-            <ButtonItem :title="`Delete`" @click="deleteCategory"/>
+			<ButtonItem :title="`Delete`" @click="deleteCategory"/>
 		</div>
 	</div>
-    
+	
 
-    <!-- Create Accounts -->
+	<!-- Create Accounts -->
 	<div class="form_container" v-if="requestForm == `createAccount`">
 		<div class="form">
 			<label for="create_account">Account:</label>
@@ -322,20 +329,20 @@
 		</div>
 	</div>
 
-    <!-- Edit Accounts -->
+	<!-- Edit Accounts -->
 	<div class="form_container" v-if="requestForm == `editAccount`">
 		<div class="form">
-            <div id="edit_account_old" oldaccount='invalid'></div>
+			<div id="edit_account_old" oldaccount='invalid'></div>
 			<label for="edit_account">Account:</label>
 			<input id="edit_account" type="text" />
 
 			<ButtonItem :title="`Save Account`" @click="editAccount"/>
 			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-            <ButtonItem :title="`Delete`" @click="deleteAccount"/>
+			<ButtonItem :title="`Delete`" @click="deleteAccount"/>
 		</div>
 	</div>
-    
-    <!-- Create Asset -->
+	
+	<!-- Create Asset -->
 	<div class="form_container" v-if="requestForm == `createAsset`">
 		<div class="form">
 			<label for="create_asset_date">Purchased Date:</label>
@@ -361,10 +368,10 @@
 		</div>
 	</div>
 
-    <!-- Edit Asset -->
+	<!-- Edit Asset -->
 	<div class="form_container" v-if="requestForm == `editAsset`">
 		<div class="form">
-            <div id="edit_assetID" assetid="invalid" assetyear="invalid"></div>
+			<div id="edit_assetID" assetid="invalid" assetyear="invalid"></div>
 
 			<label for="edit_asset_date">Purchased Date:</label>
 			<input id="edit_asset_date" type="date" />
@@ -386,11 +393,11 @@
 
 			<ButtonItem :title="`Save Account`" @click="editAsset"/>
 			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-            <ButtonItem :title="`Delete`" @click="deleteAsset"/>
+			<ButtonItem :title="`Delete`" @click="deleteAsset"/>
 		</div>
 	</div>
 
-    <!-- Create Home Expenses -->
+	<!-- Create Home Expenses -->
 	<div class="form_container" v-if="requestForm == `createHome`">
 		<div class="form">
 			<label for="create_home_date">Starting Date:</label>
@@ -402,8 +409,8 @@
 			<label for="create_home_category">Category:</label>
 			<select id="create_home_category">
 				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
-                    {{ category }}
-                </option>
+					{{ category }}
+				</option>
 			</select>
 
 			<label for="create_home_fullAmount">Full Amount:</label>
@@ -412,7 +419,7 @@
 			<label for="create_home_percentage">Percentage:</label>
 			<input id="create_home_percentage" type="number" step="0.01" />
 
-            <label for="create_home_often">How Often:</label>
+			<label for="create_home_often">How Often:</label>
 			<select id="create_home_often">
 				<option data="Monthly">Monthly</option>
 				<option data="Fortnightly">Fortnightly</option>
@@ -425,7 +432,7 @@
 			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
 		</div>
 	</div>
-    
+	
 </template>
 
 
@@ -433,6 +440,8 @@
 import ButtonItem from './ButtonItem.vue';
 import $ from 'jquery';
 import { generateID, reDoDate, addToDate } from '../../public/generalFunctions.js';
+const { ipcRenderer } = window.require("electron");
+
 
 export default {
 	name: 'AllForms',
@@ -443,158 +452,177 @@ export default {
 	components: {
 		ButtonItem
 	},
+	created(){
+		let self=this;
+		ipcRenderer.on('uploaded_file_input', function(event, data) {
+			event;
+			data;
+			self.fileHasBeenUploaded()
+		})
+	},
 	data() {
 		return {
 			masterDict: {},
-			recordDict: {}
+			recordDict: {},
+			fileUploaded: false,
+			receiptID: ''
 		}
 	},
 	methods: {
-        createHome(){
-            let startDate = ($('#create_home_date').val()).split("-");
+		fileHasBeenUploaded(){
+			this.fileUploaded = true;
+			console.log(this.fileUploaded)
+		},
+		TriggerUpload(){
+			const receiptID = generateID(this.masterDict);
+			ipcRenderer.send('upload_file_input', receiptID)
+			this.receiptID = receiptID;
+		},
+		createHome(){
+			let startDate = ($('#create_home_date').val()).split("-");
 			startDate = startDate.reverse().join("/");
-            let receiver = $('#create_home_receiver').val();
-            let category = $('#create_home_category option:selected').val();
-            let fullAmount = parseFloat($('#create_home_fullAmount').val());
-            let percent = parseFloat($('#create_home_percentage').val());
-            let often = $('#create_home_often option:selected').val();
-            let claimedAmount = fullAmount * (percent / 100);
+			let receiver = $('#create_home_receiver').val();
+			let category = $('#create_home_category option:selected').val();
+			let fullAmount = parseFloat($('#create_home_fullAmount').val());
+			let percent = parseFloat($('#create_home_percentage').val());
+			let often = $('#create_home_often option:selected').val();
+			let claimedAmount = fullAmount * (percent / 100);
 
-            const homeID = generateID(this.masterDict);
+			const homeID = generateID(this.masterDict);
 
-            this.masterDict['records']['homeExpenses'][homeID] = {'startDate': startDate};
-            this.masterDict['records']['homeExpenses'][homeID]['receiver'] = receiver;
-            this.masterDict['records']['homeExpenses'][homeID]['category'] = category;
-            this.masterDict['records']['homeExpenses'][homeID]['fullAmount'] = fullAmount;
-            this.masterDict['records']['homeExpenses'][homeID]['percent'] = percent;
-            this.masterDict['records']['homeExpenses'][homeID]['claimedAmount'] = claimedAmount;
-            this.masterDict['records']['homeExpenses'][homeID]['often'] = often;
-            this.masterDict['records']['homeExpenses'][homeID]['lastOccurence'] = startDate;
+			this.masterDict['records']['homeExpenses'][homeID] = {'startDate': startDate};
+			this.masterDict['records']['homeExpenses'][homeID]['receiver'] = receiver;
+			this.masterDict['records']['homeExpenses'][homeID]['category'] = category;
+			this.masterDict['records']['homeExpenses'][homeID]['fullAmount'] = fullAmount;
+			this.masterDict['records']['homeExpenses'][homeID]['percent'] = percent;
+			this.masterDict['records']['homeExpenses'][homeID]['claimedAmount'] = claimedAmount;
+			this.masterDict['records']['homeExpenses'][homeID]['often'] = often;
+			this.masterDict['records']['homeExpenses'][homeID]['lastOccurence'] = startDate;
 
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        createAsset(){
-            let item = $('#create_asset_item').val();
+		},
+		createAsset(){
+			let item = $('#create_asset_item').val();
 			let vendor = $('#create_asset_vendor').val();
-            let date = ($('#create_asset_date').val()).split("-");
+			let date = ($('#create_asset_date').val()).split("-");
 			date = date.reverse().join("/");
 
 			let unitCost = parseInt($(`#create_asset_unit_cost`).val());
 			let units = parseInt($(`#create_asset_units`).val());
 			let total = parseInt($(`#create_asset_total`).val());
-            let thisYear = $(`#year_selection option:selected`).attr('data')
-            const assetID = generateID(this.masterDict);
-            this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
+			let thisYear = $(`#year_selection option:selected`).attr('data')
+			const assetID = generateID(this.masterDict);
+			this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
 
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        editAsset(){
+		},
+		editAsset(){
 
-        },
-        deleteAsset(){
-            const ID = $('#edit_assetID').attr('assetid');
+		},
+		deleteAsset(){
+			const ID = $('#edit_assetID').attr('assetid');
 			const YEAR = $('#edit_assetID').attr('assetyear');
 			delete this.masterDict['records'][YEAR]['assets'][ID];
 
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        createCategory(){
-            let category = $(`#create_category`).val()
-            if(category == ''){ //If no category was provided
+		},
+		createCategory(){
+			let category = $(`#create_category`).val()
+			if(category == ''){ //If no category was provided
 				$("#create_category").addClass('form_error');
 				return false;
 			}
 			$("#create_category").removeClass('form_error');
-            this.masterDict['records']['categories'].push(category);
-            
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.masterDict['records']['categories'].push(category);
+			
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        editCategory(){
-            let category =  $(`#edit_category_old`).attr(`oldcategory`);
-            const index = this.masterDict['records']['categories'].indexOf(category);
-            if (index > -1) {
-                this.masterDict['records']['categories'].splice(index, 1);
-            }
+		},
+		editCategory(){
+			let category =  $(`#edit_category_old`).attr(`oldcategory`);
+			const index = this.masterDict['records']['categories'].indexOf(category);
+			if (index > -1) {
+				this.masterDict['records']['categories'].splice(index, 1);
+			}
 
-            let newCategory = $(`#create_category`).val()
-            if(newCategory == ''){ //If no category was provided
+			let newCategory = $(`#create_category`).val()
+			if(newCategory == ''){ //If no category was provided
 				$("#create_category").addClass('form_error');
 				return false;
 			}
 			$("#create_category").removeClass('form_error');
-            this.masterDict['records']['categories'].push(newCategory);
+			this.masterDict['records']['categories'].push(newCategory);
  
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        deleteCategory(){
-            let category =  $(`#edit_category_old`).attr(`oldcategory`);
-            const index = this.masterDict['records']['categories'].indexOf(category);
-            if (index > -1) {
-                this.masterDict['records']['categories'].splice(index, 1);
-            }
+		},
+		deleteCategory(){
+			let category =  $(`#edit_category_old`).attr(`oldcategory`);
+			const index = this.masterDict['records']['categories'].indexOf(category);
+			if (index > -1) {
+				this.masterDict['records']['categories'].splice(index, 1);
+			}
 
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        createAccount(){
-            let account = $(`#create_account`).val()
-            if(account == ''){ //If no category was provided
+		},
+		createAccount(){
+			let account = $(`#create_account`).val()
+			if(account == ''){ //If no category was provided
 				$("#create_account").addClass('form_error');
 				return false;
 			}
 			$("#create_account").removeClass('form_error');
-            this.masterDict['records']['accounts'].push(account);
-            
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.masterDict['records']['accounts'].push(account);
+			
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        editAccount(){
-            let account =  $(`#edit_account_old`).attr(`oldaccount`);
-            const index = this.masterDict['records']['accounts'].indexOf(account);
-            if (index > -1) {
-                this.masterDict['records']['accounts'].splice(index, 1);
-            }
+		},
+		editAccount(){
+			let account =  $(`#edit_account_old`).attr(`oldaccount`);
+			const index = this.masterDict['records']['accounts'].indexOf(account);
+			if (index > -1) {
+				this.masterDict['records']['accounts'].splice(index, 1);
+			}
 
-            let newAccount = $(`#edit_account`).val()
-            if(newAccount == ''){ //If no category was provided
+			let newAccount = $(`#edit_account`).val()
+			if(newAccount == ''){ //If no category was provided
 				$("#edit_account").addClass('form_error');
 				return false;
 			}
 			$("#edit_account").removeClass('form_error');
-            this.masterDict['records']['categories'].push(newAccount);
+			this.masterDict['records']['categories'].push(newAccount);
  
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        deleteAccount(){
-            let account =  $(`#edit_account_old`).attr(`oldaccount`);
-            const index = this.masterDict['records']['accounts'].indexOf(account);
-            if (index > -1) {
-                this.masterDict['records']['accounts'].splice(index, 1);
-            }
+		},
+		deleteAccount(){
+			let account =  $(`#edit_account_old`).attr(`oldaccount`);
+			const index = this.masterDict['records']['accounts'].indexOf(account);
+			if (index > -1) {
+				this.masterDict['records']['accounts'].splice(index, 1);
+			}
 
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
-        createTransaction(){
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		},
+		createTransaction(){
+			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 			let date = ($('#create_trans_date').val()).split("-");
 			let month = parseInt(date[1]) - 1;
-            let thisYear = parseInt(date[0]);
+			let thisYear = parseInt(date[0]);
 			date = date.reverse().join("/");
 
 			let account = $(`#create_trans_account option:selected`).val();
@@ -604,23 +632,25 @@ export default {
 
 			let amount = type == 'Credit' ? Math.abs(parseFloat($('#create_trans_amount').val())) : 0 - parseFloat($('#create_trans_amount').val());
 
-            let yearID;
-            if(month < 3){
-                yearID = `${thisYear - 1} - ${thisYear}`;
-            }else{
-                yearID = `${thisYear} - ${thisYear + 1}`;
-            }
+			let yearID;
+			if(month < 3){
+				yearID = `${thisYear - 1} - ${thisYear}`;
+			}else{
+				yearID = `${thisYear} - ${thisYear + 1}`;
+			}
 
-            const transID = generateID(this.masterDict);
-            if(!Object.keys(this.masterDict['records']).includes(yearID)){
-                this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
-            }
-			this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
+			const transID = generateID(this.masterDict);
+			if(!Object.keys(this.masterDict['records']).includes(yearID)){
+				this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
+			}
+			this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount, 'receiptID': this.receiptID}
 
+			this.fileUploaded = false;
+			this.receiptID = ''
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
-        },
+		},
 		editTransaction(){
 			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 			this.recordDict = this.masterDict['records'][$('#edit_transID').attr('transyear')];
@@ -635,7 +665,7 @@ export default {
 			let category = $(`#edit_trans_category option:selected`).val();
 			let item = $('#edit_trans_item').val();
 
-            let preAmount = Math.abs(parseFloat($('#edit_trans_amount').val()))
+			let preAmount = Math.abs(parseFloat($('#edit_trans_amount').val()))
 			let amount = type == 'Credit' ? preAmount : 0 - preAmount;
 			
 			let yearID;
@@ -659,6 +689,10 @@ export default {
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
+		},
+		cancelTransaction(){
+			this.fileUploaded = false;
+			this.$emit('cancelled', '')
 		},
 		createUser(){
 			let user = $('#create_user').val();
@@ -726,7 +760,7 @@ export default {
 				$("#create_project_name").removeClass('form_error');
 				return false;
 			}
-            if(isNaN(target)){ //If no target was provided
+			if(isNaN(target)){ //If no target was provided
 				$("#create_project_target").addClass('form_error');
 				$("#create_project_duration").removeClass('form_error');
 				return false;
@@ -737,9 +771,9 @@ export default {
 				return false;
 			}
 			$("#create_project_date").removeClass('form_error');
-            $("#create_project_name").removeClass('form_error');
-            $("#create_project_duration").removeClass('form_error');
-            $("#create_project_target").removeClass('form_error');
+			$("#create_project_name").removeClass('form_error');
+			$("#create_project_duration").removeClass('form_error');
+			$("#create_project_target").removeClass('form_error');
 
 			$('#create_project_name').val('');
 			$('#create_project_duration').val('');
@@ -874,7 +908,7 @@ export default {
 				$("#edit_project_name").removeClass('form_error');
 				return false;
 			}
-            if(isNaN(target)){ //If no duration was provided
+			if(isNaN(target)){ //If no duration was provided
 				$("#edit_project_target").addClass('form_error');
 				$("#edit_project_duration").removeClass('form_error');
 				return false;
@@ -888,7 +922,7 @@ export default {
 			$('#edit_project_duration').val('');
 			$('#edit_project_target').val('');
 
-            let colourIds = Object.keys(this.masterDict['colours'])
+			let colourIds = Object.keys(this.masterDict['colours'])
 			let previousDur = this.masterDict['projects'][projectID]['duration'];
 			if(this.masterDict['projects'][projectID]['duration'] < duration){
 				if(this.masterDict['projects'][projectID]['weekInterval'] == 1){
@@ -896,11 +930,11 @@ export default {
 					for(let w = previousDur + 1; w <= duration; w++){
 						date = addToDate(date, 14);
 						this.masterDict['projects'][projectID]['weeks'][`${w}`] = {'startDate': date, 'colouredCells': {}, 'invoiced': false};
-                        colourIds.forEach(colourID => {
-                            if(colourID != 'colourWhite'){
-                                    this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
-                            }
-                        });
+						colourIds.forEach(colourID => {
+							if(colourID != 'colourWhite'){
+									this.masterDict['projects'][projectID]['weeks'][`${w}`]['colouredCells'][colourID] = [];
+							}
+						});
 					}
 
 					this.masterDict['projects'][projectID]['duration'] = duration;
@@ -911,11 +945,11 @@ export default {
 					for(let w = previousDur + 1; w <= duration; w+= 2){
 						date = addToDate(date, 14);
 						this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`] = {'startDate': date, 'colouredCells': {}, 'invoiced': false};
-                        colourIds.forEach(colourID => {
-                            if(colourID != 'colourWhite'){
-                                    this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
-                            }
-                        });
+						colourIds.forEach(colourID => {
+							if(colourID != 'colourWhite'){
+									this.masterDict['projects'][projectID]['weeks'][`${w} - ${w + 1}`]['colouredCells'][colourID] = [];
+							}
+						});
 					}
 					if(duration % 2 == 1){
 						this.masterDict['projects'][projectID]['duration'] = duration + 1;

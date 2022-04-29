@@ -62,5 +62,16 @@ function saveChecker(){
         }
         masterDict['saveVersion'] = 8;
     }
+    if(masterDict['saveVersion'] == 8){
+        for(const[yearID, recordsDict] of Object.entries(masterDict['records'])){
+            if(yearID != 'accounts' && yearID != 'categories' && yearID != 'homeExpenses'){
+                for(const[transID, trandDict] of Object.entries(recordsDict['transactions'])){
+                    trandDict['receiptID'] = '';
+                    transID;
+                }
+            }
+        }
+        masterDict['saveVersion'] = 9;
+    }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

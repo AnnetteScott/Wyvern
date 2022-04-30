@@ -175,7 +175,6 @@ export default {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	pointer-events: none;
 }
 .table .row b {
 	color: black;

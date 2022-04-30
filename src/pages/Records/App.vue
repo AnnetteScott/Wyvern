@@ -111,15 +111,52 @@
 				<div class="title">
 					<p>Pivot Table</p>
 				</div>
-                <div class="headings">
+                <div class="pivot_row pivot_heading">
                     <p v-for="column in colNames" :key="column">
                         {{ column }}
                     </p>
                 </div>
-                <div class="headings">
-                    <p v-for="category in pivotDict['categories']" :key="category">
-                        {{ category }}
-                    </p>
+                <div class="pivot_row">
+                    <template  v-for="(categoryDict, category) in pivotDict['categories']" :key="category">
+                        <p>{{ category }}</p>
+                        <p>{{ categoryDict['Apr'] }}</p>
+                        <p>{{ categoryDict['May'] }}</p>
+                        <p>{{ categoryDict['Jun'] }}</p>
+                        <p>{{ categoryDict['Jul'] }}</p>
+                        <p>{{ categoryDict['Aug'] }}</p>
+                        <p>{{ categoryDict['Sep'] }}</p>
+                        <p>{{ categoryDict['Oct'] }}</p>
+                        <p>{{ categoryDict['Nov'] }}</p>
+                        <p>{{ categoryDict['Dec'] }}</p>
+                        <p>{{ categoryDict['Jan'] }}</p>
+                        <p>{{ categoryDict['Feb'] }}</p>
+                        <p>{{ categoryDict['Mar'] }}</p>
+                        <p>{{ categoryDict['grandTotal'] }}</p>
+                    </template>
+                </div>
+                <div class="pivot_row pivot_heading">
+                    <template v-if="loaded">
+                        <p>Grand Total</p>
+                        <p>{{ pivotDict['months']['Apr'] }}</p>
+                        <p>{{ pivotDict['months']['May'] }}</p>
+                        <p>{{ pivotDict['months']['Jun'] }}</p>
+                        <p>{{ pivotDict['months']['Jul'] }}</p>
+                        <p>{{ pivotDict['months']['Aug'] }}</p>
+                        <p>{{ pivotDict['months']['Sep'] }}</p>
+                        <p>{{ pivotDict['months']['Oct'] }}</p>
+                        <p>{{ pivotDict['months']['Nov'] }}</p>
+                        <p>{{ pivotDict['months']['Dec'] }}</p>
+                        <p>{{ pivotDict['months']['Jan'] }}</p>
+                        <p>{{ pivotDict['months']['Feb'] }}</p>
+                        <p>{{ pivotDict['months']['Mar'] }}</p>
+                        <p>{{ pivotDict['months']['grandTotal'] }}</p>
+                    </template>
+                </div>
+                <div class="pivot_row pivot_heading">
+                    <template v-if="loaded">
+                        <p>Tax To Pay</p>
+                        <p>{{ calculateTax(pivotDict['months']['grandTotal']) }}</p>
+                    </template>
                 </div>
 			</div>
         </div>
@@ -182,6 +219,7 @@ export default {
             current_request_form: '',
             transID: '',
             receiptID: '',
+            loaded: false,
             colNames: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Grand Total"]
 		}
 	},
@@ -224,6 +262,7 @@ export default {
             this.pivotDict = {'categories': {}, 'months': {}};
             this.masterDict['records']['categories'].forEach((category, index) => {
                 this.pivotDict['categories'][category] = {'grandTotal': 0}
+                this.pivotDict['months'] = {'grandTotal': 0}
                 monthNames.forEach((month, index1) => {
                     this.pivotDict['categories'][category][month] = 0;
                     this.pivotDict['months'][month] = 0;
@@ -233,10 +272,13 @@ export default {
             });
             for(const [transID, transDict] of Object.entries(this.recordDict['transactions'])){
                 this.pivotDict['categories'][transDict['category']][transDict['month']] += transDict['amount'];
+                this.pivotDict['categories'][transDict['category']]['grandTotal'] += transDict['amount'];
                 this.pivotDict['months'][transDict['month']] += transDict['amount'];
+                this.pivotDict['months']['grandTotal'] += transDict['amount'];
                 transID;
             }
             console.log(this.pivotDict)
+            this.loaded = true;
         },
         uploadReceipt(event){
             this.transID = $(event.target).attr('data');
@@ -490,5 +532,40 @@ select{
     width: 95%;
     height: 90%;
 }
+
+.pivot_row{
+    display: flex;
+    width: 95%;
+    margin-bottom: 1px;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: white;
+    height: 25px;
+}
+
+.pivot_row p{
+    font-size: 15px;
+    width: 100%;
+    margin: 0px;
+    border-left: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pivot_row > p:first-child{
+    width: 30ch;
+    min-width: 30ch;
+}
+
+.pivot_heading{
+    background-color: #f3f5f9;
+}
+
+.pivot_row:nth-last-of-type(2){
+    margin-top: 10px;
+}
+
 
 </style>

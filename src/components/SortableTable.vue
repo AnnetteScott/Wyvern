@@ -1,6 +1,6 @@
 <template>
 	<div :id="$props.id" class="table">
-		<div v-if="$props.title" class="title">{{ $props.title }}</div>
+		<div v-if="$props.title" class="title"><p>{{ $props.title }}</p><span><slot></slot></span></div>
 		<div class="row headings">
 			<p v-for="heading in $props.headings" :key="heading" class="heading" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}${$props.id && $props.sort.includes(heading) ? 'cursor: pointer;' : 'pointer-events: none;'}`" :title="`${$props.id && $props.sort.includes(heading) ? `Sort by ${heading}` : heading}`" @click="sort_table">{{ (heading == 'image' ? '' : heading) }}</p>
 		</div>
@@ -12,9 +12,6 @@
 					{{ (heading != 'image' && !($props.emphasis && heading == $props.emphasis) ? item[heading.toLowerCase()] : '') }}
 				</p>
 			</div>
-		</div>
-		<div class="bottom">
-			<slot></slot>
 		</div>
 	</div>
 </template>
@@ -100,13 +97,23 @@ export default {
 	align-items: flex-start;
 	width: clamp(300px, 90%, 1000px);
 	min-height: 300px;
+	max-height: 90%;
 	padding: 10px;
 	background-color: #ffffff60;
 	border-radius: 10px;
 	box-shadow: 2px 4px 10px -7px black;
+	backdrop-filter: blur(10px);
 }
 .table .title {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
 	margin-bottom: 10px;
+}
+.table .title > p {
+	margin: 0px;
 	font-size: 28px;
 }
 .table .inner {
@@ -117,8 +124,7 @@ export default {
 	align-items: flex-start;
 	width: 100%;
 	height: 100%;
-	/* background-color: var(--almost_white); */
-	background-color: #ffffff60;
+	background-color: #fff3;
 	border-radius: 0px 0px 5px 5px;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -131,11 +137,16 @@ export default {
 	align-items: center;
 	width: 100%;
 	height: 40px;
+	box-sizing: border-box;
 	padding: 0px 10px;
-	/* background-color: var(--almost_white); */
-	border-radius: 5px;
 }
-.table .row:hover {
+.table .row:nth-child(odd):not(.headings) {
+	background-color: #fff0;
+}
+.table .row:nth-child(even):not(.headings) {
+	background-color: #fff3;
+}
+.table .row:not(.headings):hover {
 	background-color: white;
 }
 .table .row > * {
@@ -146,6 +157,7 @@ export default {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	pointer-events: none;
 }
 .table .row b {
 	color: black;
@@ -189,9 +201,5 @@ export default {
 }
 .table .headings p:hover::after {
 	opacity: 1;
-}
-.table .bottom {
-	width: 100%;
-	margin: 10px 0px 0px 0px;
 }
 </style>

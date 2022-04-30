@@ -263,6 +263,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: 10px;
 	width: 97%;
 	height: 80px;
 }

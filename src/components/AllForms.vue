@@ -23,8 +23,10 @@
 			<label for="create_user_contact">Contact</label>
 			<input id="create_user_contact" type="text" />
 
-			<ButtonItem :title="`Create User`" @click="createUser"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<fieldset>
+				<ButtonItem :title="`Create User`" @click="createUser"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -53,9 +55,11 @@
 			<label for="edit_user_contact">Contact</label>
 			<input id="edit_user_contact" type="text" />
 
-			<ButtonItem :title="`Save User`" @click="editUser"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-			<ButtonItem :title="`Delete`" @click="deleteUser"/>
+			<fieldset>
+				<ButtonItem :title="`Save User`" @click="editUser"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+				<ButtonItem :title="`Delete`" @click="deleteUser"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -83,8 +87,10 @@
 			<label for="create_client_contact">Contact</label>
 			<input id="create_client_contact" type="text" />
 
-			<ButtonItem :title="`Create Client`" @click="createClient"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<fieldset>
+				<ButtonItem :title="`Create Client`" @click="createClient"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -113,9 +119,11 @@
 			<label for="edit_client_contact">Contact</label>
 			<input id="edit_client_contact" type="text" />
 
-			<ButtonItem :title="`Save Client`" @click="editClient"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-			<ButtonItem :title="`Delete`" @click="deleteClient"/>
+			<fieldset>
+				<ButtonItem :title="`Save Client`" @click="editClient"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+				<ButtonItem :title="`Delete`" @click="deleteClient"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -149,8 +157,10 @@
 				<option value="2">2 Weeks</option>
 			</select>
 
-			<ButtonItem :title="`Create Project`" @click="createProject"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<fieldset>
+				<ButtonItem :title="`Create Project`" @click="createProject"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -167,9 +177,11 @@
 			<label for="edit_project_target">Target Hours Per TimeSheet:</label>
 			<input id="edit_project_target" type="number" />
 
-			<ButtonItem :title="`Save Project`" @click="editProject"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-			<ButtonItem :title="`Delete`" @click="deleteProject"/>
+			<fieldset>
+				<ButtonItem :title="`Save Project`" @click="editProject"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+				<ButtonItem :title="`Delete`" @click="deleteProject"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -185,8 +197,10 @@
 			<label for="create_colour_colour">Colour:</label>
 			<input type="color" id="create_colour_colour" name="head" value="#000000">
 
-			<ButtonItem :title="`Create Colour`" @click="createColour"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<fieldset>
+				<ButtonItem :title="`Create Colour`" @click="createColour"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -203,9 +217,11 @@
 			<label for="edit_colour_colour">Colour:</label>
 			<input type="color" id="edit_colour_colour" name="head" value="#000000">
 
-			<ButtonItem :title="`Save Colour`" @click="editColour"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-			<ButtonItem :title="`Delete`" @click="deleteColour"/>
+			<fieldset>
+				<ButtonItem :title="`Save Colour`" @click="editColour"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+				<ButtonItem :title="`Delete`" @click="deleteColour"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -242,15 +258,17 @@
 			<label for="create_trans_amount">Amount:</label>
 			<input id="create_trans_amount" type="number" step="0.01" />
 
-			<template v-if="fileUploaded === false">
-				<ButtonItem :title="`Upload Receipt`" @click="TriggerUpload"/>
-			</template>
-			<template v-else>
-				Your receipt has been uploaded
-			</template>
+			<fieldset>
+				<template v-if="fileUploaded === false">
+					<ButtonItem :title="`Upload Receipt`" @click="TriggerUpload"/>
+				</template>
+				<template v-else>
+					Your receipt has been uploaded
+				</template>
 
-			<ButtonItem :title="`Create Transaction`" @click="createTransaction"/>
-			<ButtonItem :title="`Cancel`" @click="cancelTransaction"/>
+				<ButtonItem :title="`Create Transaction`" @click="createTransaction"/>
+				<ButtonItem :title="`Cancel`" @click="cancelTransaction"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -287,9 +305,11 @@
 			<label for="edit_trans_amount">Amount:</label>
 			<input id="edit_trans_amount" type="number" step="0.01" />
 
-			<ButtonItem :title="`Save Transaction`" @click="editTransaction"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-			<ButtonItem :title="`Delete`" @click="deleteTransaction"/>
+			<fieldset>
+				<ButtonItem :title="`Save Transaction`" @click="editTransaction"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+				<ButtonItem :title="`Delete`" @click="deleteTransaction"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -299,21 +319,25 @@
 			<label for="create_category">Category:</label>
 			<input id="create_category" type="text" />
 
-			<ButtonItem :title="`Create Category`" @click="createCategory"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<fieldset>
+				<ButtonItem :title="`Create Category`" @click="createCategory"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
 		</div>
 	</div>
 
 	<!-- Edit Category -->
 	<div class="form_container" v-if="requestForm == `editCategory`">
 		<div class="form">
-			<div id="edit_category_old" oldcategory='invalid'></div>
+			<div id="edit_category_old" oldcategory='invalid' style="display:none;"></div>
 			<label for="edit_category">Category:</label>
 			<input id="edit_category" type="text" />
 
-			<ButtonItem :title="`Save Category`" @click="editCategory"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-			<ButtonItem :title="`Delete`" @click="deleteCategory"/>
+			<fieldset>
+				<ButtonItem :title="`Save Category`" @click="editCategory"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+				<ButtonItem :title="`Delete`" @click="deleteCategory"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -324,8 +348,10 @@
 			<label for="create_account">Account:</label>
 			<input id="create_account" type="text" />
 
-			<ButtonItem :title="`Create Account`" @click="createAccount"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<fieldset>
+				<ButtonItem :title="`Create Account`" @click="createAccount"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
 		</div>
 	</div>
 
@@ -336,9 +362,11 @@
 			<label for="edit_account">Account:</label>
 			<input id="edit_account" type="text" />
 
-			<ButtonItem :title="`Save Account`" @click="editAccount"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-			<ButtonItem :title="`Delete`" @click="deleteAccount"/>
+			<fieldset>
+				<ButtonItem :title="`Save Account`" @click="editAccount"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+				<ButtonItem :title="`Delete`" @click="deleteAccount"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -363,8 +391,10 @@
 			<label for="create_asset_total">Total:</label>
 			<input id="create_asset_total" type="number" step="0.01" />
 
-			<ButtonItem :title="`Create Asset`" @click="createAsset"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<fieldset>
+				<ButtonItem :title="`Create Asset`" @click="createAsset"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
 		</div>
 	</div>
 
@@ -391,9 +421,11 @@
 			<label for="edit_asset_total">Total:</label>
 			<input id="edit_asset_total" type="number" step="0.01" />
 
-			<ButtonItem :title="`Save Account`" @click="editAsset"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-			<ButtonItem :title="`Delete`" @click="deleteAsset"/>
+			<fieldset>
+				<ButtonItem :title="`Save Account`" @click="editAsset"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+				<ButtonItem :title="`Delete`" @click="deleteAsset"/>
+			</fieldset>
 		</div>
 	</div>
 
@@ -428,8 +460,10 @@
 				<option data="28 Days">28 Days</option>
 			</select>
 
-			<ButtonItem :title="`Create Reapeating Home Expense`" @click="createHome"/>
-			<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			<fieldset>
+				<ButtonItem :title="`Create Reapeating Home Expense`" @click="createHome"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -1040,7 +1074,6 @@ export default {
 <style scoped>
 input {
 	width: 200px;
-	margin-bottom: 15px;
 	padding: 2px;
 	font-family: 'Segoe UI', sans-serif;
 	font-size: 15px;
@@ -1075,6 +1108,7 @@ input {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	gap: 10px;
 	padding: 20px;
 	background-color: #FFFFFF23;
 	border-radius: 5px;
@@ -1084,8 +1118,15 @@ input {
 	transition: 0.3s ease all;
 }
 
-.form button:first-of-type{
+.form fieldset{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
 	margin-top: 20px;
+	border: unset;
 }
 
 select{

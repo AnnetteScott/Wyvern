@@ -64,13 +64,16 @@
 					'Date',
 					'Account',
 					'Type',
+					'Item',
 					'Category',
 					'Amount'
 				]"
 				sort_default="Date"
 				:data="all_transactions"
 				:clickable="true"
-			/>
+			>
+				<ButtonItem :title="`+ New`" @click="current_request_form = 'createTransaction'"/>
+			</SortableTable>
 
 			
 		</div>
@@ -389,7 +392,7 @@ select{
 }
 
 
-.outer_table .title{
+.outer_table > .title{
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
@@ -397,7 +400,7 @@ select{
 	width: 100%;
 	margin-bottom: 5px;
 }
-.outer_table .title > p{
+.outer_table > .title > p{
 	font-family: 'Lora';
 	margin: 5px 0px;
 	font-size: 20px;
@@ -406,27 +409,8 @@ select{
 	width: 70%;
 	border-radius: 5px;
 }
-.outer_table .title .button_link{
+.outer_table > .title .button_link{
 	margin: 0px 10px;
-}
-
-.headings{
-	display: flex;
-    width: 95%;
-	margin-bottom: 6px;
-	border: 1px solid black;
-    background-color: white;
-}
-
-.headings > p{
-	font-size: 15px;
-	width: 100%;
-	margin: 0px;
-	border-left: 1px solid black;
-}
-
-.headings > p:first-child{
-	border-left: 0px solid black;
 }
 
 #transactions_list{

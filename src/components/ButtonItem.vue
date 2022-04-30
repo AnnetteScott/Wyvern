@@ -25,7 +25,7 @@ export default {
 	width: fit-content;
 	min-height: 20px;
 	max-height: 50px;
-	margin: 10px 0px 0px 0px;
+	margin: 0px;
 	font-family: inherit;
 	font-size: 17px;
 	font-weight: bold;

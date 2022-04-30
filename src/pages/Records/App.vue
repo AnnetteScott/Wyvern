@@ -81,29 +81,28 @@
 		<div class="tables">
 			<div id="home" class="outer_table">
 				<div class="title">
-					<p>Repeating Home Expenses</p>
-					<ButtonItem :title="`+ New`" @click="current_request_form = 'createHome'"/>
+					<p>Saved Transactions</p>
+					<ButtonItem :title="`+ New`" @click="current_request_form = 'createSaved'"/>
 				</div>
-                <div class="headings">
-					<p>Start Date</p>
-					<p>Receiver</p>
+                <div class="saved_row pivot_heading">
+					<p>Account</p>
+					<p>Type</p>
+					<p>Item</p>
 					<p>Category</p>
-					<p>Full Amount</p>
-					<p>Percent</p>
-					<p>Claimed Amount</p>
-					<p>How Often</p>
-					<p>Last Occurence</p>
+					<p>Amount</p>
+					<p></p>
 				</div>
-               <div v-for="(homeDict, homeID) in masterDict['records']['homeExpenses']" class="asset" :key="homeID" :data="homeID" @click="''">
-					<p>{{ homeDict['startDate'] }}</p>
-					<p>{{ homeDict['receiver'] }}</p>
-					<p>{{ homeDict['category'] }}</p>
-					<p>{{ homeDict['fullAmount'] }}</p>
-					<p>{{ homeDict['percent'] }}</p>
-					<p>{{ homeDict['claimedAmount'] }}</p>
-					<p>{{ homeDict['often'] }}</p>
-					<p>{{ homeDict['lastOccurence'] }}</p>
-				</div>
+                <div v-for="(savedDict, savedID) in masterDict['records']['savedTransactions']" :key="savedID" class="saved_row">
+                    <p>{{ savedDict['account'] }}</p>
+					<p>{{ savedDict['type'] }}</p>
+					<p>{{ savedDict['item'] }}</p>
+					<p>{{ savedDict['category'] }}</p>
+					<p>{{ savedDict['amount'] }}</p>
+					<p>
+                        <ButtonItem :title="`Add`" @click="addSaved" :data="savedID"/>
+                        <ButtonItem :title="`Edit`" @click="editSaved" :data="savedID"/>
+                    </p>
+                </div>
 			</div>
 		</div>
         <div class="tables">
@@ -118,42 +117,49 @@
                 </div>
                 <div class="pivot_row" v-for="(categoryDict, category) in pivotDict['categories']" :key="category">
                     <p>{{ category }}</p>
-                    <p>{{ categoryDict['Apr'] }}</p>
-                    <p>{{ categoryDict['May'] }}</p>
-                    <p>{{ categoryDict['Jun'] }}</p>
-                    <p>{{ categoryDict['Jul'] }}</p>
-                    <p>{{ categoryDict['Aug'] }}</p>
-                    <p>{{ categoryDict['Sep'] }}</p>
-                    <p>{{ categoryDict['Oct'] }}</p>
-                    <p>{{ categoryDict['Nov'] }}</p>
-                    <p>{{ categoryDict['Dec'] }}</p>
-                    <p>{{ categoryDict['Jan'] }}</p>
-                    <p>{{ categoryDict['Feb'] }}</p>
-                    <p>{{ categoryDict['Mar'] }}</p>
-                    <p>{{ categoryDict['grandTotal'] }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Apr']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['May']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Jun']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Jul']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Aug']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Sep']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Oct']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Nov']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Dec']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Jan']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Feb']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['Mar']) }}</p>
+                    <p>{{ numberWithCommas(categoryDict['grandTotal']) }}</p>
                 </div>
                 <div class="pivot_row pivot_heading">
                     <template v-if="loaded">
                         <p>Grand Total</p>
-                        <p>{{ pivotDict['months']['Apr'] }}</p>
-                        <p>{{ pivotDict['months']['May'] }}</p>
-                        <p>{{ pivotDict['months']['Jun'] }}</p>
-                        <p>{{ pivotDict['months']['Jul'] }}</p>
-                        <p>{{ pivotDict['months']['Aug'] }}</p>
-                        <p>{{ pivotDict['months']['Sep'] }}</p>
-                        <p>{{ pivotDict['months']['Oct'] }}</p>
-                        <p>{{ pivotDict['months']['Nov'] }}</p>
-                        <p>{{ pivotDict['months']['Dec'] }}</p>
-                        <p>{{ pivotDict['months']['Jan'] }}</p>
-                        <p>{{ pivotDict['months']['Feb'] }}</p>
-                        <p>{{ pivotDict['months']['Mar'] }}</p>
-                        <p>{{ pivotDict['months']['grandTotal'] }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Apr']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['May']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Jun']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Jul']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Aug']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Sep']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Oct']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Nov']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Dec']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Jan']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Feb']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['Mar']) }}</p>
+                        <p>{{ numberWithCommas(pivotDict['months']['grandTotal']) }}</p>
+                    </template>
+                </div> 
+                <div class="pivot_row pivot_heading">
+                    <template v-if="loaded">
+                        <p>Tax To Pay</p>
+                        <p>${{ numberWithCommas(calculateTax(pivotDict['months']['grandTotal'])) }}</p>
+                        <p>Effective Tax Rate: {{ (calculateTax(pivotDict['months']['grandTotal']) / pivotDict['months']['grandTotal'] * 100).toFixed(2) }}%</p>
                     </template>
                 </div>
                 <div class="pivot_row pivot_heading">
                     <template v-if="loaded">
-                        <p>Tax To Pay</p>
-                        <p>{{ calculateTax(pivotDict['months']['grandTotal']) }}</p>
+                        <p>Take Home</p>
+                        <p>${{ numberWithCommas(pivotDict['months']['grandTotal'] - calculateTax(pivotDict['months']['grandTotal'])) }}</p>
                     </template>
                 </div>
 			</div>
@@ -255,6 +261,26 @@ export default {
 		}.bind(this))
 	},
 	methods: {
+        addSaved(event){
+            const savedID = $(event.target).attr('data');
+            this.current_request_form = 'addSaved';
+            setTimeout(() => {
+                $(`#add_savedID`).attr('savedid', savedID)
+            }, 1)
+        },
+        editSaved(event){
+            const savedID = $(event.target).attr('data');
+            this.current_request_form = 'editSaved';
+            let saveDict = this.masterDict['records']['savedTransactions'][savedID]
+            setTimeout(() => {
+                $(`#edit_savedID`).attr('savedid', savedID)
+                $(`#edit_savedTrans_item`).val(saveDict['item'])
+                $(`#edit_savedTrans_amount`).val(saveDict['amount'])
+                $(`#edit_savedTrans_account`).val(saveDict['account']);
+                $(`#edit_savedTrans_type`).val(saveDict['type']);
+                $(`#edit_savedTrans_category`).val(saveDict['category']);
+            }, 1)
+        },
         calculatePivotTable(){
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             this.pivotDict = {'categories': {}, 'months': {}};
@@ -275,7 +301,6 @@ export default {
                 this.pivotDict['months']['grandTotal'] += transDict['amount'];
                 transID;
             }
-            console.log(this.pivotDict)
             this.loaded = true;
         },
         uploadReceipt(event){
@@ -286,7 +311,6 @@ export default {
         },
         downloadReceipt(event){
             const receiptID = $(event.target).attr('data');
-            console.log(receiptID)
             ipcRenderer.send('download_file', receiptID)
         },
 		onchange(){
@@ -354,24 +378,34 @@ export default {
             let fourthTax = [0.33, 180000];
             let fifthTax = [0.39]; 
 
-            let firstAmount = amount > firstTax[1] ? firstTax[1] * firstTax[0]: amount * firstTax[0];
-            
-            amount = Math.max(0, amount - firstTax[1]);
+            let firstTaxAmount = amount > firstTax[1] ? firstTax[1] * firstTax[0]: amount * firstTax[0]; //1470 so correct!
+            if(amount <= firstTax[1]){
+                return firstTaxAmount
+            }
 
-            let secondAmount = amount > secondTax[1] ? secondTax[1] * secondTax[0]: amount * secondTax[0];
-            amount = Math.max(0, amount - secondTax[1]);
+            let secondTaxAmount = amount > firstTax[1] && amount < secondTax[1] ? (amount - firstTax[1]) * secondTax[0]: (secondTax[1] - firstTax[1]) * secondTax[0] //5950 so correct
+            if(amount <= secondTax[1]){
+                return firstTaxAmount + secondTaxAmount
+            }
 
-            let thirdAmount = amount > thirdTax[1] ? thirdTax[1] * thirdTax[0]: amount * thirdTax[0];
-            amount = Math.max(0, amount - thirdTax[1]);
+            let thirdTaxAmount = amount > secondTax[1] && amount < thirdTax[1] ? (amount - secondTax[1]) * thirdTax[0]: (thirdTax[1] - secondTax[1]) * thirdTax[0] //6600 so correct
+            if(amount <= thirdTax[1]){
+                return firstTaxAmount + secondTaxAmount + thirdTaxAmount;
+            }
 
-            let fourthAmount = amount > fourthTax[1] ? fourthTax[1] * fourthTax[0]: amount * fourthTax[0];
-            amount = Math.max(0, amount - fourthTax[1]);
-            
-            let fifthAmount = amount * fifthTax[0];
+            let fourthTaxAmount = amount > thirdTax[1] && amount < fourthTax[1] ? (amount - thirdTax[1]) * fourthTax[0]: (fourthTax[1] - thirdTax[1]) * fourthTax[0] //36300 so correct
+            if(amount <= fourthTax[1]){
+                return firstTaxAmount + secondTaxAmount + thirdTaxAmount + fourthTaxAmount;
+            }
 
-            let totalTax = firstAmount + secondAmount + thirdAmount + fourthAmount + fifthAmount;
+            let fifthTaxAmount = amount > fourthTax[1] ? (amount - fourthTax[1]) * fifthTax[0]: 0
+            if(amount >= fourthTax[1]){
+                return firstTaxAmount + secondTaxAmount + thirdTaxAmount + fourthTaxAmount + fifthTaxAmount;
+            }
 
-            return totalTax <= 0 ? 0 : totalTax.toFixed(2);
+        },
+        numberWithCommas(num) {
+            return ((parseFloat(num).toFixed(2)).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
         }
 	}
 }
@@ -426,88 +460,64 @@ select{
 
 .outer_table{
 	position: relative;
-	height: 95%;
-	width: 45%;
-	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
-	border-radius: 15px;
-	background-color: #ffffff5d;
 	display: flex;
-	flex-direction: column;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
 	align-items: center;
-	cursor: default;
-	overflow-y: scroll;
+	width: 95%;
+    height: 90%;
+	padding: 10px;
+	background-color: #ffffff60;
+	border-radius: 10px;
+	box-shadow: 2px 4px 10px -7px black;
+	backdrop-filter: blur(10px);
 }
-
 
 .outer_table > .title{
 	display: flex;
-	flex-flow: row nowrap;
-	justify-content: center;
+	flex-flow: row wrap;
+	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 .outer_table > .title > p{
-	font-family: 'Lora';
-	margin: 5px 0px;
-	font-size: 20px;
-	color: black;
-	background-color: white;
-	width: 70%;
-	border-radius: 5px;
+	margin: 0px;
+	font-size: 28px;
 }
 .outer_table > .title .button_link{
 	margin: 0px 10px;
 }
 
-#transactions_list{
+.saved_row{
+    display: flex;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-bottom: 1px;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: white;
+    height: 25px;
 }
 
-#transactions_list > div{
-    width: 95%;
-    display: flex;
-	margin-bottom: 6px;
-	border: 1px solid black;
-}
-
-#transactions_list > div > p{
+.saved_row > p{
     font-size: 15px;
-	width: 100%;
-	margin: 0px;
-	border-left: 1px solid black;
-	pointer-events: none;
+    width: 100%;
+    margin: 0px;
+    border-left: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.Credit{
-	background-color: #00ff00;
-	cursor: pointer;
+.saved_row > p:last-child{
+    display: flex;
+    justify-content: space-evenly;
 }
 
-.Debit{
-    color: white;
-	background-color: #ff1100;
-	cursor: pointer;
+.saved_row .button_link{
+    padding: 0px 10px;
 }
-
-#assets > div:not(.title) > p:nth-of-type(1){
-	max-width: 16ch;
-}
-
-#assets > div:not(.title) > p:nth-of-type(6){
-	max-width: 10ch;
-}
-
-.asset{
-	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
-	border-radius: 5px;
-	background-color: #ffffff5d;
-	cursor: pointer;
-}
-
 
 #pivot{
     width: 95%;
@@ -516,7 +526,7 @@ select{
 
 .pivot_row{
     display: flex;
-    width: 95%;
+    width: 100%;
     margin-bottom: 1px;
     border-right: 1px solid black;
     border-top: 1px solid black;
@@ -541,7 +551,7 @@ select{
 }
 
 .pivot_heading{
-    background-color: #f3f5f9;
+    background-color: #93f1fdaf;
 }
 
 .pivot_row:nth-last-of-type(2){

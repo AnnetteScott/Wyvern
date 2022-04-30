@@ -169,11 +169,13 @@ function manualSave(){
     
 }
 
+let masterRawFormat = {"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work'], 'savedTransactions': {}}, "saveVersion": 10}
+
 if(!fs.existsSync(app.getPath('userData') + "\\data")){
     fs.mkdirSync(app.getPath('userData') + "\\data");
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work']}, "saveVersion": 9}));
+    fs.writeFileSync(saveFilePath, JSON.stringify(masterRawFormat));
 }else if(!fs.existsSync(app.getPath('userData') + "\\data\\userData.json")){
-    fs.writeFileSync(saveFilePath, JSON.stringify({"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": ['Contract Work'], 'homeExpenses': {}}, "saveVersion": 9}));
+    fs.writeFileSync(saveFilePath, JSON.stringify(masterRawFormat));
 }
 
 if(!fs.existsSync(app.getPath('userData') + "\\data\\receipts")){

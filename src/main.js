@@ -15,11 +15,9 @@ ipcRenderer.on('reedMasterDict', function(event, arg) {
 
 ipcRenderer.send('master_dict_read')
 ipcRenderer.on('master_dict_reading', function(event, data) {
-    event;
     if(!window.localStorage.getItem('masterDict')){
         window.localStorage.setItem('masterDict', JSON.stringify(data))
     }
-    
 })
 
 ipcRenderer.on('loadData', function(event, data) {
@@ -28,7 +26,7 @@ ipcRenderer.on('loadData', function(event, data) {
 })
 
 window.setTimeout(function(){
-    saveChecker();
+    saveChecker(); 
 }, 1)
 
 app.mount('#app');
@@ -72,6 +70,11 @@ function saveChecker(){
             }
         }
         masterDict['saveVersion'] = 9;
+    }
+    if(masterDict['saveVersion'] == 9){
+        delete masterDict['records']['homeExpenses']
+        masterDict['records']['savedTransactions'] = {}
+        masterDict['saveVersion'] = 10;
     }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

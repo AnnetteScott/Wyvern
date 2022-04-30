@@ -1,21 +1,19 @@
 <template>
-    <template v-if="loaded">
-        <div :id="$props.id" class="table">
-            <div v-if="$props.title" class="title"><p>{{ $props.title }}</p><span><slot></slot></span></div>
-            <div class="row headings">
-                <p v-for="heading in $props.headings" :key="heading" class="heading" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}${$props.id && $props.sort.includes(heading) ? 'cursor: pointer;' : 'pointer-events: none;'}`" :title="`${$props.id && $props.sort.includes(heading) ? `Sort by ${heading}` : heading}`" @click="sort_table">{{ (heading == 'image' ? '' : heading) }}</p>
-            </div>
-            <div class="inner">
-                <div class="row" v-for="item in $props.data" :key="item" :data="item['id']" :value="JSON.stringify(item)" :style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}${item.amount < 0 ? 'background-color:#f004;' : item.amount > 0 ? 'background-color:#0f03;' : ''}`" @click="this.$parent.editTransaction($event)">
-                    <p v-for="heading in $props.headings" :key="heading" :title="item[heading.toLowerCase()]" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}`">
-                        <img v-if="heading == 'image'" :src="item[heading]" draggable="false" loading="lazy" alt="">
-                        <b v-else-if="$props.emphasis && heading == $props.emphasis">{{  item[heading.toLowerCase()] }}</b>
-                        {{ (heading != 'image' && !($props.emphasis && heading == $props.emphasis) ? item[heading.toLowerCase()] : '') }}
-                    </p>
-                </div>
+    <div :id="$props.id" class="table">
+        <div v-if="$props.title" class="title"><p>{{ $props.title }}</p><span><slot></slot></span></div>
+        <div class="row headings">
+            <p v-for="heading in $props.headings" :key="heading" class="heading" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}${$props.id && $props.sort.includes(heading) ? 'cursor: pointer;' : 'pointer-events: none;'}`" :title="`${$props.id && $props.sort.includes(heading) ? `Sort by ${heading}` : heading}`" @click="sort_table">{{ (heading == 'image' ? '' : heading) }}</p>
+        </div>
+        <div class="inner">
+            <div class="row" v-for="item in $props.data" :key="item" :data="item['id']" :value="JSON.stringify(item)" :style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}${item.amount < 0 ? 'background-color:#f004;' : item.amount > 0 ? 'background-color:#0f03;' : ''}`" @click="this.$parent.editTransaction($event)">
+                <p v-for="heading in $props.headings" :key="heading" :title="item[heading.toLowerCase()]" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}`">
+                    <img v-if="heading == 'image'" :src="item[heading]" draggable="false" loading="lazy" alt="">
+                    <b v-else-if="$props.emphasis && heading == $props.emphasis">{{  item[heading.toLowerCase()] }}</b>
+                    {{ (heading != 'image' && !($props.emphasis && heading == $props.emphasis) ? item[heading.toLowerCase()] : '') }}
+                </p>
             </div>
         </div>
-    </template>
+    </div>
 </template>
 
 <script>
@@ -31,14 +29,11 @@ export default {
 		data: Array,
 		clickable: Boolean
 	},
-    data() {
-		return {
-			loaded: false
-		}
-	},
 	methods: {
 		sort_table(e = false, heading = false) {
-            if(document.querySelector(`#${this.id} .inner`) != null){
+            e;
+            heading;
+            /* if(document.querySelector(`#${this.id} .inner`) != null){
                 let elem;
                 let position;
 
@@ -94,11 +89,10 @@ export default {
                     sorted_elements += row[1].outerHTML;
                 });
                 document.querySelector(`#${this.id} .inner`).innerHTML = sorted_elements; 
-            }
+            } */
 			
 		},
 		sort_table_default() {
-            this.loaded = true
 			if(this.sort_default && this.headings.includes(this.sort_default)){
 				this.sort_table(false, this.sort_default);
 			}
@@ -119,9 +113,8 @@ export default {
 	flex-flow: column nowrap;
 	justify-content: flex-start;
 	align-items: flex-start;
-	width: clamp(300px, 90%, 1000px);
-	min-height: 300px;
-	max-height: 90%;
+	width: 95%;
+    height: 90%;
 	padding: 10px;
 	background-color: #ffffff60;
 	border-radius: 10px;

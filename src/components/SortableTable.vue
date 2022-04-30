@@ -5,8 +5,8 @@
 			<p v-for="heading in $props.headings" :key="heading" class="heading" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}${$props.id && $props.sort.includes(heading) ? 'cursor: pointer;' : 'pointer-events: none;'}`" :title="`${$props.id && $props.sort.includes(heading) ? `Sort by ${heading}` : heading}`" @click="sort_table">{{ (heading == 'image' ? '' : heading) }}</p>
 		</div>
 		<div class="inner">
-			<div class="row" v-for="item in $props.data" :key="item" :value="JSON.stringify(item)" :style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : ''}`">
-				<p v-for="heading in $props.headings" :key="heading" :title="item[heading.toLowerCase()]" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}${$props.clickable ? 'pointer-events: none;' : ''}`">
+			<div class="row" v-for="item in $props.data" :key="item" :data="item['id']" :value="JSON.stringify(item)" :style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}`" @click="data_clicked">
+				<p v-for="heading in $props.headings" :key="heading" :title="item[heading.toLowerCase()]" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}`">
 					<img v-if="heading == 'image'" :src="item[heading]" draggable="false" loading="lazy" alt="">
 					<b v-else-if="$props.emphasis && heading == $props.emphasis">{{  item[heading.toLowerCase()] }}</b>
 					{{ (heading != 'image' && !($props.emphasis && heading == $props.emphasis) ? item[heading.toLowerCase()] : '') }}
@@ -29,6 +29,7 @@ export default {
 		data: Array,
 		clickable: Boolean
 	},
+	emits: ['dataclicked'],
 	methods: {
 		sort_table(e = false, heading = false) {
 			let elem;
@@ -55,10 +56,24 @@ export default {
 
 			// Sort the table rows alphabetically based on the content of the selected column.
 			let table_data = Array.from(document.querySelector(`#${this.id} .inner`).querySelectorAll('.row'));
+			let is_numeric = false;
 			table_data.forEach((data_elem, index) => {
-				table_data[index] = [data_elem.querySelector(`p:nth-child(${position + 1})`).innerHTML, data_elem];
+				let raw_data = data_elem.querySelector(`p:nth-child(${position + 1})`).innerText;
+				let formatted_data = raw_data;
+				if(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}/i.test(raw_data)){
+					raw_data = raw_data.split('/');
+					formatted_data = `${raw_data[2]}/${raw_data[1]}/${raw_data[0]}`
+				}else if(!isNaN(raw_data)){
+					formatted_data = parseFloat(raw_data);
+					is_numeric = true;
+				}
+				table_data[index] = [formatted_data, data_elem];
 			});
-			table_data.sort();
+			if(is_numeric){
+				table_data.sort(function(a,b) {return a[0] - b[0];});
+			}else{
+				table_data.sort();
+			}
 			// Reverse the list if the heading is selected multiple times.
 			if(Array.from(elem.classList).includes('forwards')){
 				table_data.reverse();
@@ -78,6 +93,9 @@ export default {
 			if(this.sort_default && this.headings.includes(this.sort_default)){
 				this.sort_table(false, this.sort_default);
 			}
+		},
+		data_clicked() {
+			console.log('yee');
 		}
 	},
 	mounted() {

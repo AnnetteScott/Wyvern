@@ -71,6 +71,7 @@
 				sort_default="Date"
 				:data="all_transactions"
 				:clickable="true"
+				@dataclicked="editTransaction"
 			>
 				<ButtonItem :title="`+ New`" @click="current_request_form = 'createTransaction'"/>
 			</SortableTable>
@@ -259,7 +260,9 @@ export default {
 		},
 		listAllTransactions() {
 			Object.keys(this.recordDict['transactions']).forEach(function(key) {
-				this.all_transactions.push(this.recordDict['transactions'][key]);
+				let transaction = this.recordDict['transactions'][key];
+				transaction.id = key;
+				this.all_transactions.push(transaction);
 			}.bind(this));
 		},
         editTransaction(e){

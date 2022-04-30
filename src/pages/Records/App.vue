@@ -116,23 +116,21 @@
                         {{ column }}
                     </p>
                 </div>
-                <div class="pivot_row">
-                    <template  v-for="(categoryDict, category) in pivotDict['categories']" :key="category">
-                        <p>{{ category }}</p>
-                        <p>{{ categoryDict['Apr'] }}</p>
-                        <p>{{ categoryDict['May'] }}</p>
-                        <p>{{ categoryDict['Jun'] }}</p>
-                        <p>{{ categoryDict['Jul'] }}</p>
-                        <p>{{ categoryDict['Aug'] }}</p>
-                        <p>{{ categoryDict['Sep'] }}</p>
-                        <p>{{ categoryDict['Oct'] }}</p>
-                        <p>{{ categoryDict['Nov'] }}</p>
-                        <p>{{ categoryDict['Dec'] }}</p>
-                        <p>{{ categoryDict['Jan'] }}</p>
-                        <p>{{ categoryDict['Feb'] }}</p>
-                        <p>{{ categoryDict['Mar'] }}</p>
-                        <p>{{ categoryDict['grandTotal'] }}</p>
-                    </template>
+                <div class="pivot_row" v-for="(categoryDict, category) in pivotDict['categories']" :key="category">
+                    <p>{{ category }}</p>
+                    <p>{{ categoryDict['Apr'] }}</p>
+                    <p>{{ categoryDict['May'] }}</p>
+                    <p>{{ categoryDict['Jun'] }}</p>
+                    <p>{{ categoryDict['Jul'] }}</p>
+                    <p>{{ categoryDict['Aug'] }}</p>
+                    <p>{{ categoryDict['Sep'] }}</p>
+                    <p>{{ categoryDict['Oct'] }}</p>
+                    <p>{{ categoryDict['Nov'] }}</p>
+                    <p>{{ categoryDict['Dec'] }}</p>
+                    <p>{{ categoryDict['Jan'] }}</p>
+                    <p>{{ categoryDict['Feb'] }}</p>
+                    <p>{{ categoryDict['Mar'] }}</p>
+                    <p>{{ categoryDict['grandTotal'] }}</p>
                 </div>
                 <div class="pivot_row pivot_heading">
                     <template v-if="loaded">
@@ -294,13 +292,17 @@ export default {
 		onchange(){
 			this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
 			this.listAllTransactions();
+			this.calculatePivotTable();
 		},
         saveCookie(){
 			this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
             this.recordDict = this.masterDict['records'][$(`#year_selection option:selected`).attr('data')];
 			this.listAllTransactions();
+			this.calculatePivotTable();
+
 		},
 		listAllTransactions() {
+            this.all_transactions = []
 			Object.keys(this.recordDict['transactions']).forEach(function(key) {
 				let transaction = this.recordDict['transactions'][key];
 				transaction.id = key;
@@ -369,7 +371,7 @@ export default {
 
             let totalTax = firstAmount + secondAmount + thirdAmount + fourthAmount + fifthAmount;
 
-            return totalTax;
+            return totalTax <= 0 ? 0 : totalTax.toFixed(2);
         }
 	}
 }
@@ -480,27 +482,6 @@ select{
 	pointer-events: none;
 }
 
-.month{
-	border-left: 0px !important;
-	max-width: 8ch;
-	min-width: 8ch;
-}
-
-.twelve{
-	min-width: 12ch;
-	max-width: 15ch;
-}
-
-.ten{
-	min-width: 10ch;
-	max-width: 15ch;
-}
-
-.eight{
-	min-width: 8ch;
-	max-width: 15ch;
-}
-
 .Credit{
 	background-color: #00ff00;
 	cursor: pointer;
@@ -567,5 +548,7 @@ select{
     margin-top: 10px;
 }
 
-
+.pivot_row > p:last-child{
+    min-width: 10ch;
+}
 </style>

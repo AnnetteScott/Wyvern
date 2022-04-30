@@ -1,19 +1,21 @@
 <template>
-	<div :id="$props.id" class="table">
-		<div v-if="$props.title" class="title"><p>{{ $props.title }}</p><span><slot></slot></span></div>
-		<div class="row headings">
-			<p v-for="heading in $props.headings" :key="heading" class="heading" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}${$props.id && $props.sort.includes(heading) ? 'cursor: pointer;' : 'pointer-events: none;'}`" :title="`${$props.id && $props.sort.includes(heading) ? `Sort by ${heading}` : heading}`" @click="sort_table">{{ (heading == 'image' ? '' : heading) }}</p>
-		</div>
-		<div class="inner">
-			<div class="row" v-for="item in $props.data" :key="item" :data="item['id']" :value="JSON.stringify(item)" :style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}`" @click="data_clicked">
-				<p v-for="heading in $props.headings" :key="heading" :title="item[heading.toLowerCase()]" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}`">
-					<img v-if="heading == 'image'" :src="item[heading]" draggable="false" loading="lazy" alt="">
-					<b v-else-if="$props.emphasis && heading == $props.emphasis">{{  item[heading.toLowerCase()] }}</b>
-					{{ (heading != 'image' && !($props.emphasis && heading == $props.emphasis) ? item[heading.toLowerCase()] : '') }}
-				</p>
-			</div>
-		</div>
-	</div>
+    <template v-if="loaded">
+        <div :id="$props.id" class="table">
+            <div v-if="$props.title" class="title"><p>{{ $props.title }}</p><span><slot></slot></span></div>
+            <div class="row headings">
+                <p v-for="heading in $props.headings" :key="heading" class="heading" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}${$props.id && $props.sort.includes(heading) ? 'cursor: pointer;' : 'pointer-events: none;'}`" :title="`${$props.id && $props.sort.includes(heading) ? `Sort by ${heading}` : heading}`" @click="sort_table">{{ (heading == 'image' ? '' : heading) }}</p>
+            </div>
+            <div class="inner">
+                <div class="row" v-for="item in $props.data" :key="item" :data="item['id']" :value="JSON.stringify(item)" :style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}${item.amount < 0 ? 'background-color:#f004;' : item.amount > 0 ? 'background-color:#0f03;' : ''}`" @click="this.$parent.editTransaction($event)">
+                    <p v-for="heading in $props.headings" :key="heading" :title="item[heading.toLowerCase()]" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}`">
+                        <img v-if="heading == 'image'" :src="item[heading]" draggable="false" loading="lazy" alt="">
+                        <b v-else-if="$props.emphasis && heading == $props.emphasis">{{  item[heading.toLowerCase()] }}</b>
+                        {{ (heading != 'image' && !($props.emphasis && heading == $props.emphasis) ? item[heading.toLowerCase()] : '') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </template>
 </template>
 
 <script>
@@ -29,79 +31,83 @@ export default {
 		data: Array,
 		clickable: Boolean
 	},
-	emits: ['dataclicked'],
+    data() {
+		return {
+			loaded: false
+		}
+	},
 	methods: {
 		sort_table(e = false, heading = false) {
-			let elem;
-			let position;
+            if(document.querySelector(`#${this.id} .inner`) != null){
+                let elem;
+                let position;
 
-			if(e && !heading){
-				elem = e.target;
-				position = [];
-				// Loop through previous siblings until `null` to get the DOM index of the selected heading.
-				while((elem = elem.previousElementSibling)){
-					position.push(elem);
-				}
-				elem = e.target;
-				position = position.length;
-			}else{
-				position = 0;
-				document.querySelectorAll(`#${this.id} .heading`).forEach(function(heading_elem, index) {
-					if(heading_elem.innerText.toLowerCase() === heading.toLowerCase()){
-						elem = heading_elem;
-						position = index;
-					}
-				}.bind(this));
-			}
-
-			// Sort the table rows alphabetically based on the content of the selected column.
-			let table_data = Array.from(document.querySelector(`#${this.id} .inner`).querySelectorAll('.row'));
-			let is_numeric = false;
-			table_data.forEach((data_elem, index) => {
-				let raw_data = data_elem.querySelector(`p:nth-child(${position + 1})`).innerText;
-				let formatted_data = raw_data;
-				if(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}/i.test(raw_data)){
-					raw_data = raw_data.split('/');
-					formatted_data = `${raw_data[2]}/${raw_data[1]}/${raw_data[0]}`
-				}else if(!isNaN(raw_data)){
-					formatted_data = parseFloat(raw_data);
-					is_numeric = true;
-				}
-				table_data[index] = [formatted_data, data_elem];
-			});
-			if(is_numeric){
-				table_data.sort(function(a,b) {return a[0] - b[0];});
-			}else{
-				table_data.sort();
-			}
-			// Reverse the list if the heading is selected multiple times.
-			if(Array.from(elem.classList).includes('forwards')){
-				table_data.reverse();
-				elem.classList.remove('forwards');
-			}else{
-				elem.classList.add('forwards');
-			}
-			// Update the rows in the table.
-			document.querySelector(`#${this.id} .inner`).innerHTML = '';
-			let sorted_elements = '';
-			table_data.forEach((row) => {
-				sorted_elements += row[1].outerHTML;
-			});
-			document.querySelector(`#${this.id} .inner`).innerHTML = sorted_elements;
+                if(e && !heading){
+                    elem = e.target;
+                    position = [];
+                    // Loop through previous siblings until `null` to get the DOM index of the selected heading.
+                    while((elem = elem.previousElementSibling)){
+                        position.push(elem);
+                    }
+                    elem = e.target;
+                    position = position.length;
+                }else{
+                    position = 0;
+                    document.querySelectorAll(`#${this.id} .heading`).forEach(function(heading_elem, index) {
+                        if(heading_elem.innerText.toLowerCase() === heading.toLowerCase()){
+                            elem = heading_elem;
+                            position = index;
+                        }
+                    }.bind(this));
+                }
+                // Sort the table rows alphabetically based on the content of the selected column.
+                let table_data = Array.from(document.querySelector(`#${this.id} .inner`).querySelectorAll('.row'));
+                let is_numeric = false;
+                table_data.forEach((data_elem, index) => {
+                    let raw_data = data_elem.querySelector(`p:nth-child(${position + 1})`).innerText;
+                    let formatted_data = raw_data;
+                    if(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}/i.test(raw_data)){
+                        raw_data = raw_data.split('/');
+                        formatted_data = `${raw_data[2]}/${raw_data[1]}/${raw_data[0]}`
+                    }else if(!isNaN(raw_data)){
+                        formatted_data = parseFloat(raw_data);
+                        is_numeric = true;
+                    }
+                    table_data[index] = [formatted_data, data_elem];
+                });
+                if(is_numeric){
+                    table_data.sort(function(a,b) {return a[0] - b[0];});
+                }else{
+                    table_data.sort();
+                }
+                // Reverse the list if the heading is selected multiple times.
+                if(Array.from(elem.classList).includes('forwards')){
+                    table_data.reverse();
+                    elem.classList.remove('forwards');
+                }else{
+                    elem.classList.add('forwards');
+                }
+                // Update the rows in the table.
+                document.querySelector(`#${this.id} .inner`).innerHTML = '';
+                let sorted_elements = '';
+                table_data.forEach((row) => {
+                    sorted_elements += row[1].outerHTML;
+                });
+                document.querySelector(`#${this.id} .inner`).innerHTML = sorted_elements; 
+            }
+			
 		},
 		sort_table_default() {
+            this.loaded = true
 			if(this.sort_default && this.headings.includes(this.sort_default)){
 				this.sort_table(false, this.sort_default);
 			}
-		},
-		data_clicked() {
-			console.log('yee');
 		}
 	},
 	mounted() {
-		setTimeout(function() {
-			this.sort_table_default();
-		}.bind(this), 10);
+        setTimeout(function() {
+            this.sort_table_default();
+		}.bind(this), 1);
 	}
 }
 </script>
@@ -163,9 +169,11 @@ export default {
 }
 .table .row:nth-child(even):not(.headings) {
 	background-color: #fff3;
+    border-top: 1px solid #0001;
+    border-bottom: 1px solid #0001;
 }
 .table .row:not(.headings):hover {
-	background-color: white;
+	background-color: #fffB !important;
 }
 .table .row > * {
 	position: relative;
@@ -175,6 +183,9 @@ export default {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+}
+.table .row:not(.headings) > * {
+    pointer-events: none;
 }
 .table .row b {
 	color: black;

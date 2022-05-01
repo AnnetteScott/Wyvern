@@ -357,8 +357,10 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: 10px;
 	width: 150px;
 	min-width: 150px;
+	padding-top: 10px;
 	height: calc(100vh - var(--navbar_height) - 10vh);
 	overflow-y: scroll;
 	margin: 10px 10px 10px 10px;

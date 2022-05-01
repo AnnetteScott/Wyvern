@@ -36,7 +36,7 @@
                 <label for="year_selection">Choose a Tax Year:</label>
                 <select id="year_selection"  @change="onchange">
                     <template v-for="(recordDict, recordYear) in masterDict['records']" :key="recordDict" >
-                        <option v-if="recordYear !== 'categories' && recordYear !== 'accounts' && recordYear !== 'homeExpenses'" :data="recordYear">
+                        <option v-if="recordYear !== 'categories' && recordYear !== 'accounts' && recordYear !== 'savedTransactions'" :data="recordYear">
                             {{ recordYear }}
                         </option>
                     </template>
@@ -302,6 +302,8 @@ export default {
                 transID;
             }
             this.loaded = true;
+            console.log(this.recordDict)
+            console.log(this.pivotDict)
         },
         uploadReceipt(event){
             this.transID = $(event.target).attr('data');
@@ -376,7 +378,11 @@ export default {
             let secondTax = [0.175, 48000];
             let thirdTax = [0.3, 70000];
             let fourthTax = [0.33, 180000];
-            let fifthTax = [0.39]; 
+            let fifthTax = [0.39];
+            
+            if(amount <= 0){
+                return 0;
+            }
 
             let firstTaxAmount = amount > firstTax[1] ? firstTax[1] * firstTax[0]: amount * firstTax[0]; //1470 so correct!
             if(amount <= firstTax[1]){
@@ -492,7 +498,7 @@ select{
 .saved_row{
     display: flex;
     width: 100%;
-    margin-bottom: 1px;
+    margin-bottom: 10px;
     border-right: 1px solid black;
     border-top: 1px solid black;
     border-bottom: 1px solid black;

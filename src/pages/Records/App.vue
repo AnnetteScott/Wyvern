@@ -34,9 +34,16 @@
 				]"
 				emphasis=""
 				:sort="[
+					'Month',
+					'Date',
+					'Account',
+					'Type',
+					'Item',
+					'Category',
+					'Amount'
 				]"
-				sort_default=""
-				:data="all_transactions"
+				sort_default="Date"
+				:rows="all_transactions"
 				:clickable="true"
 				@dataclicked="editTransaction"
 			>

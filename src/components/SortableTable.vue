@@ -46,6 +46,11 @@ export default {
 			table_rows: this.rows
 		}
 	},
+    watch: {
+        rows() {
+            this.table_rows = this.rows;
+        }
+    },
 	methods: {
         sort_table(heading = false, event = false) {// Sort the table rows alphabetically based on the content of a selected column.
             if(this.table_rows && heading){

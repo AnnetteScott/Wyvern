@@ -57,8 +57,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save User`" @click="editUser"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteUser`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteUser"/>
 			</fieldset>
 		</div>
 	</div>
@@ -121,8 +121,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save Client`" @click="editClient"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteClient`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteClient"/>
 			</fieldset>
 		</div>
 	</div>
@@ -179,8 +179,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save Project`" @click="editProject"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteProject`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteProject"/>
 			</fieldset>
 		</div>
 	</div>
@@ -219,8 +219,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save Colour`" @click="editColour"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteColour`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteColour"/>
 			</fieldset>
 		</div>
 	</div>
@@ -306,8 +306,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save Transaction`" @click="editTransaction"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteTransaction`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteTransaction"/>
 			</fieldset>
 		</div>
 	</div>
@@ -334,8 +334,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save Category`" @click="editCategory"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteCategory`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteCategory"/>
 			</fieldset>
 		</div>
 	</div>
@@ -363,8 +363,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save Account`" @click="editAccount"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteAccount`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteAccount"/>
 			</fieldset>
 		</div>
 	</div>
@@ -422,8 +422,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save Account`" @click="editAsset"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteAsset`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteAsset"/>
 			</fieldset>
 		</div>
 	</div>
@@ -496,8 +496,8 @@
 
 			<fieldset>
 				<ButtonItem :title="`Save Transaction`" @click="editSaved"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteSaved`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
-				<ButtonItem :title="`Delete`" @click="deleteSaved"/>
 			</fieldset>
 		</div>
 	</div>
@@ -517,13 +517,15 @@
 		</div>
 	</div>
 
-
+    <DeleteBox :showDelete="show_delete" :deleteFunction="delete_function" @dontDelete="show_delete=false, delete_function=``"
+	@doDelete="show_delete=false, delete_function=``"/>
 	
 </template>
 
 
 <script>
 import ButtonItem from './ButtonItem.vue';
+import DeleteBox from './DeleteBox.vue';
 import $ from 'jquery';
 import { generateID, reDoDate, addToDate } from '../../public/generalFunctions.js';
 const { ipcRenderer } = window.require("electron");
@@ -536,7 +538,8 @@ export default {
 		requestForm: String
 	},
 	components: {
-		ButtonItem
+		ButtonItem,
+        DeleteBox
 	},
 	created(){
 		let self=this;
@@ -551,7 +554,9 @@ export default {
 			masterDict: {},
 			recordDict: {},
 			fileUploaded: false,
-			receiptID: ''
+			receiptID: '',
+            show_delete: false,
+            delete_function: '',
 		}
 	},
 	methods: {
@@ -590,12 +595,13 @@ export default {
 			this.$emit('saveCookieForBeebViewing', '');
         },
         deleteSaved(){
-           const savedID = $('#edit_savedID').attr('savedid');
-			delete this.masterDict['records']['savedTransactions'][savedID]
+            const savedID = $('#edit_savedID').attr('savedid');
+            delete this.masterDict['records']['savedTransactions'][savedID]
 
-			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
-			this.$emit('cancelled', '');
-			this.$emit('saveCookieForBeebViewing', '');
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+            this.$emit('cancelled', '');
+            this.$emit('saveCookieForBeebViewing', '');
+            this.doDelete = false;
         },
         addSaved(){
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

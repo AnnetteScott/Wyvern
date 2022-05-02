@@ -3,7 +3,7 @@
         <div id="inner_box">
             Are you sure you want to delete this?
             <div id="buttons">
-                <ButtonItem :title="'Yes'" @click="this.$emit('doDelete', '')"/>
+                <ButtonItem :title="'Yes'" @click="triggerDelete"/>
                 <ButtonItem :title="'No'" @click="this.$emit('dontDelete', '')"/>
             </div>
         </div>
@@ -17,11 +17,45 @@ export default {
 	name: 'DeleteBox',
     emits: ['doDelete','dontDelete'],
 	props: {
-        showDelete: Boolean
+        showDelete: Boolean,
+        deleteFunction: String
 	},
     components: {
 		ButtonItem
-	}
+	},
+    methods: {
+        triggerDelete(){
+            this.$emit('doDelete', '')
+            if(this.deleteFunction == 'deleteSaved'){
+                this.$parent.deleteSaved();
+            }
+            else if(this.deleteFunction == 'deleteUser'){
+                this.$parent.deleteUser();
+            }
+            else if(this.deleteFunction == 'deleteClient'){
+                this.$parent.deleteClient();
+            }
+            else if(this.deleteFunction == 'deleteProject'){
+                this.$parent.deleteProject();
+            }
+            else if(this.deleteFunction == 'deleteColour'){
+                this.$parent.deleteColour();
+            }
+            else if(this.deleteFunction == 'deleteTransaction'){
+                this.$parent.deleteTransaction();
+            }
+            else if(this.deleteFunction == 'deleteCategory'){
+                this.$parent.deleteCategory();
+            }
+            else if(this.deleteFunction == 'deleteAccount'){
+                this.$parent.deleteAccount();
+            }
+            else if(this.deleteFunction == 'deleteAsset'){
+                this.$parent.deleteAsset();
+            }
+            
+        }
+    }
 }
 </script>
 

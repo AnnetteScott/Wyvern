@@ -321,10 +321,15 @@ export default {
                     this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': {}, 'assets': {}};
                     this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
                 }
+                if(!Object.keys(this.masterDict['records']).includes(yearID)){
+                    this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
+                }
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': invoiceDate, 'account': $('#select_account option:selected').val(), 'type': 'Credit', 'item': `${clientDict['client']} - ${invoiceID}`, 'category': 'Contract Work', 'amount': parseFloat(this.invoiceTotal), 'receiptID': ''}
             }
-            this.projWeek['invoiced'] = true;
+            if($('#invoice_check_invoice')[0].checked){
+                this.projWeek['invoiced'] = true;
+            }
             localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 
 		},

@@ -31,9 +31,7 @@ export default {
 	},
 	methods: {
 		sort_table(e = false, heading = false) {
-            e;
-            heading;
-            /* if(document.querySelector(`#${this.id} .inner`) != null){
+            if(document.querySelector(`#${this.id} .inner`) != null){
                 let elem;
                 let position;
 
@@ -89,8 +87,7 @@ export default {
                     sorted_elements += row[1].outerHTML;
                 });
                 document.querySelector(`#${this.id} .inner`).innerHTML = sorted_elements; 
-            } */
-			
+            }
 		},
 		sort_table_default() {
 			if(this.sort_default && this.headings.includes(this.sort_default)){

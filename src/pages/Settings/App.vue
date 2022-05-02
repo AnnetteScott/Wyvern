@@ -30,6 +30,7 @@
 			}
 		]"
 	/>
+	<SavingPopup />
 
 	<div id="settings_tabs">
 		<div class="settings_tab_button" @click="settings_tab_clicked($event, `users_bottom`)">
@@ -136,15 +137,17 @@ import AllForms from '../../components/AllForms.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import $ from 'jquery';
+import SavingPopup from '@/components/SavingPopup.vue';
 
 export default {
 	name: 'App',
 	components: {
-		NavBar,
-		AllForms,
-		ButtonItem,
-		BackgroundBubble
-	},
+    NavBar,
+    AllForms,
+    ButtonItem,
+    BackgroundBubble,
+    SavingPopup
+},
 	data() {
 		return {
 			current_settings_page: '',

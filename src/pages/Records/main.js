@@ -1,20 +1,16 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-const app = createApp(App)
+import { createApp } from 'vue';
+import App from './App.vue';
+const app = createApp(App);
 
-import $ from 'jquery'
 const { ipcRenderer } = window.require("electron");
 ipcRenderer.on('reedMasterDict', function(event, arg) {
-    $('#saving_pop_up').addClass('input_box_open');
-    window.setTimeout(function(){
-        $('#saving_pop_up').removeClass('input_box_open');
-    }, 1000)
+    ipcRenderer.send('trigger_save_pop_up');
     event.sender.send('readMasterDict', JSON.parse(window.localStorage.getItem('masterDict')));
-    arg
+    arg;
 });
 
 ipcRenderer.on('loadData', function(event, data) {
-    window.localStorage.setItem('masterDict', data)
+    window.localStorage.setItem('masterDict', data);
     event;
 })
 

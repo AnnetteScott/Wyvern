@@ -30,6 +30,7 @@
             }
         ]"
     />
+    <SavingPopup />
     <div id="home_page">
         <img src="./assets/WyvernIcon.png" draggable="false" alt="" style="filter: grayscale(1) brightness(4);">
         <h1>Welcome To Wyvern!</h1>
@@ -41,23 +42,22 @@
         <br>
         <br>
         <br>
-        <ButtonItem :title="`Check for updates`" :glow="true"/>
     </div>
 
 </template>
 
 <script>
 import NavBar from './components/NavBar.vue';
-import ButtonItem from './components/ButtonItem.vue';
 import BackgroundBubble from './components/BackgroundBubble.vue';
+import SavingPopup from './components/SavingPopup.vue';
 
 export default {
 	name: 'App',
 	components: {
-		NavBar,
-		ButtonItem,
-		BackgroundBubble
-	},
+        NavBar,
+        BackgroundBubble,
+        SavingPopup
+    },
 	mounted() {
         setTimeout(() => {
             console.log(JSON.parse(localStorage.getItem('masterDict')));

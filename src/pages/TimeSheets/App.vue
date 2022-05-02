@@ -30,6 +30,7 @@
 			}
 		]"
 	/>
+	<SavingPopup />
     <div id="inner">
         <div id="project_container">
             <a v-for="(projectDict, projectID) in masterDict['projects']" :key="projectDict" class="list_item" :data="projectID" @click="saveProjectID" :href="`/Project.html`">{{ projectDict.name }}</a> 
@@ -44,13 +45,15 @@
 import NavBar from '../../components/NavBar.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import $ from 'jquery';
+import SavingPopup from '@/components/SavingPopup.vue';
 
 export default {
 	name: 'App',
 	components: {
-		NavBar,
-		BackgroundBubble
-	},
+    NavBar,
+    BackgroundBubble,
+    SavingPopup
+},
     data() {
 		return {
 			masterDict: {}

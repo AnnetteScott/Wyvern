@@ -30,6 +30,7 @@
 			}
 		]"
 	/>
+	<SavingPopup />
 	<!-- Invoice Selector -->
 	<div class="form_container">
         <div class="form">
@@ -186,6 +187,7 @@
 
 <script>
 import NavBar from '../../components/NavBar.vue';
+import SavingPopup from '../../components/SavingPopup.vue';
 import BackgroundBubble from '../../components/BackgroundBubble.vue';
 import ButtonItem from '../../components/ButtonItem.vue';
 import { addToDate, generateID } from '../../../public/generalFunctions.js';
@@ -195,6 +197,7 @@ export default {
 	name: 'App',
 	components: {
 		NavBar,
+		SavingPopup,
 		BackgroundBubble,
 		ButtonItem
 	},

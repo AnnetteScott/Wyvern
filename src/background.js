@@ -237,3 +237,7 @@ ipcMain.on('download_file', function(event, receiptID) {
 function read_file(path){
     return fs.readFileSync(path, 'utf8');
 }
+
+ipcMain.on('trigger_save_pop_up', function(event, receiptID) {
+    win.webContents.send("trigger_the_save_pop_up");
+});

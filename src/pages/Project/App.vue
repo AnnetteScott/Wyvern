@@ -30,6 +30,7 @@
 			}
 		]"
 	/>
+	<SavingPopup />
     <div id="container">
         <div id="top_title">
             <template v-if="weekID !== ''">
@@ -87,17 +88,19 @@ import DeleteBox from '../../components/DeleteBox.vue';
 import AllForms from '../../components/AllForms.vue';
 import $ from 'jquery';
 import {addToDate } from '../../../public/generalFunctions.js';
+import SavingPopup from '@/components/SavingPopup.vue';
 
 export default {
 	name: 'App',
 	components: {
-		NavBar,
-		BackgroundBubble,
-		ButtonItem,
-		TimeSheet,
-        DeleteBox,
-        AllForms
-	},
+    NavBar,
+    BackgroundBubble,
+    ButtonItem,
+    TimeSheet,
+    DeleteBox,
+    AllForms,
+    SavingPopup
+},
 	data() {
 		return {
 			projectDict: {},

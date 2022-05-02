@@ -30,6 +30,7 @@
 			}
 		]"
 	/>
+	<SavingPopup />
 	<div id="inner">
 		<div id="selectors">
 			<div id="year_select">
@@ -197,17 +198,19 @@ import DeleteBox from '../../components/DeleteBox.vue';
 import { generateID } from '../../../public/generalFunctions.js';
 import $ from 'jquery';
 import SortableTable from '@/components/SortableTable.vue';
+import SavingPopup from '@/components/SavingPopup.vue';
 const { ipcRenderer } = window.require("electron");
 
 export default {
 	name: 'App',
 	components: {
-	NavBar,
-	BackgroundBubble,
-	AllForms,
-	ButtonItem,
-	SortableTable,
-	DeleteBox
+    NavBar,
+    BackgroundBubble,
+    AllForms,
+    ButtonItem,
+    SortableTable,
+    DeleteBox,
+    SavingPopup
 },
 	data() {
 		return {

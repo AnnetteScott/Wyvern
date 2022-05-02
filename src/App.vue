@@ -36,12 +36,7 @@
         <h1>Welcome To Wyvern!</h1>
         <h2>An Invoicing and Timesheet Software</h2>
         <br>
-        <br>
-        <br>
         <p>Click the menu in the top right to get started.</p>
-        <br>
-        <br>
-        <br>
     </div>
 
 </template>
@@ -96,6 +91,8 @@ export default {
 	border: 3px solid #ffffff40;
 	border-radius: 50%;
 	transform: translateY(var(--navbar_height));
+
+    display: none;
 }
 
 #home_page::after{
@@ -108,6 +105,8 @@ export default {
 	border: 3px solid #ffffff20;
 	border-radius: 50%;
 	transform: translateY(var(--navbar_height));
+
+    display: none;
 }
 
 </style>

@@ -466,13 +466,19 @@ export default {
 	justify-content: space-evenly;
 }
 
+select{
+	width: 150px;
+	height: 27px;
+	margin: 0px 1ch 10px;
+	padding: 5px;
+	border-radius: 10px;
+	outline: none;
+}
+
 label{
 	width: 200px;
 }
 
-select{
-	width: 100px;
-}
 
 .tables{
 	width: 100%;

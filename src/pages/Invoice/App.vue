@@ -439,12 +439,12 @@ input {
 }
 
 select{
-	margin: 0px 0px 10px;
-	border-radius: 10px;
-	padding: 5px;
-	width: 110px;
-	outline: none;
+	width: 200px;
 	height: 27px;
+	margin: 0px 0px 10px;
+	padding: 5px;
+	border-radius: 10px;
+	outline: none;
 }
 
 label{

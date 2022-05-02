@@ -158,6 +158,7 @@ export default {
 	mounted() {
 		this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
 
+		$('.settings_tab_button:nth-child(1)').click();
 	},
 	methods: {
 		settings_tab_clicked(e, page){
@@ -322,14 +323,14 @@ export default {
 	justify-content: center;
 	align-items: center;
 	width: 95%;
-	height: clamp(60px, 60px, 60px);
+	height: 50px;
 	padding: 0px 20px;
 	background-color: #ffffff4f;
 	border-radius: 10px;
 	cursor: pointer;
 	font-family: 'Lora';
 	font-weight: 900;
-	font-size: 2.25em;
+	font-size: 1.6em;
 }
 
 .list_item:hover {
@@ -342,8 +343,8 @@ export default {
 }
 
 .colour_preview{
-    width: 25px;
-    height: 80%;
+    height: 70%;
+	aspect-ratio: 1;
     margin-right: 10px;
     border-radius: 10px;
 }

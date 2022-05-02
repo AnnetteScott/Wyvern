@@ -26,27 +26,27 @@ export default {
             links: [
                 {
                     title: `Wyvern`,
-                    image: require(`@/assets/icons/home_white_24dp.svg`),
+                    image: require(`@/assets/icons/homeIcon.svg`),
                     url: `/index.html`
                 },
                 {
                     title: `Settings`,
-                    image: require(`@/assets/icons/settings_white_24dp.svg`),
+                    image: require(`@/assets/icons/settingsIcon.svg`),
                     url: `/Settings.html`
                 },
                 {
                     title: `Time Sheets`,
-                    image: require(`@/assets/icons/schedule_white_24dp.svg`),
+                    image: require(`@/assets/icons/timeSheetsIcon.svg`),
                     url: `/TimeSheets.html`
                 },
                 {
                     title: `Invoice`,
-                    image: require(`@/assets/icons/receipt_white_24dp.svg`),
+                    image: require(`@/assets/icons/invoiceIcon.svg`),
                     url: `/Invoice.html`
                 },
                 {
                     title: `Records`,
-                    image: require(`@/assets/icons/receipt_long_white_24dp.svg`),
+                    image: require(`@/assets/icons/recordsIcon.svg`),
                     url: `/Records.html`
                 }
             ]

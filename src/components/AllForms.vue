@@ -421,7 +421,7 @@
 			<input id="edit_asset_total" type="number" step="0.01" />
 
 			<fieldset>
-				<ButtonItem :title="`Save Account`" @click="editAsset"/>
+				<ButtonItem :title="`Save Asset`" @click="editAsset"/>
 				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteAsset`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
 			</fieldset>
@@ -645,21 +645,67 @@ export default {
 			let item = $('#create_asset_item').val();
 			let vendor = $('#create_asset_vendor').val();
 			let date = ($('#create_asset_date').val()).split("-");
+			let month = parseInt(date[1]) - 1;
+			let thisYear = parseInt(date[0]);
 			date = date.reverse().join("/");
+            if(date == '' || date == 'NaN/NaN/NaN'){ //If no date was provided
+				$("#create_asset_date").addClass('form_error');
+				return false;
+			}
+            $("#create_asset_date").removeClass('form_error');
+            let yearID;
+			if(month < 3){
+				yearID = `${thisYear - 1} - ${thisYear}`;
+			}else{
+				yearID = `${thisYear} - ${thisYear + 1}`;
+			}
+
+			if(!Object.keys(this.masterDict['records']).includes(yearID)){
+				this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
+			}
 
 			let unitCost = parseInt($(`#create_asset_unit_cost`).val());
 			let units = parseInt($(`#create_asset_units`).val());
 			let total = parseInt($(`#create_asset_total`).val());
-			let thisYear = $(`#year_selection option:selected`).attr('data')
 			const assetID = generateID(this.masterDict);
-			this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
 
+			this.masterDict['records'][thisYear]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');
 		},
 		editAsset(){
-            
+            let date = ($('#edit_asset_date').val()).split("-");
+			let month = parseInt(date[1]) - 1;
+			let thisYear = parseInt(date[0]);
+			date = date.reverse().join("/");
+            if(date == '' || date == 'NaN/NaN/NaN'){ //If no date was provided
+				$("#edit_asset_date").addClass('form_error');
+				return false;
+			}
+            $("#edit_asset_date").removeClass('form_error');
+            let yearID;
+			if(month < 3){
+                yearID = `${thisYear - 1} - ${thisYear}`;
+			}else{
+                yearID = `${thisYear} - ${thisYear + 1}`;
+			}
+
+			if(!Object.keys(this.masterDict['records']).includes(yearID)){
+                this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
+			}
+
+            let item = $('#edit_asset_item').val();
+			let vendor = $('#edit_asset_vendor').val();
+            let unitCost = parseInt($(`#edit_asset_unit_cost`).val());
+			let units = parseInt($(`#edit_asset_units`).val());
+			let total = parseInt($(`#edit_asset_total`).val());
+            const assetID = $('#edit_assetID').attr('assetid');
+
+            this.masterDict['records'][yearID]['assets'][assetID] = {'item': item, 'vendor': vendor, 'date': date, 'unitCost': unitCost, 'units': units, 'total': total}
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
 		},
 		deleteAsset(){
 			const ID = $('#edit_assetID').attr('assetid');

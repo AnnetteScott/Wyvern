@@ -164,10 +164,12 @@ export default {
 					$(`.column > div:nth-child(${i})`).css("user-select", "none");
 				}
                 //Set border for bottom of timelist timesheet section
-				$(`.column > div:nth-child(${this.projDict['timeList'].length + 3})`).css("border-top", "2px solid black");
-				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-bottom", "2px solid black");
+				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("margin-bottom", "7px");
+				$(`.column > div:nth-child(${this.projDict['timeList'].length + 2})`).css("border-bottom", "1px solid black");
+				$(`.column > div:nth-child(${this.projDict['timeList'].length + 3})`).css("border-top", "1px solid black");
+				$(`.column > div:nth-child(${this.timeList.length})`).css("margin-bottom", "5px");
+				$(`.column > div:nth-child(${this.timeList.length})`).css("border-bottom", "1px solid black");
 
-				$(`.column > div:nth-child(${this.timeList.length})`).css("border-bottom", "2px solid black");
 				$(`.column > div:nth-child(${this.timeList.length - 1})`).css("border-bottom", "1px dashed black");
 				$(`.column > div:nth-child(${this.timeList.length + 1})`).css({"border-top": '1px solid black', "font-weight": "bold"});
 				$(`.column > div:nth-child(${this.timeList.length + 2})`).css({"font-weight": "bold"});
@@ -179,6 +181,7 @@ export default {
                     $('.column').each(function(i, obj) {
                         if(i == 7){
                             $(obj).css("border-right", "1px solid black");
+                            $(obj).css("margin-right", "5px");
                         }
                     });
 				}
@@ -410,7 +413,7 @@ export default {
 
 .totalCellTwo{
 	background-color: white;
-	width: calc(1400% + 14px);
+	width: calc(1400% + 19px);
 	height: 25px;
 	min-height: 25px;
 	max-height: 25px;

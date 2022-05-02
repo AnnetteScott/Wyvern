@@ -92,7 +92,7 @@
 					<p>{{ assetDict['unitCost'] }}</p>
 					<p>{{ assetDict['units'] }}</p>
 					<p>${{ assetDict['total'] }}</p>
-					<p>{{ assetDict['total'] }}</p>
+					<p></p>
 				</div>
 			</div>
 		</div>

@@ -16,13 +16,20 @@
 				class="row" 
 				:data="item.id ? item.id : ''"  
 				:value="JSON.stringify(item)" 
-				:style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}${item.amount < 0 ? 'background-color:#ff00005c;' : item.amount > 0 ? 'background-color:#00ff005e;' : ''}`" 
+				:style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}${item.amount < 0 ? 'background-color:#ff26265c;' : item.amount > 0 ? 'background-color:#00ff005e;' : ''}`" 
 				@click="this.$parent.editTransaction($event)"
 			>
                 <p v-for="heading in $props.headings" :key="heading" :title="item[heading.toLowerCase()]" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}`">
                     <img v-if="heading == 'image'" :src="item[heading]" draggable="false" loading="lazy" alt="">
                     <b v-else-if="$props.emphasis && heading == $props.emphasis">{{  item[heading.toLowerCase()] }}</b>
                     {{ (heading != 'image' && !($props.emphasis && heading == $props.emphasis) ? item[heading.toLowerCase()] : '') }}
+
+                    <template v-if="heading == 'Receipt' && item.receiptID != ''">
+                        <img :src="require(`../assets/icons/fileDownload.svg`)" draggable="false" alt="" @click.stop="this.$parent.downloadReceipt($event)" :data="item.receiptID" style="pointer-events:all;">
+                    </template>
+                    <template v-else-if="heading == 'Receipt'">
+                        <img :src="require(`../assets/icons/fileUpload.svg`)" draggable="false" alt="" @click.stop="this.$parent.uploadReceipt($event)" :data="item.id" style="pointer-events:all;">
+                    </template>
                 </p>
             </div>
         </div>

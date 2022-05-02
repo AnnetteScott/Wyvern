@@ -30,7 +30,8 @@
 					'Type',
 					'Item',
 					'Category',
-					'Amount'
+					'Amount',
+                    'Receipt'
 				]"
 				emphasis=""
 				:sort="[

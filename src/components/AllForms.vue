@@ -786,6 +786,7 @@ export default {
 			if(!Object.keys(this.masterDict['records']).includes(yearID)){
 				this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
 			}
+            console.log(this.masterDict)
 			this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount, 'receiptID': this.receiptID}
 
 			this.fileUploaded = false;

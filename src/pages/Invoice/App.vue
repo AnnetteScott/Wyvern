@@ -365,6 +365,13 @@ export default {
 	margin-top: var(--navbar_height);
 }
 
+@media only screen and (max-width: 1435px) {
+    #inner {
+        height: calc(100vh - var(--navbar_height) - 15px);
+        overflow-x: auto;
+    }
+}
+
 input {
 	width: 200px;
 	margin-bottom: 15px;

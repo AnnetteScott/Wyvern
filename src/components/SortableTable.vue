@@ -5,7 +5,7 @@
             <p v-for="heading in $props.headings" :key="heading" class="heading" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}${$props.id && $props.sort.includes(heading) ? 'cursor: pointer;' : 'pointer-events: none;'}`" :title="`${$props.id && $props.sort.includes(heading) ? `Sort by ${heading}` : heading}`" @click="sort_table">{{ (heading == 'image' ? '' : heading) }}</p>
         </div>
         <div class="inner">
-            <div class="row" v-for="item in $props.data" :key="item" :data="item['id']" :value="JSON.stringify(item)" :style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}${item.amount < 0 ? 'background-color:#f004;' : item.amount > 0 ? 'background-color:#0f03;' : ''}`" @click="this.$parent.editTransaction($event)">
+            <div class="row" v-for="item in $props.data" :key="item" :data="item['id']" :value="JSON.stringify(item)" :style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}${item.amount < 0 ? 'background-color:#ff00005c;' : item.amount > 0 ? 'background-color:#00ff005e;' : ''}`" @click="this.$parent.editTransaction($event)">
                 <p v-for="heading in $props.headings" :key="heading" :title="item[heading.toLowerCase()]" :style="`${heading == 'image' ? 'max-width: 38px;' : ''}`">
                     <img v-if="heading == 'image'" :src="item[heading]" draggable="false" loading="lazy" alt="">
                     <b v-else-if="$props.emphasis && heading == $props.emphasis">{{  item[heading.toLowerCase()] }}</b>

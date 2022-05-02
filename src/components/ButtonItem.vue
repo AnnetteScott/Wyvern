@@ -1,6 +1,6 @@
 <template>
 	<div class="button_link" :title="$props.title">
-		<p>{{ title }}</p>
+		<p v-if="title">{{ title }}</p>
 		<img :src="image" draggable="false" alt="">
 	</div>
 </template>

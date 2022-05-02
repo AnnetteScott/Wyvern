@@ -329,6 +329,13 @@ export default {
 	flex-direction: row;
 }
 
+@media only screen and (max-width: 1435px) {
+    #inner {
+        height: calc(100vh - var(--navbar_height) - 15px);
+        overflow-x: auto;
+    }
+}
+
 #container{
     display: flex;
     align-items: center;

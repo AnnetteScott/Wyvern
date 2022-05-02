@@ -1,35 +1,6 @@
 <template>
 	<BackgroundBubble />
-	<NavBar 
-		:title="`Records`"
-		:links="[
-			{
-				title: `Wyvern`,
-				image: require(`../../assets/icons/home_white_24dp.svg`),
-				url: `/index.html`
-			},
-			{
-				title: `Settings`,
-				image: require(`../../assets/icons/settings_white_24dp.svg`),
-				url: `/Settings.html`
-			},
-			{
-				title: `Time Sheets`,
-				image: require(`../../assets/icons/schedule_white_24dp.svg`),
-				url: `/TimeSheets.html`
-			},
-			{
-				title: `Invoice`,
-				image: require(`../../assets/icons/receipt_white_24dp.svg`),
-				url: `/Invoice.html`
-			},
-			{
-				title: `Records`,
-				image: require(`../../assets/icons/receipt_long_white_24dp.svg`),
-				url: `/Records.html`
-			}
-		]"
-	/>
+	<NavBar :title="`Records`"/>
 	<SavingPopup />
 	<div id="inner">
 		<div id="selectors">

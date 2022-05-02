@@ -1,7 +1,6 @@
 <template>
 	<BackgroundBubble/>
-    <NavBar :title="`Wyvern`"
-    />
+    <NavBar :title="`Wyvern`"/>
     <SavingPopup />
     <div id="home_page">
         <img src="./assets/WyvernIcon.png" draggable="false" alt="" style="filter: grayscale(1) brightness(4);">

@@ -176,12 +176,41 @@ export default {
 .table .row > * {
 	position: relative;
 	display: block;
-	width: 200px;
+	width: 100%;
 	text-align: left;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 }
+.table .row > *:nth-child(1) {
+	min-width: 3rem;
+	max-width: 5rem;
+}
+.table .row > *:nth-child(2) {
+	min-width: 3rem;
+	max-width: 7rem;
+}
+.table .row > *:nth-child(3) {
+	min-width: 15rem;
+}
+.table .row > *:nth-child(4) {
+	min-width: 7rem;
+	max-width: 9rem;
+}
+.table .row > *:nth-child(5) {
+	min-width: 25rem;
+}
+.table .row > *:nth-child(6) {
+	min-width: 20rem;
+}
+.table .row > *:nth-child(7) {
+	min-width: 8rem;
+}
+.table .row > *:nth-child(8) {
+	min-width: 3rem;
+	max-width: 5rem;
+}
+
 .table .row:not(.headings) > * {
     pointer-events: none;
 }

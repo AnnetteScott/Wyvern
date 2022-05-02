@@ -14,7 +14,7 @@
             <div v-for="item in table_rows" 
 				:key="item" 
 				class="row" 
-				:data="item.id ? item.id : ''" 
+				:data="item.id ? item.id : ''"  
 				:value="JSON.stringify(item)" 
 				:style="`${$props.clickable ? 'user-select: none;cursor: pointer;' : 'pointer-events: none;'}${item.amount < 0 ? 'background-color:#ff00005c;' : item.amount > 0 ? 'background-color:#00ff005e;' : ''}`" 
 				@click="this.$parent.editTransaction($event)"
@@ -47,7 +47,7 @@ export default {
 		}
 	},
 	methods: {
-		sort_table(heading = false, event = false) {// Sort the table rows alphabetically based on the content of a selected column.
+        sort_table(heading = false, event = false) {// Sort the table rows alphabetically based on the content of a selected column.
             if(this.table_rows && heading){
                 let table_data = [],
 					is_numeric = false;
@@ -92,6 +92,7 @@ export default {
 	},
 	mounted() {
         setTimeout(function() {
+            this.table_rows = this.rows;
             this.sort_table_default();
 		}.bind(this), 1);
 	}

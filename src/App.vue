@@ -5,7 +5,6 @@
     <div id="home_page">
         <img src="./assets/WyvernIcon.png" draggable="false" alt="" style="filter: grayscale(1) brightness(4);">
         <h1>Welcome To Wyvern!</h1>
-        <h2>An Invoicing and Timesheet Software</h2>
         <br>
         <p>Click the menu in the top right to get started.</p>
     </div>

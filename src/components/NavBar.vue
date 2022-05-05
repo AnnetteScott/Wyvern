@@ -82,7 +82,7 @@ export default {
 	height: var(--navbar_height);
 	padding: 0px 40px;
 	color: white;
-	font-family: 'Lora';
+	font-family: 'Lato';
 	font-size: 0.9em;
 	background-color: black;
 }
@@ -108,7 +108,7 @@ export default {
 	justify-content: space-evenly;
 	align-items: center;
 	width: var(--navbar_menu_width);
-	font-family: 'Lora';
+	font-family: 'Lato';
 	background-color: black;
 	transition: 0.3s ease all;
 }

@@ -327,6 +327,7 @@ export default {
     box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
     border-radius: 10px;
     background-color: #ffffff56;
+    font-family: 'Lato';
 }
 
 #top_title > p{
@@ -382,7 +383,7 @@ export default {
 	box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
 	border-radius: 10px;
 	background-color: #ffffff56;
-	font-family: 'Lora';
+	font-family: 'Lato';
 }
 
 .colour_item{
@@ -399,7 +400,7 @@ export default {
 
 .colour_item p{
     pointer-events: none;
-    font-family: 'Lora';
+    font-family: 'Lato';
     font-size: 17px;
 }
 

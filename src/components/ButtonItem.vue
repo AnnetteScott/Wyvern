@@ -46,6 +46,7 @@ export default {
 	text-decoration: none;
 	user-select: none;
     pointer-events: none;
+    font-family: 'Lato';
 }
 
 .button_link img {

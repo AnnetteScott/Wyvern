@@ -221,13 +221,16 @@ export default {
 	height: 90px;
 }
 .settings_tab_button {
+    width: 18%;
 	height: 30px;
 	opacity: 1;
 	transition: 0.1s ease all;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
+    justify-content: center;
 	user-select: none;
+    font-family: 'Lato';
 	padding: 10px;
 	background-color: #FFFFFF23;
 	border-radius: 5px;
@@ -243,6 +246,7 @@ export default {
 }
 
 .settings_bottom_control{
+    font-family: 'Lato';
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -300,7 +304,7 @@ export default {
 	background-color: #ffffff4f;
 	border-radius: 10px;
 	cursor: pointer;
-	font-family: 'Lora';
+	font-family: 'Lato';
 	font-weight: 900;
 	font-size: 1.6em;
 }

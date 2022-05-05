@@ -97,7 +97,7 @@ export default {
 	background-color: #ffffff40;
 	border-radius: 10px;
 	cursor: pointer;
-	font-family: 'Lora';
+	font-family: 'Lato';
 	font-weight: 900;
 	font-size: 2.25em;
     text-decoration: none;

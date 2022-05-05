@@ -420,7 +420,7 @@ select{
 
 label{
     margin-top: 12px;
-    font-family: 'Lora';
+    font-family: 'Lato';
 }
 
 input[type="checkbox"]{

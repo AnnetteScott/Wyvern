@@ -246,7 +246,7 @@
 
 			<label for="create_trans_category">Category:</label>
 			<select id="create_trans_category">
-				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
+				<option v-for="(status, category) in masterDict['records']['categories']" :key="category" :data="category">
 					{{ category }}
 				</option>
 			</select>
@@ -293,7 +293,7 @@
 
 			<label for="edit_trans_category">Category:</label>
 			<select id="edit_trans_category">
-				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
+				<option v-for="(status, category) in masterDict['records']['categories']" :key="category" :data="category">
 					{{ category }}
 				</option>
 			</select>
@@ -318,6 +318,9 @@
 			<label for="create_category">Category:</label>
 			<input id="create_category" type="text" />
 
+            <label for="create_category_status">Include Category in Pivot Table:</label>
+            <input id="create_category_status" type="checkbox" checked/>
+
 			<fieldset>
 				<ButtonItem :title="`Create Category`" @click="createCategory"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
@@ -331,6 +334,9 @@
 			<div id="edit_category_old" oldcategory='invalid' style="display:none;"></div>
 			<label for="edit_category">Category:</label>
 			<input id="edit_category" type="text" />
+
+            <label for="edit_category_status">Include Category in Pivot Table:</label>
+            <input id="edit_category_status" type="checkbox" checked/>
 
 			<fieldset>
 				<ButtonItem :title="`Save Category`" @click="editCategory"/>
@@ -446,7 +452,7 @@
 
 			<label for="create_savedTrans_category">Category:</label>
 			<select id="create_savedTrans_category">
-				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
+				<option v-for="(status, category) in masterDict['records']['categories']" :key="category" :data="category">
 					{{ category }}
 				</option>
 			</select>
@@ -483,7 +489,7 @@
 
 			<label for="edit_savedTrans_category">Category:</label>
 			<select id="edit_savedTrans_category">
-				<option v-for="category in masterDict['records']['categories']" :key="category" :data="category">
+				<option v-for="(status, category) in masterDict['records']['categories']" :key="category" :data="category">
 					{{ category }}
 				</option>
 			</select>
@@ -723,7 +729,7 @@ export default {
 				return false;
 			}
 			$("#create_category").removeClass('form_error');
-			this.masterDict['records']['categories'].push(category);
+			this.masterDict['records']['categories'][category] = $('#create_category_status')[0].checked
 			
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
@@ -731,18 +737,15 @@ export default {
 		},
 		editCategory(){
 			let category =  $(`#edit_category_old`).attr(`oldcategory`);
-			const index = this.masterDict['records']['categories'].indexOf(category);
-			if (index > -1) {
-				this.masterDict['records']['categories'].splice(index, 1);
-			}
+            delete this.masterDict['records']['categories'][category];
 
-			let newCategory = $(`#create_category`).val()
+			let newCategory = $(`#edit_category`).val();
 			if(newCategory == ''){ //If no category was provided
 				$("#create_category").addClass('form_error');
 				return false;
 			}
 			$("#create_category").removeClass('form_error');
-			this.masterDict['records']['categories'].push(newCategory);
+			this.masterDict['records']['categories'][newCategory] = $('#edit_category_status')[0].checked
  
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
@@ -750,11 +753,7 @@ export default {
 		},
 		deleteCategory(){
 			let category =  $(`#edit_category_old`).attr(`oldcategory`);
-			const index = this.masterDict['records']['categories'].indexOf(category);
-			if (index > -1) {
-				this.masterDict['records']['categories'].splice(index, 1);
-			}
-
+            delete this.masterDict['records']['categories'][category];
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');

@@ -31,7 +31,7 @@
 					'Item',
 					'Category',
 					'Amount',
-                    'Receipt'
+					'Receipt'
 				]"
 				emphasis=""
 				:sort="[
@@ -130,22 +130,22 @@
 					<p>{{ numberWithCommas(categoryDict['Mar']) }}</p>
 					<p>{{ numberWithCommas(categoryDict['grandTotal']) }}</p>
 				</div>
-				<div class="pivot_row pivot_heading">
+				<div class="pivot_row pivot_heading"> <!-- Total of each column -->
 					<template v-if="loaded">
 						<p>Grand Total</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Apr']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['May']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Jun']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Jul']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Aug']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Sep']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Oct']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Nov']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Dec']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Jan']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Feb']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['Mar']) }}</p>
-						<p>{{ numberWithCommas(pivotDict['months']['grandTotal']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Apr']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['May']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Jun']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Jul']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Aug']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Sep']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Oct']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Nov']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Dec']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Jan']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Feb']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['Mar']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['grandTotal']) }}</p>
 					</template>
 				</div> 
 				<div class="pivot_row pivot_heading">
@@ -183,13 +183,13 @@ const { ipcRenderer } = window.require("electron");
 export default {
 	name: 'App',
 	components: {
-    NavBar,
-    BackgroundBubble,
-    AllForms,
-    ButtonItem,
-    SortableTable,
-    DeleteBox,
-    SavingPopup
+	NavBar,
+	BackgroundBubble,
+	AllForms,
+	ButtonItem,
+	SortableTable,
+	DeleteBox,
+	SavingPopup
 },
 	data() {
 		return {
@@ -211,7 +211,7 @@ export default {
 		let thisYear = date.getFullYear();
 		let month = date.getMonth();
 		let yearID;
-		if(month < 3){
+		if(month < 3){ //April is 3rd month
 			yearID = `${thisYear - 1} - ${thisYear}`;
 		}else{
 			yearID = `${thisYear} - ${thisYear + 1}`;
@@ -223,12 +223,13 @@ export default {
 		}
 		if(!Object.keys(this.masterDict['records']).includes(yearID)){
 			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
+            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		}
-		$(`#year_selection`).val(yearID);
 		this.recordDict = this.masterDict['records'][yearID];
 		this.yearID = yearID;
 		this.listAllTransactions();
 		setTimeout(() => {
+            $(`#year_selection`).val(yearID);
 			this.calculatePivotTable()
 		}, 1)
 		
@@ -264,22 +265,24 @@ export default {
 		calculatePivotTable(){
 			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 			this.pivotDict = {'categories': {}, 'months': {}};
-			this.masterDict['records']['categories'].forEach((category, index) => {
-				this.pivotDict['categories'][category] = {'grandTotal': 0}
-				this.pivotDict['months'] = {'grandTotal': 0}
-				monthNames.forEach((month, index1) => {
+			for(const [category, status] of Object.entries(this.masterDict['records']['categories'])){
+				if(status){
+					this.pivotDict['categories'][category] = {'grandTotal': 0}
+					this.pivotDict['months'] = {'grandTotal': 0}
+				monthNames.forEach((month) => {
 					this.pivotDict['categories'][category][month] = 0;
 					this.pivotDict['months'][month] = 0;
-					index1;
 				});
-				index;
-			});
+				}
+			}
 			for(const [transID, transDict] of Object.entries(this.recordDict['transactions'])){
-				this.pivotDict['categories'][transDict['category']][transDict['month']] += transDict['amount'];
-				this.pivotDict['categories'][transDict['category']]['grandTotal'] += transDict['amount'];
-				this.pivotDict['months'][transDict['month']] += transDict['amount'];
-				this.pivotDict['months']['grandTotal'] += transDict['amount'];
-				transID;
+				if(this.masterDict['records']['categories'][transDict['category']]){
+					this.pivotDict['categories'][transDict['category']][transDict['month']] += transDict['amount'];
+					this.pivotDict['categories'][transDict['category']]['grandTotal'] += transDict['amount'];
+					this.pivotDict['months'][transDict['month']] += transDict['amount'];
+					this.pivotDict['months']['grandTotal'] += transDict['amount'];
+					transID;
+				}
 			}
 			this.loaded = true;
 		},
@@ -358,10 +361,10 @@ export default {
 			if(!Object.keys(this.masterDict['records']).includes(this.yearID)){
 				this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
 			}
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
-            this.recordDict = this.masterDict['records'][this.yearID];
-            this.listAllTransactions();
-            this.calculatePivotTable();
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.recordDict = this.masterDict['records'][this.yearID];
+			this.listAllTransactions();
+			this.calculatePivotTable();
 		},
 		calculateTax(amount){
 			let firstTax = [0.105, 14000];

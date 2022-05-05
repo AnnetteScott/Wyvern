@@ -72,10 +72,10 @@
             <div class="column">
                 <div class="settings_section">
                     <div class="settings_bottom_control">
-                        <p>You Have {{ ((masterDict['records']['categories']).length) == 1 ? ((masterDict['records']['categories']).length) + ' Category' : ((masterDict['records']['categories']).length) + ' Categories' }}</p>
+                        <p>You Have {{(Object.keys(masterDict['records']['categories']).length) == 1 ? (Object.keys(masterDict['records']['categories']).length) + ' Category' : (Object.keys(masterDict['records']['categories']).length) + ' Categories' }}</p>
                         <ButtonItem :title="`Create Category`" @click="current_request_form=`createCategory`" />
                     </div>
-                    <template v-for="Category in masterDict['records']['categories']" :key="Category">
+                    <template v-for="(status, Category) in masterDict['records']['categories']" :key="Category">
                         <div class="list_item" :data="Category" :category="Category" @click="open_edit_form($event, `editCategory`, `categories`)">
                             {{ Category }}
                         </div>
@@ -179,6 +179,7 @@ export default {
                     let category = $(event.target).attr(`category`)
                     $(`#edit_category_old`).attr(`oldcategory`, category);
                     $(`#edit_category`).val(category);
+                    $(`#edit_category_status`).prop('checked', this.masterDict['records']['categories'][category]);
                 }
 				else if(editedType == 'account'){
                     let account = $(event.target).attr(`account`)
@@ -350,6 +351,10 @@ export default {
 
 #records_bottom{
     overflow-y: unset !important;
+}
+
+input[type="checkbox"] {
+    height: 30px;
 }
 
 </style>

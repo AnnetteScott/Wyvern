@@ -72,5 +72,13 @@ function saveChecker(){
         masterDict['records']['savedTransactions'] = {}
         masterDict['saveVersion'] = 10;
     }
+    if(masterDict['saveVersion'] == 10){
+        let categoryCopy = [... masterDict['records']['categories']];
+        masterDict['records']['categories'] = {};
+        categoryCopy.forEach(item => {
+            masterDict['records']['categories'][item] = true;
+        });
+        masterDict['saveVersion'] = 11;
+    }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

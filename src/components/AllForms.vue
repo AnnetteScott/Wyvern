@@ -239,7 +239,7 @@
 			</select>
 			
 			<label for="create_trans_payee">Payee:</label>
-			<select v-selectize="``" id="create_trans_payee">
+			<select id="create_trans_payee">
 				<option v-for="payee in masterDict['records']['payee']" :key="payee" :data="payee">
 					{{ payee }}
 				</option>

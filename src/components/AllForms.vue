@@ -237,6 +237,13 @@
 					{{ account }}
 				</option>
 			</select>
+			
+			<label for="create_trans_payee">Payee:</label>
+			<select v-selectize="``" id="create_trans_payee">
+				<option v-for="payee in masterDict['records']['payee']" :key="payee" :data="payee">
+					{{ payee }}
+				</option>
+			</select>
 
 			<label for="create_trans_type">Type:</label>
 			<select id="create_trans_type">
@@ -370,6 +377,34 @@
 			<fieldset>
 				<ButtonItem :title="`Save Account`" @click="editAccount"/>
 				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deleteAccount`"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
+		</div>
+	</div>
+	
+	<!-- Create Payee -->
+	<div class="form_container" v-if="requestForm == `createPayee`">
+		<div class="form">
+			<label for="create_payee">Payee:</label>
+			<input id="create_payee" type="text" />
+
+			<fieldset>
+				<ButtonItem :title="`Create Payee`" @click="createPayee"/>
+				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
+			</fieldset>
+		</div>
+	</div>
+
+	<!-- Edit Payee-->
+	<div class="form_container" v-if="requestForm == `editPayee`">
+		<div class="form">
+			<div id="edit_payee_old" oldpayee='invalid'></div>
+			<label for="edit_payee">Payee:</label>
+			<input id="edit_payee" type="text" />
+
+			<fieldset>
+				<ButtonItem :title="`Save Payee`" @click="editPayee"/>
+				<ButtonItem :title="`Delete`" @click="show_delete=true, delete_function=`deletePayee`"/>
 				<ButtonItem :title="`Cancel`" @click="this.$emit('cancelled', '')"/>
 			</fieldset>
 		</div>
@@ -573,6 +608,51 @@ export default {
 			const receiptID = generateID(this.masterDict);
 			ipcRenderer.send('upload_file_input', receiptID)
 			this.receiptID = receiptID;
+		},
+		createPayee(){
+			let payee = $(`#create_payee`).val()
+			if(payee == ''){ //If no category was provided
+				$("#create_payee").addClass('form_error');
+				return false;
+			}
+			$("#create_payee").removeClass('form_error');
+			this.masterDict['records']['payee'].push(payee)
+			
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+
+		},
+		editPayee(){
+			let oldPayee =  $(`#edit_payee_old`).attr(`oldpayee`);
+			const index = this.masterDict['records']['payee'].indexOf(oldPayee);
+			if (index > -1) {
+				this.masterDict['records']['payee'].splice(index, 1);
+			}
+
+			let payee = $(`#edit_payee`).val()
+			if(payee == ''){ //If no category was provided
+				$("#edit_payee").addClass('form_error');
+				return false;
+			}
+			$("#edit_payee").removeClass('form_error');
+			this.masterDict['records']['payee'].push(payee);
+ 
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
+
+		},
+		deletePayee(){
+			let account =  $(`#edit_payee_old`).attr(`oldpayee`);
+			const index = this.masterDict['records']['payee'].indexOf(account);
+			if (index > -1) {
+				this.masterDict['records']['payee'].splice(index, 1);
+			}
+
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			this.$emit('cancelled', '');
+			this.$emit('saveCookieForBeebViewing', '');
 		},
 		createSaved(){
             const savedID = generateID(this.masterDict);
@@ -816,6 +896,7 @@ export default {
 			let account = $(`#create_trans_account option:selected`).val();
 			let type = $(`#create_trans_type option:selected`).val();
 			let category = $(`#create_trans_category option:selected`).val();
+			let payee = $(`#create_payee_category option:selected`).val();
 			let item = $('#create_trans_item').val();
 
 			let amount = type == 'Credit' ? Math.abs(parseFloat($('#create_trans_amount').val())) : 0 - parseFloat($('#create_trans_amount').val());
@@ -831,8 +912,7 @@ export default {
 			if(!Object.keys(this.masterDict['records']).includes(yearID)){
 				this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
 			}
-            console.log(this.masterDict)
-			this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount, 'receiptID': this.receiptID}
+			this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'payee': payee, 'type': type, 'item': item, 'category': category, 'amount': amount, 'receiptID': this.receiptID}
 
 			this.fileUploaded = false;
 			this.receiptID = ''

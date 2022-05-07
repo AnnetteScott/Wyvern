@@ -92,6 +92,17 @@
                         </div>
                     </template>
                 </div>  
+				<div class="settings_section">
+                    <div class="settings_bottom_control">
+                        <p>You Have {{ ((masterDict['records']['payee']).length) == 1 ? ((masterDict['records']['payee']).length) + ' Payee' : ((masterDict['records']['payee']).length) + ' Payees' }}</p>
+                        <ButtonItem :title="`Create Payee`" @click="current_request_form=`createPayee`" />
+                    </div>
+                    <template v-for="payee in masterDict['records']['payee']" :key="payee">
+                        <div class="list_item" :data="`payee`" :payee="payee" @click="open_edit_form($event, `editPayee`, `payee`)">
+                            {{ payee }}
+                        </div>
+                    </template>
+                </div>  
             </div>
 			
 		</div>
@@ -145,12 +156,13 @@ export default {
 			let id;
 			let obj;
 			
-			if(type !== 'categories' && type != 'accounts'){
+			if(type !== 'categories' && type != 'accounts' && type != 'payee'){
 				id = $(event.target).attr('data');
 				obj = this.masterDict[type][id];
 			}
 			
 			const editedType = type.slice(0, -1);
+
 			setTimeout(() => {
 				if(editedType == 'user' || editedType == 'client'){
 					$(`#edit_${editedType}ID`).val(obj[editedType]);
@@ -186,6 +198,11 @@ export default {
                     $(`#edit_account_old`).attr(`oldaccount`, account);
                     $(`#edit_account`).val(account);
                 }
+				else if(editedType == 'paye'){
+					let payee = $(event.target).attr(`payee`);
+                    $(`#edit_payee_old`).attr(`oldpayee`, payee);
+                    $(`#edit_payee`).val(payee);
+				}
 
 			}, 1) 
 		}

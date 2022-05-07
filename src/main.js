@@ -59,10 +59,13 @@ function saveChecker(){
     if(masterDict['saveVersion'] == 8){
         for(const[yearID, recordsDict] of Object.entries(masterDict['records'])){
             if(yearID != 'accounts' && yearID != 'categories' && yearID != 'homeExpenses'){
-                for(const[transID, transDict] of Object.entries(recordsDict['transactions'])){
-                    transDict['receiptID'] = '';
-                    transID;
+                if(recordsDict['transactions'] != undefined){
+                    for(const[transID, transDict] of Object.entries(recordsDict['transactions'])){
+                        transDict['receiptID'] = '';
+                        transID;
+                    }
                 }
+                
             }
         }
         masterDict['saveVersion'] = 9;
@@ -79,6 +82,10 @@ function saveChecker(){
             masterDict['records']['categories'][item] = true;
         });
         masterDict['saveVersion'] = 11;
+    }
+    if(masterDict['saveVersion'] == 11){
+        masterDict['records']['payee'] = [];
+        masterDict['saveVersion'] = 12;
     }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

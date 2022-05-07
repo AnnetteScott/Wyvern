@@ -28,6 +28,7 @@
 					'Date',
 					'Account',
 					'Type',
+					'Payee',
 					'Item',
 					'Category',
 					'Amount',
@@ -38,6 +39,7 @@
 					'Month',
 					'Date',
 					'Account',
+					'Payee',
 					'Type',
 					'Item',
 					'Category',
@@ -216,7 +218,7 @@ export default {
 		}else{
 			yearID = `${thisYear} - ${thisYear + 1}`;
 		}
-		if(Object.keys(this.masterDict['records']).length == 3){
+		if(Object.keys(this.masterDict['records']).length == 4){
 			this.masterDict['records'][`${thisYear - 1} - ${thisYear}`] = {'transactions': {}, 'assets': {}};
 			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
@@ -275,15 +277,18 @@ export default {
 				});
 				}
 			}
-			for(const [transID, transDict] of Object.entries(this.recordDict['transactions'])){
-				if(this.masterDict['records']['categories'][transDict['category']]){
-					this.pivotDict['categories'][transDict['category']][transDict['month']] += transDict['amount'];
-					this.pivotDict['categories'][transDict['category']]['grandTotal'] += transDict['amount'];
-					this.pivotDict['months'][transDict['month']] += transDict['amount'];
-					this.pivotDict['months']['grandTotal'] += transDict['amount'];
-					transID;
+			if(this.recordDict['transactions'] != undefined){
+				for(const [transID, transDict] of Object.entries(this.recordDict['transactions'])){
+					if(this.masterDict['records']['categories'][transDict['category']]){
+						this.pivotDict['categories'][transDict['category']][transDict['month']] += transDict['amount'];
+						this.pivotDict['categories'][transDict['category']]['grandTotal'] += transDict['amount'];
+						this.pivotDict['months'][transDict['month']] += transDict['amount'];
+						this.pivotDict['months']['grandTotal'] += transDict['amount'];
+						transID;
+					}
 				}
 			}
+			
 			this.loaded = true;
 		},
 		uploadReceipt(event){
@@ -310,11 +315,14 @@ export default {
 		},
 		listAllTransactions() {
 			this.all_transactions = []
-			Object.keys(this.recordDict['transactions']).forEach(function(key) {
-				let transaction = this.recordDict['transactions'][key];
-				transaction.id = key;
-				this.all_transactions.push(transaction);
-			}.bind(this));
+			if(this.recordDict['transactions'] != undefined){
+				Object.keys(this.recordDict['transactions']).forEach(function(key) {
+					let transaction = this.recordDict['transactions'][key];
+					transaction.id = key;
+					this.all_transactions.push(transaction);
+				}.bind(this));
+			}
+			
 		},
 		editTransaction(e){
 			this.current_request_form = 'editTransaction';

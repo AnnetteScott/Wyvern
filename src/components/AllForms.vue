@@ -239,11 +239,7 @@
 			</select>
 			
 			<label for="create_trans_payee">Payee:</label>
-			<select id="create_trans_payee">
-				<option v-for="payee in masterDict['records']['payee']" :key="payee" :data="payee">
-					{{ payee }}
-				</option>
-			</select>
+			<VueNextSelect :options="masterDict['records']['payee']" id="create_trans_payee" searchable/>
 
 			<label for="create_trans_type">Type:</label>
 			<select id="create_trans_type">
@@ -569,8 +565,9 @@ import ButtonItem from './ButtonItem.vue';
 import DeleteBox from './DeleteBox.vue';
 import $ from 'jquery';
 import { generateID, reDoDate, addToDate } from '../../public/generalFunctions.js';
-const { ipcRenderer } = window.require("electron");
+import VueNextSelect from 'vue-next-select'
 
+const { ipcRenderer } = window.require("electron");
 
 export default {
 	name: 'AllForms',
@@ -580,7 +577,8 @@ export default {
 	},
 	components: {
 		ButtonItem,
-        DeleteBox
+        DeleteBox,
+		VueNextSelect
 	},
 	created(){
 		let self=this;
@@ -1310,7 +1308,105 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
+.vue-select{
+	position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 150px;
+    border-radius: 4px;
+    border: 1px solid #999;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.vue-select-header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.vue-input {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+}
+
+.vue-input input {
+    border: none;
+    outline: none;
+    width: 100%;
+    min-width: 0;
+    font-size: 0.8rem;
+    padding: 0;
+}
+
+.vue-select[data-is-focusing='false'][aria-disabled='false'] 
+.vue-input input, input[readonly] {
+    cursor: default;
+}
+
+.icon.arrow-downward {
+    margin-right: 4px;
+}
+
+.icon.arrow-downward.active {
+    transform: rotate(180deg);
+}
+
+.icon.arrow-downward {
+    color: #999;
+    border-style: solid;
+    border-width: 4px 4px 0;
+    border-color: #999 transparent transparent;
+    content: '';
+    transition: transform 0.2s linear;
+    cursor: pointer;
+}
+
+.vue-dropdown-item {
+    list-style-type: none;
+    padding: 4px;
+    cursor: pointer;
+    min-height: 1rem;
+}
+
+.vue-select.direction-bottom .vue-dropdown {
+    top: 100%;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.vue-select[aria-expanded='true'] .vue-dropdown{
+	display: unset;
+}
+
+.vue-dropdown{
+    display: none;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+    overflow-y: auto;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    left: -1px;
+    box-sizing: content-box;
+    border: 1px solid #999;
+    list-style-type: none;
+}
+
 input {
 	width: 200px;
 	padding: 2px;

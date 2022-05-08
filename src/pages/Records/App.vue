@@ -131,6 +131,7 @@
 					<p>{{ numberWithCommas(categoryDict['Feb']) }}</p>
 					<p>{{ numberWithCommas(categoryDict['Mar']) }}</p>
 					<p>{{ numberWithCommas(categoryDict['grandTotal']) }}</p>
+					<p>{{ numberWithCommas(categoryDict['grandTotal'] * 1.15) }}</p>
 				</div>
 				<div class="pivot_row pivot_heading"> <!-- Total of each column -->
 					<template v-if="loaded">
@@ -148,6 +149,7 @@
 						<p>${{ numberWithCommas(pivotDict['months']['Feb']) }}</p>
 						<p>${{ numberWithCommas(pivotDict['months']['Mar']) }}</p>
 						<p>${{ numberWithCommas(pivotDict['months']['grandTotal']) }}</p>
+						<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] * 1.15) }}</p>
 					</template>
 				</div> 
 				<div class="pivot_row pivot_heading">
@@ -159,8 +161,21 @@
 				</div>
 				<div class="pivot_row pivot_heading">
 					<template v-if="loaded">
-						<p>Take Home</p>
+						<p>Tax To Pay inc. GST</p>
+						<p>${{ numberWithCommas(calculateTax(pivotDict['months']['grandTotal']) * 1.15) }}</p>
+						<p>Effective Tax Rate: {{ ((calculateTax(pivotDict['months']['grandTotal'])  * 1.15) / (pivotDict['months']['grandTotal'] * 1.15) * 100).toFixed(2) }}%</p>
+					</template>
+				</div>
+				<div class="pivot_row pivot_heading">
+					<template v-if="loaded">
+						<p>Take Home w/o GST</p>
 						<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] - calculateTax(pivotDict['months']['grandTotal'])) }}</p>
+					</template>
+				</div>
+				<div class="pivot_row pivot_heading">
+					<template v-if="loaded">
+						<p>Take Home w/ GST</p>
+						<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] * 1.15 - calculateTax(pivotDict['months']['grandTotal']) * 1.15) }}</p>
 					</template>
 				</div>
 			</div>
@@ -205,7 +220,7 @@ export default {
 			loaded: false,
 			show_delete: false,
 			yearID: '',
-			colNames: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Grand Total"]
+			colNames: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Total w/o GST", "Total w/ GST"]
 		}
 	},
 	mounted() {
@@ -238,6 +253,7 @@ export default {
 	},
 	created(){
 		ipcRenderer.on('uploaded_file_done', function() {
+			console.log('this')
 			this.recordDict['transactions'][this.transID]['receiptID'] = this.receiptID;
 			this.listAllTransactions();
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
@@ -634,6 +650,20 @@ label{
 	justify-content: center;
 }
 
+.pivot_row:not(.pivot_heading) > p:nth-last-child(1){
+	min-width: 100px;
+}
+.pivot_row:not(.pivot_heading) > p:nth-last-child(2){
+	min-width: 100px;
+}
+.pivot_heading > p:nth-last-child(1){
+	min-width: 100px;
+}
+
+.pivot_heading > p:nth-last-child(2){
+	min-width: 100px;
+}
+
 .pivot_row > p:first-child{
 	width: 30ch;
 	min-width: 30ch;
@@ -645,11 +675,8 @@ label{
 	background-color: #41e07e;
 }
 
-.pivot_row:nth-last-of-type(2){
+.pivot_row:nth-last-of-type(4){
 	margin-top: 10px;
 }
 
-.pivot_row > p:last-child{
-	min-width: 10ch;
-}
 </style>

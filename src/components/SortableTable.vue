@@ -187,24 +187,24 @@ export default {
 	max-width: 5rem;
 }
 .table .row > *:nth-child(2) {
-	min-width: 3rem;
+	min-width: 6rem;
 	max-width: 7rem;
 }
 .table .row > *:nth-child(3) {
 	min-width: 15rem;
 }
 .table .row > *:nth-child(4) {
-	min-width: 7rem;
-	max-width: 9rem;
+	min-width: 3rem;
+	max-width: 5rem;
 }
 .table .row > *:nth-child(5) {
-	min-width: 25rem;
+	min-width: 15rem;
 }
 .table .row > *:nth-child(6) {
-	min-width: 20rem;
+	min-width: 15rem;
 }
 .table .row > *:nth-child(7) {
-	min-width: 8rem;
+	min-width: 17rem;
 }
 .table .row > *:nth-child(8) {
 	min-width: 3rem;

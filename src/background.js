@@ -203,34 +203,45 @@ ipcMain.on('master_dict_read', function(event, arg) {
 });
 
 ipcMain.on('upload_file', function(event, receiptID) {
-    dialog.showOpenDialog(win, {
+    dialog.showOpenDialog({
         properties: ['openFile'],
         filters: [{ name: '.pdf', extensions: ['pdf'] }]
-    }).then(result => {
-        let path = result['filePaths'][0];
-        fs.copyFile(path, `${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, (err) => {
-            if (err) throw err;
-            console.log('source was copied to destination');
-            win.webContents.send("uploaded_file_done");
-        });
-    }).catch(err => {
-        console.log(err)
+    }, function (files) {
+        console.log(files)
+        if (files !== undefined) {
+            let path = files['filePaths'][0];
+            console.log(path)
+            fs.copyFile(path, `${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, (err) => {
+                if (err){
+                    throw err;
+                }else{
+                    console.log('path: ' + path)
+                    win.webContents.send("uploaded_file_done");
+                }
+            });
+        }
     });
 });
 
 ipcMain.on('upload_file_input', function(event, receiptID) {
-    dialog.showOpenDialog(win, {
+
+    dialog.showOpenDialog({
         properties: ['openFile'],
         filters: [{ name: '.pdf', extensions: ['pdf'] }]
-    }).then(result => {
-        let path = result['filePaths'][0];
-        fs.copyFile(path, `${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, (err) => {
-            if (err) throw err;
-            console.log('source was copied to destination');
-            win.webContents.send("uploaded_file_input");
-        });
-    }).catch(err => {
-        console.log(err)
+    }, function (files) {
+        console.log(files)
+        if (files !== undefined) {
+            let path = result['filePaths'][0];
+            console.log(path)
+            fs.copyFile(path, `${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, (err) => {
+                if (err){
+                    throw err;
+                }else{
+                    console.log('path: ' + path)
+                    win.webContents.send("uploaded_file_input");
+                }
+            });
+        }
     });
 });
 

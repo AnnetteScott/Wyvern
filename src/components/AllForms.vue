@@ -582,7 +582,7 @@ export default {
 		ipcRenderer.on('uploaded_file_input', function(event, data) {
 			event;
 			data;
-			self.fileHasBeenUploaded()
+			self.fileHasBeenUploaded();
 		})
 	},
 	data() {
@@ -907,6 +907,9 @@ export default {
 			if(!Object.keys(this.masterDict['records']).includes(yearID)){
 				this.masterDict['records'][yearID] = {'transactions': {}, 'assets': {}};
 			}
+
+			this.fileUploaded ? `` : this.receiptID = '';
+
 			this.masterDict['records'][yearID]['transactions'][transID] = {'month': monthNames[month], 'date': date, 'account': account, 'payee': payee, 'type': type, 'item': item, 'category': category, 'amount': amount, 'receiptID': this.receiptID}
 
 			this.fileUploaded = false;

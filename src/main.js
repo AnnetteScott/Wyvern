@@ -87,5 +87,18 @@ function saveChecker(){
         masterDict['records']['payee'] = [];
         masterDict['saveVersion'] = 12;
     }
+    if(masterDict['saveVersion'] == 12){
+        for(const[yearID, recordsDict] of Object.entries(masterDict['records'])){
+            if(yearID != 'accounts' && yearID != 'categories' && yearID != 'homeExpenses'){
+                if(recordsDict['transactions'] != undefined){
+                    for(const[transID, transDict] of Object.entries(recordsDict['transactions'])){
+                        transDict['payee'] = '';
+                        transID;
+                    }
+                }
+            }
+        }
+        masterDict['saveVersion'] = 13;
+    }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

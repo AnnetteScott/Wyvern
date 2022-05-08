@@ -8,7 +8,7 @@
 				<label for="year_selection">Choose a Tax Year:</label>
 				<select id="year_selection"  @change="onchange">
 					<template v-for="(recordDict, recordYear) in masterDict['records']" :key="recordDict" >
-						<option v-if="recordYear !== 'categories' && recordYear !== 'accounts' && recordYear !== 'savedTransactions'" :data="recordYear">
+						<option v-if="recordYear !== 'categories' && recordYear !== 'accounts' && recordYear !== 'payee' && recordYear !== 'savedTransactions'" :data="recordYear">
 							{{ recordYear }}
 						</option>
 					</template>
@@ -161,15 +161,15 @@
 				</div>
 				<div class="pivot_row pivot_heading">
 					<template v-if="loaded">
-						<p>Tax To Pay inc. GST</p>
-						<p>${{ numberWithCommas(calculateTax(pivotDict['months']['grandTotal']) * 1.15) }}</p>
-						<p>Effective Tax Rate: {{ ((calculateTax(pivotDict['months']['grandTotal'])  * 1.15) / (pivotDict['months']['grandTotal'] * 1.15) * 100).toFixed(2) }}%</p>
+						<p>Take Home w/o GST</p>
+						<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] - calculateTax(pivotDict['months']['grandTotal'])) }}</p>
 					</template>
 				</div>
 				<div class="pivot_row pivot_heading">
 					<template v-if="loaded">
-						<p>Take Home w/o GST</p>
-						<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] - calculateTax(pivotDict['months']['grandTotal'])) }}</p>
+						<p>Tax To Pay inc. GST</p>
+						<p>${{ numberWithCommas(calculateTax(pivotDict['months']['grandTotal']) * 1.15) }}</p>
+						<p>Effective Tax Rate: {{ ((calculateTax(pivotDict['months']['grandTotal'])  * 1.15) / (pivotDict['months']['grandTotal'] * 1.15) * 100).toFixed(2) }}%</p>
 					</template>
 				</div>
 				<div class="pivot_row pivot_heading">
@@ -352,6 +352,7 @@ export default {
 				$(`#edit_trans_item`).val(transDict[ID]['item'])
 				$(`#edit_trans_amount`).val(transDict[ID]['amount'])
 				$(`#edit_trans_account`).val(transDict[ID]['account']);
+				$(`.vs__selected`).text(transDict[ID]['payee'])
 				$(`#edit_trans_type`).val(transDict[ID]['type']);
 				$(`#edit_trans_category`).val(transDict[ID]['category']);
 			}, 1)
@@ -677,6 +678,10 @@ label{
 
 .pivot_row:nth-last-of-type(4){
 	margin-top: 10px;
+}
+
+.pivot_row:nth-last-of-type(2){
+	margin-top: 4px;
 }
 
 </style>

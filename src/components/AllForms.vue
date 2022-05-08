@@ -239,6 +239,13 @@
 			</select>
 			
 			<label for="create_trans_payee">Payee:</label>
+			<v-select 
+				:options="masterDict['records']['payee']" 
+				style="width: 200px" 
+				id="create_trans_payee" 
+				:v-model="selected" 
+				:value="``"
+			/>
 
 			<label for="create_trans_type">Type:</label>
 			<select id="create_trans_type">
@@ -284,6 +291,9 @@
 					{{ account }}
 				</option>
 			</select>
+
+			<label for="edit_trans_payee">Payee:</label>
+			<v-select :options="masterDict['records']['payee']" style="width: 200px" id="edit_trans_payee"></v-select>
 
 			<label for="edit_trans_type">Type:</label>
 			<select id="edit_trans_type">
@@ -560,8 +570,10 @@
 <script>
 import ButtonItem from './ButtonItem.vue';
 import DeleteBox from './DeleteBox.vue';
+import vSelect from 'vue-select';
 import $ from 'jquery';
 import { generateID, reDoDate, addToDate } from '../../public/generalFunctions.js';
+import 'vue-select/dist/vue-select.css';
 
 const { ipcRenderer } = window.require("electron");
 
@@ -573,7 +585,8 @@ export default {
 	},
 	components: {
 		ButtonItem,
-        DeleteBox
+        DeleteBox,
+		vSelect
 	},
 	created(){
 		let self=this;
@@ -590,7 +603,7 @@ export default {
 			fileUploaded: false,
 			receiptID: '',
             show_delete: false,
-            delete_function: '',
+            delete_function: ''
 		}
 	},
 	methods: {
@@ -889,8 +902,9 @@ export default {
 			let account = $(`#create_trans_account option:selected`).val();
 			let type = $(`#create_trans_type option:selected`).val();
 			let category = $(`#create_trans_category option:selected`).val();
-			let payee = $(`#create_payee_category option:selected`).val();
+			let payee = $(`.vs__selected`).text();
 			let item = $('#create_trans_item').val();
+			console.log(payee)
 
 			let amount = type == 'Credit' ? Math.abs(parseFloat($('#create_trans_amount').val())) : 0 - parseFloat($('#create_trans_amount').val());
 
@@ -932,6 +946,7 @@ export default {
 
 			let account = $(`#edit_trans_account option:selected`).val();
 			let type = $(`#edit_trans_type option:selected`).val();
+			let payee = $(`.vs__selected`).text();
 			let category = $(`#edit_trans_category option:selected`).val();
 			let item = $('#edit_trans_item').val();
 
@@ -946,7 +961,7 @@ export default {
 			}
 
 			delete this.recordDict['transactions'][ID]
-			this.masterDict['records'][yearID]['transactions'][ID] = {'month': monthNames[month], 'date': date, 'account': account, 'type': type, 'item': item, 'category': category, 'amount': amount}
+			this.masterDict['records'][yearID]['transactions'][ID] = {'month': monthNames[month], 'date': date, 'account': account, 'payee': payee, 'type': type, 'item': item, 'category': category, 'amount': amount}
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
 			this.$emit('saveCookieForBeebViewing', '');

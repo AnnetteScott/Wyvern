@@ -258,15 +258,13 @@
 
 			<label for="create_trans_amount">Amount:</label>
 			<input id="create_trans_amount" type="number" step="0.01" />
-
+			<template v-if="fileUploaded === false">
+				<ButtonItem :title="`Upload Receipt`" @click="TriggerUpload" style="margin-top: 20px"/>
+			</template>
+			<template v-else>
+				Your receipt has been uploaded
+			</template>
 			<fieldset>
-				<template v-if="fileUploaded === false">
-					<ButtonItem :title="`Upload Receipt`" @click="TriggerUpload"/>
-				</template>
-				<template v-else>
-					Your receipt has been uploaded
-				</template>
-
 				<ButtonItem :title="`Create Transaction`" @click="createTransaction"/>
 				<ButtonItem :title="`Cancel`" @click="cancelTransaction"/>
 			</fieldset>
@@ -1471,4 +1469,11 @@ select{
 	width: 110px;
 	outline: none;
 }
+
+fieldset > .button_link:nth-last-child(1){
+	background-color:#bb1818;
+}
+
+
+
 </style>

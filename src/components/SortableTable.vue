@@ -207,8 +207,8 @@ export default {
 	min-width: 17rem;
 }
 .table .row > *:nth-child(8) {
-	min-width: 3rem;
-	max-width: 5rem;
+	min-width: 6rem;
+	max-width: 8rem;
 }
 
 .table .row:not(.headings) > * {

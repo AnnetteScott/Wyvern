@@ -239,7 +239,6 @@
 			</select>
 			
 			<label for="create_trans_payee">Payee:</label>
-			<VueNextSelect :options="masterDict['records']['payee']" id="create_trans_payee" searchable/>
 
 			<label for="create_trans_type">Type:</label>
 			<select id="create_trans_type">
@@ -565,7 +564,6 @@ import ButtonItem from './ButtonItem.vue';
 import DeleteBox from './DeleteBox.vue';
 import $ from 'jquery';
 import { generateID, reDoDate, addToDate } from '../../public/generalFunctions.js';
-import VueNextSelect from 'vue-next-select'
 
 const { ipcRenderer } = window.require("electron");
 
@@ -577,8 +575,7 @@ export default {
 	},
 	components: {
 		ButtonItem,
-        DeleteBox,
-		VueNextSelect
+        DeleteBox
 	},
 	created(){
 		let self=this;

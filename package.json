@@ -18,8 +18,7 @@
     "core-js": "^3.8.3",
     "jquery": "^3.6.0",
     "path": "^0.12.7",
-    "vue": "^3.2.13",
-    "vue-next-select": "^2.10.4"
+    "vue": "^3.2.13"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

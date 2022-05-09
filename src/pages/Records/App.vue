@@ -110,11 +110,22 @@
 			<div id="pivot" class="outer_table">
 				<div class="title">
 					<p>Pivot Table</p>
+					<div id="show_gst"> 
+						<label for="show_gst_checkbox">Show GST:</label>
+						<input id="show_gst_checkbox" type="checkbox" @click="changeCheckBox" checked/>
+					</div>
 				</div>
 				<div class="pivot_row pivot_heading">
-					<p v-for="column in colNames" :key="column">
-						{{ column }}
-					</p>
+					<template v-if="masterDict['showGST']">
+						<p v-for="column in colNamesGST" :key="column">
+							{{ column }}
+						</p>
+					</template>
+					<template v-else>
+						<p v-for="column in colNames" :key="column">
+							{{ column }}
+						</p>
+					</template>
 				</div>
 				<div class="pivot_row" v-for="(categoryDict, category) in pivotDict['categories']" :key="category">
 					<p>{{ category }}</p>
@@ -131,7 +142,9 @@
 					<p>{{ numberWithCommas(categoryDict['Feb']) }}</p>
 					<p>{{ numberWithCommas(categoryDict['Mar']) }}</p>
 					<p>{{ numberWithCommas(categoryDict['grandTotal']) }}</p>
-					<p>{{ numberWithCommas(categoryDict['grandTotal'] * 1.15) }}</p>
+					<template v-if="masterDict['showGST']">
+						<p>{{ numberWithCommas(categoryDict['grandTotal'] * 1.15) }}</p>
+					</template>
 				</div>
 				<div class="pivot_row pivot_heading"> <!-- Total of each column -->
 					<template v-if="loaded">
@@ -149,10 +162,12 @@
 						<p>${{ numberWithCommas(pivotDict['months']['Feb']) }}</p>
 						<p>${{ numberWithCommas(pivotDict['months']['Mar']) }}</p>
 						<p>${{ numberWithCommas(pivotDict['months']['grandTotal']) }}</p>
-						<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] * 1.15) }}</p>
+						<template v-if="masterDict['showGST']">
+							<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] * 1.15) }}</p>
+						</template>
 					</template>
 				</div> 
-				<div class="pivot_row pivot_heading">
+				<div class="pivot_row pivot_heading" style="margin-top: 10px;">
 					<template v-if="loaded">
 						<p>Tax To Pay</p>
 						<p>${{ numberWithCommas(calculateTax(pivotDict['months']['grandTotal'])) }}</p>
@@ -161,23 +176,30 @@
 				</div>
 				<div class="pivot_row pivot_heading">
 					<template v-if="loaded">
-						<p>Take Home w/o GST</p>
+						<template v-if="masterDict['showGST']">
+							<p>Take Home w/o GST</p>
+						</template>
+						<template v-else>
+							<p>Take Home:</p>
+						</template>
 						<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] - calculateTax(pivotDict['months']['grandTotal'])) }}</p>
 					</template>
 				</div>
-				<div class="pivot_row pivot_heading">
-					<template v-if="loaded">
-						<p>Tax To Pay inc. GST</p>
-						<p>${{ numberWithCommas(calculateTax(pivotDict['months']['grandTotal']) * 1.15) }}</p>
-						<p>Effective Tax Rate: {{ ((calculateTax(pivotDict['months']['grandTotal'])  * 1.15) / (pivotDict['months']['grandTotal'] * 1.15) * 100).toFixed(2) }}%</p>
-					</template>
-				</div>
-				<div class="pivot_row pivot_heading">
-					<template v-if="loaded">
-						<p>Take Home w/ GST</p>
-						<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] * 1.15 - calculateTax(pivotDict['months']['grandTotal']) * 1.15) }}</p>
-					</template>
-				</div>
+				<template v-if="masterDict['showGST']">
+					<div class="pivot_row pivot_heading" style="margin-top: 5px;">
+						<template v-if="loaded">
+							<p>Tax To Pay inc. GST</p>
+							<p>${{ numberWithCommas(calculateTax(pivotDict['months']['grandTotal']) * 1.15) }}</p>
+							<p>Effective Tax Rate: {{ ((calculateTax(pivotDict['months']['grandTotal'])  * 1.15) / (pivotDict['months']['grandTotal'] * 1.15) * 100).toFixed(2) }}%</p>
+						</template>
+					</div>
+					<div class="pivot_row pivot_heading">
+						<template v-if="loaded">
+							<p>Take Home w/ GST</p>
+							<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] * 1.15 - calculateTax(pivotDict['months']['grandTotal']) * 1.15) }}</p>
+						</template>
+					</div>
+				</template>
 			</div>
 		</div>		
 		<AllForms :requestForm="current_request_form" @cancelled="current_request_form=``"
@@ -220,7 +242,8 @@ export default {
 			loaded: false,
 			show_delete: false,
 			yearID: '',
-			colNames: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Total w/o GST", "Total w/ GST"]
+			colNamesGST: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Total w/o GST", "Total w/ GST"],
+			colNames: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Total"]
 		}
 	},
 	mounted() {
@@ -240,13 +263,14 @@ export default {
 		}
 		if(!Object.keys(this.masterDict['records']).includes(yearID)){
 			this.masterDict['records'][`${thisYear} - ${thisYear + 1}`] = {'transactions': {}, 'assets': {}};
-            localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 		}
 		this.recordDict = this.masterDict['records'][yearID];
 		this.yearID = yearID;
 		this.listAllTransactions();
 		setTimeout(() => {
-            $(`#year_selection`).val(yearID);
+			$(`#year_selection`).val(yearID);
+			$('#show_gst_checkbox').prop('checked', this.masterDict['showGST']);
 			this.calculatePivotTable()
 		}, 1)
 		
@@ -260,6 +284,10 @@ export default {
 		}.bind(this))
 	},
 	methods: {
+		changeCheckBox(){
+			this.masterDict['showGST'] = $('#show_gst_checkbox')[0].checked;
+			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
+		},
 		addSaved(event){
 			const savedID = $(event.target).attr('data');
 			this.current_request_form = 'addSaved';
@@ -676,12 +704,9 @@ label{
 	background-color: #41e07e;
 }
 
-.pivot_row:nth-last-of-type(4){
-	margin-top: 10px;
-}
-
-.pivot_row:nth-last-of-type(2){
-	margin-top: 4px;
+#show_gst_checkbox{
+	width: 100px;
+	height: 15px;
 }
 
 </style>

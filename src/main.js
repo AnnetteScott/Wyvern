@@ -100,5 +100,9 @@ function saveChecker(){
         }
         masterDict['saveVersion'] = 13;
     }
+    if(masterDict['saveVersion'] == 13){
+        masterDict['showGST'] = true;
+        masterDict['saveVersion'] = 14;
+    }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

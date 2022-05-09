@@ -142,11 +142,13 @@ const DEVmainMenuTemplate =  [
     }
 ];
 
-let saveFilePath = app.getPath('userData') + "\\data\\userData.json"
+const dataPath = app.getPath('userData') + "\\data";
+
+
 function saveData(){
 	win.webContents.send("reedMasterDict");
     ipcMain.on('readMasterDict', function(event, data) {
-        fs.writeFileSync(saveFilePath , JSON.stringify(data));
+        fs.writeFileSync(dataPath + "\\userData.json" , JSON.stringify(data));
 		event;
     })
 }
@@ -159,7 +161,7 @@ function loadData(){
         let path = result['filePaths'][0];
         masterDict = JSON.parse(read_file(path));
         win.webContents.send("loadData", JSON.stringify(masterDict));
-        fs.writeFileSync(saveFilePath, JSON.stringify(masterDict));
+        fs.writeFileSync(dataPath + "\\userData.json", JSON.stringify(masterDict));
         win.reload()
     }).catch(err => {
         console.log(err)
@@ -169,7 +171,7 @@ function loadData(){
 function manualSave(){
     saveData();
     setTimeout(function(){
-        let masterDict = JSON.parse(read_file(saveFilePath));
+        let masterDict = JSON.parse(read_file(dataPath + "\\userData.json"));
         dialog.showSaveDialog(win, {
             properties: ['saveFile'],
             filters: [{ name: '.json', extensions: ['json'] }]
@@ -183,21 +185,21 @@ function manualSave(){
     
 }
 
-let masterRawFormat = {"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": {}, 'savedTransactions': {}}, "saveVersion": 13}
+let masterRawFormat = {"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": {}, 'savedTransactions': {}}, "saveVersion": 13, "showGST": true}
 
-if(!fs.existsSync(app.getPath('userData') + "\\data")){
-    fs.mkdirSync(app.getPath('userData') + "\\data");
-    fs.writeFileSync(saveFilePath, JSON.stringify(masterRawFormat));
-}else if(!fs.existsSync(app.getPath('userData') + "\\data\\userData.json")){
-    fs.writeFileSync(saveFilePath, JSON.stringify(masterRawFormat));
+if(!fs.existsSync(dataPath)){
+    fs.mkdirSync(dataPath);
+    fs.writeFileSync(dataPath + "\\userData.json", JSON.stringify(masterRawFormat));
+}else if(!fs.existsSync(dataPath + "\\userData.json")){
+    fs.writeFileSync(dataPath + "\\userData.json", JSON.stringify(masterRawFormat));
 }
 
-if(!fs.existsSync(app.getPath('userData') + "\\data\\receipts")){
-    fs.mkdirSync(app.getPath('userData') + "\\data\\receipts");
+if(!fs.existsSync(dataPath + "\\receipts")){
+    fs.mkdirSync(dataPath + "\\receipts");
 }
 
 ipcMain.on('master_dict_read', function(event, arg) {
-    let masterDict = JSON.parse(read_file(saveFilePath));
+    let masterDict = JSON.parse(read_file(dataPath + "\\userData.json"));
     event.sender.send('master_dict_reading', masterDict);
 
 });
@@ -211,7 +213,7 @@ ipcMain.on('upload_file', function(event, receiptID) {
         if (files !== undefined) {
             let path = files['filePaths'][0];
             console.log(path)
-            fs.copyFile(path, `${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, (err) => {
+            fs.copyFile(path, `${dataPath}\\receipts\\${receiptID}.pdf`, (err) => {
                 if (err){
                     throw err;
                 }else{
@@ -233,7 +235,7 @@ ipcMain.on('upload_file_input', function(event, receiptID) {
         if (files !== undefined) {
             let path = result['filePaths'][0];
             console.log(path)
-            fs.copyFile(path, `${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, (err) => {
+            fs.copyFile(path, `${dataPath}\\receipts\\${receiptID}.pdf`, (err) => {
                 if (err){
                     throw err;
                 }else{
@@ -251,7 +253,7 @@ ipcMain.on('download_file', function(event, receiptID) {
         filters: [{ name: '.pdf', extensions: ['pdf'] }]
     }).then(result => {
         let filepath = result.filePath;
-        fs.copyFile(`${app.getPath('userData') + "\\data\\receipts\\"}${receiptID}.pdf`, filepath, (err) => {
+        fs.copyFile(`${dataPath}\\receipts\\${receiptID}.pdf`, filepath, (err) => {
             if (err) throw err;
         });
     }).catch(err => {

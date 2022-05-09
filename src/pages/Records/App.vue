@@ -111,7 +111,7 @@
 				<div class="title">
 					<p>Pivot Table</p>
 					<div style="display: flex; align-items: center;"> 
-						<label for="show_gst_checkbox" style="width: unset;">Show GST:</label>
+						<label for="show_gst_checkbox" style="width: unset;">Show GST Inclusive:</label>
 						<input id="show_gst_checkbox" type="checkbox" @click="changeCheckBox" checked/>
 					</div>
 				</div>

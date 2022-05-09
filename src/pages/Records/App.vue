@@ -110,19 +110,19 @@
 			<div id="pivot" class="outer_table">
 				<div class="title">
 					<p>Pivot Table</p>
-					<div id="show_gst"> 
-						<label for="show_gst_checkbox">Show GST:</label>
+					<div style="display: flex; align-items: center;"> 
+						<label for="show_gst_checkbox" style="width: unset;">Show GST:</label>
 						<input id="show_gst_checkbox" type="checkbox" @click="changeCheckBox" checked/>
 					</div>
 				</div>
 				<div class="pivot_row pivot_heading">
 					<template v-if="masterDict['showGST']">
-						<p v-for="column in colNamesGST" :key="column">
+						<p v-for="column in colNamesGST" :key="column" class="with_GST">
 							{{ column }}
 						</p>
 					</template>
 					<template v-else>
-						<p v-for="column in colNames" :key="column">
+						<p v-for="column in colNames" :key="column" class="without_GST">
 							{{ column }}
 						</p>
 					</template>
@@ -141,9 +141,12 @@
 					<p>{{ numberWithCommas(categoryDict['Jan']) }}</p>
 					<p>{{ numberWithCommas(categoryDict['Feb']) }}</p>
 					<p>{{ numberWithCommas(categoryDict['Mar']) }}</p>
-					<p>{{ numberWithCommas(categoryDict['grandTotal']) }}</p>
 					<template v-if="masterDict['showGST']">
-						<p>{{ numberWithCommas(categoryDict['grandTotal'] * 1.15) }}</p>
+						<p style="min-width: calc((100% - 30ch) / 14);">{{ numberWithCommas(categoryDict['grandTotal']) }}</p>	
+						<p style="min-width: calc((100% - 30ch) / 14);">{{ numberWithCommas(categoryDict['grandTotal'] * 1.15) }}</p>
+					</template>
+					<template v-else>
+						<p style="min-width: calc(((100% - 30ch) / 14) * 2 + 1px);">${{ numberWithCommas(categoryDict['grandTotal']) }}</p>
 					</template>
 				</div>
 				<div class="pivot_row pivot_heading"> <!-- Total of each column -->
@@ -161,9 +164,12 @@
 						<p>${{ numberWithCommas(pivotDict['months']['Jan']) }}</p>
 						<p>${{ numberWithCommas(pivotDict['months']['Feb']) }}</p>
 						<p>${{ numberWithCommas(pivotDict['months']['Mar']) }}</p>
-						<p>${{ numberWithCommas(pivotDict['months']['grandTotal']) }}</p>
 						<template v-if="masterDict['showGST']">
-							<p>${{ numberWithCommas(pivotDict['months']['grandTotal'] * 1.15) }}</p>
+							<p style="min-width: calc((100% - 30ch) / 14);">${{ numberWithCommas(pivotDict['months']['grandTotal']) }}</p>
+							<p style="min-width: calc((100% - 30ch) / 14);">${{ numberWithCommas(pivotDict['months']['grandTotal'] * 1.15) }}</p>
+						</template>
+						<template v-else>
+							<p style="min-width: calc(((100% - 30ch) / 14) * 2 + 1px);">${{ numberWithCommas(pivotDict['months']['grandTotal']) }}</p>
 						</template>
 					</template>
 				</div> 
@@ -242,7 +248,7 @@ export default {
 			loaded: false,
 			show_delete: false,
 			yearID: '',
-			colNamesGST: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Total w/o GST", "Total w/ GST"],
+			colNamesGST: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "T w/o GST", "T w/ GST"],
 			colNames: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Total"]
 		}
 	},
@@ -679,20 +685,6 @@ label{
 	justify-content: center;
 }
 
-.pivot_row:not(.pivot_heading) > p:nth-last-child(1){
-	min-width: 100px;
-}
-.pivot_row:not(.pivot_heading) > p:nth-last-child(2){
-	min-width: 100px;
-}
-.pivot_heading > p:nth-last-child(1){
-	min-width: 100px;
-}
-
-.pivot_heading > p:nth-last-child(2){
-	min-width: 100px;
-}
-
 .pivot_row > p:first-child{
 	width: 30ch;
 	min-width: 30ch;
@@ -705,8 +697,19 @@ label{
 }
 
 #show_gst_checkbox{
-	width: 100px;
-	height: 15px;
+	width: 50px;
+	height: 30px;
+}
+
+.without_GST:last-child{
+	min-width: calc(((100% - 30ch) / 14) * 2 + 1px);
+}
+
+.with_GST:last-child{
+	min-width: calc((100% - 30ch) / 14);
+}
+.with_GST:nth-last-child(2){
+	min-width: calc((100% - 30ch) / 14);
 }
 
 </style>

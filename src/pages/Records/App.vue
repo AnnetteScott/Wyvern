@@ -115,7 +115,7 @@
 						<input id="show_gst_checkbox" type="checkbox" @click="changeCheckBox" checked/>
 					</div>
 				</div>
-				<div class="pivot_row pivot_heading">
+				<div class="pivot_row pivot_heading" style="height: 30px">
 					<template v-if="masterDict['showGST']">
 						<p v-for="column in colNamesGST" :key="column" class="with_GST">
 							{{ column }}
@@ -248,7 +248,7 @@ export default {
 			loaded: false,
 			show_delete: false,
 			yearID: '',
-			colNamesGST: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "T w/o GST", "T w/ GST"],
+			colNamesGST: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Total w/o GST", "Total w/ GST"],
 			colNames: ["Category", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Total"]
 		}
 	},

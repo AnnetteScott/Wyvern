@@ -130,7 +130,7 @@ export default {
                         $(`[cellid=${cellID}]`).css({"background-color": this.masterDict['colours'][colourID]['colour'], "border-color": "black"});
 					});
 				}
-			}, 1)
+			}, 1);
 
 			this.dateList = [`Date | Time`];
 			this.dateList.push(this.weekDict['startDate']);

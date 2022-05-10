@@ -185,7 +185,7 @@ function manualSave(){
     
 }
 
-let masterRawFormat = {"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": {}, 'savedTransactions': {}}, "saveVersion": 13, "showGST": true}
+let masterRawFormat = {"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": {}, 'savedTransactions': {}}, "saveVersion": 13, "showGST": true, "version": "4.1.6"}
 
 if(!fs.existsSync(dataPath)){
     fs.mkdirSync(dataPath);

@@ -2,7 +2,13 @@
 	<BackgroundBubble/>
     <NavBar :title="`Wyvern`"/>
     <SavingPopup />
-    <div id="home_page">
+   
+    <div id="home_page"> 
+    <template v-if="update">
+        <div id="update">
+            There is an update available. Go to &nbsp; <a @click="openWyvern">Wyvern Releases</a>
+        </div>
+    </template>
         <img src="./assets/WyvernIcon.png" draggable="false" alt="" style="filter: grayscale(1) brightness(4);">
         <h1>Welcome To Wyvern!</h1>
         <br>
@@ -15,6 +21,8 @@
 import NavBar from './components/NavBar.vue';
 import BackgroundBubble from './components/BackgroundBubble.vue';
 import SavingPopup from './components/SavingPopup.vue';
+import $ from 'jquery';
+const { shell } = window.require("electron");
 
 export default {
 	name: 'App',
@@ -24,10 +32,57 @@ export default {
         SavingPopup
     },
 	mounted() {
+        this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
+        console.log(this.masterDict);
         setTimeout(() => {
-            console.log(JSON.parse(localStorage.getItem('masterDict')));
-        }, 1)
-		
+            this.checkForUpdates();
+        }, 1);
+	},
+    data() {
+        return {
+            update: false,
+            masterDict: {}
+        }
+    },
+    methods: {
+        openWyvern(){
+            shell.openExternal('https://github.com/Scott-Studios/Wyvern/releases/latest/')
+        },
+        updateVar(){
+            this.update = true;
+        },
+        checkForUpdates(){
+            let masterDict = {...this.masterDict}
+            let update_data = undefined;
+            let ref = this;
+            $.ajax({
+                dataType: "json",
+                url: 'https://api.github.com/repos/Scott-Studios/Wyvern/releases',
+                cache: false,
+                success: function (data){
+                    update_data = data;
+                    let current_version = [
+                        parseInt(masterDict['version'].split('.')[0]), 
+                        parseInt(masterDict['version'].split('.')[1]), 
+                        parseInt(masterDict['version'].split('.')[2])
+                    ];
+                    let latest_version = [
+                        parseInt(update_data[0].tag_name.split('v')[1].split('.')[0]), 
+                        parseInt(update_data[0].tag_name.split('v')[1].split('.')[1]), 
+                        parseInt(update_data[0].tag_name.split('v')[1].split('.')[2])
+                    ];
+                    if(latest_version[0] > current_version[0] || latest_version[1] > current_version[1] || latest_version[2] > current_version[2]){
+                        //nothing
+                    }else{
+                        ref.updateVar();
+                    }
+
+                },
+                error: function (xhr){
+                    console.log("Error " + xhr.status + ", could not check for updates.");
+                }
+            });
+        }
 	}
 }
 </script>
@@ -77,6 +132,22 @@ export default {
 	transform: translateY(var(--navbar_height));
 
     display: none;
+}
+
+#update{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 40px;
+    box-shadow: 0px 0px 10px -5px white inset, 0px 4px 16px -16px black;
+    border-radius: 10px;
+    background-color: #ffffff3b;
+}
+
+#update a{
+    cursor: pointer;
+    color: blue;
 }
 
 </style>

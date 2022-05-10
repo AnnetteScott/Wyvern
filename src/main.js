@@ -104,5 +104,9 @@ function saveChecker(){
         masterDict['showGST'] = true;
         masterDict['saveVersion'] = 14;
     }
+    if(masterDict['saveVersion'] == 14){
+        masterDict['version'] = '4.1.6';
+        masterDict['saveVersion'] = 15;
+    }
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

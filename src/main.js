@@ -29,6 +29,7 @@ app.mount('#app');
 
 
 function saveChecker(){
+    let pjson = require('../package.json');
     let masterDict = JSON.parse(window.localStorage.getItem('masterDict'));
     if(masterDict['saveVersion'] == 4){
         masterDict['records']['accounts'] = [];
@@ -105,8 +106,9 @@ function saveChecker(){
         masterDict['saveVersion'] = 14;
     }
     if(masterDict['saveVersion'] == 14){
-        masterDict['version'] = '4.1.6';
+        masterDict['version'] = pjson.version;
         masterDict['saveVersion'] = 15;
     }
+    masterDict['version'] = pjson.version;
     window.localStorage.setItem('masterDict', JSON.stringify(masterDict));
 }

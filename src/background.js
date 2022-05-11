@@ -184,8 +184,8 @@ function manualSave(){
     }, 100)
     
 }
-
-let masterRawFormat = {"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": {}, 'savedTransactions': {}}, "saveVersion": 13, "showGST": true, "version": "4.1.6"}
+let pjson = require('../package.json');
+let masterRawFormat = {"projects": {}, "clients": {}, "colours": {'colourWhite':{'name': 'Clear', 'colour': '#ffffff'}}, "users": {}, "records": {"accounts": [], "categories": {}, 'savedTransactions': {}}, "saveVersion": 13, "showGST": true, "version": pjson.version}
 
 if(!fs.existsSync(dataPath)){
     fs.mkdirSync(dataPath);

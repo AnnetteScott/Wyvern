@@ -32,9 +32,9 @@ export default {
         SavingPopup
     },
 	mounted() {
-        this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
-        console.log(this.masterDict);
         setTimeout(() => {
+            this.masterDict = JSON.parse(localStorage.getItem('masterDict'));
+            console.log(this.masterDict);
             this.checkForUpdates();
         }, 1);
 	},

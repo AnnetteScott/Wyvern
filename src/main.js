@@ -22,12 +22,8 @@ ipcRenderer.on('loadData', function(event, data) {
     saveChecker(); 
 });
 
-window.setTimeout(function(){
-    saveChecker(); 
-}, 1);
-
 app.mount('#app');
-
+saveChecker(); 
 
 function saveChecker(){
     let pjson = require('../package.json');

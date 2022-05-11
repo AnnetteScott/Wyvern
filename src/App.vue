@@ -72,8 +72,6 @@ export default {
                         parseInt(update_data[0].tag_name.split('v')[1].split('.')[2])
                     ];
                     if(latest_version[0] > current_version[0] || latest_version[1] > current_version[1] || latest_version[2] > current_version[2]){
-                        //nothing
-                    }else{
                         ref.updateVar();
                     }
 

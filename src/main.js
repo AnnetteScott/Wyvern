@@ -19,6 +19,7 @@ ipcRenderer.on('master_dict_reading', function(event, data) {
 ipcRenderer.on('loadData', function(event, data) {
     window.localStorage.setItem('masterDict', data);
     event;
+    saveChecker(); 
 });
 
 window.setTimeout(function(){

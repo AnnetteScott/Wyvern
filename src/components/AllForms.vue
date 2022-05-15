@@ -870,7 +870,7 @@ export default {
 				return false;
 			}
 			$("#edit_account").removeClass('form_error');
-			this.masterDict['records']['categories'].push(newAccount);
+			this.masterDict['records']['accounts'].push(newAccount);
  
 			localStorage.setItem('masterDict', JSON.stringify(this.masterDict));
 			this.$emit('cancelled', '');
